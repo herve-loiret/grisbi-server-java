@@ -1,0 +1,11 @@
+
+logging:
+  level:
+    root: DEBUG
+
+server:
+  context-path: /grisbiweb
+
+spring:
+  application:
+    name: grisbi-web
