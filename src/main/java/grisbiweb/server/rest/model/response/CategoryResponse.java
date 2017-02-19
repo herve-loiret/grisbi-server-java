@@ -1,10 +1,14 @@
 package grisbiweb.server.rest.model.response;
 
-import io.swagger.annotations.ApiModel;
-
 import org.apache.commons.lang3.StringUtils;
 
+import io.swagger.annotations.ApiModel;
+import lombok.Getter;
+import lombok.Setter;
+
 @ApiModel
+@Getter
+@Setter
 public class CategoryResponse {
 	
 	private Long idCategory;
@@ -31,35 +35,4 @@ public class CategoryResponse {
 		return completeName;
 	}
 
-	public Long getIdCategory() {
-		return idCategory;
-	}
-
-	public Long getIdSubCategory() {
-		return idSubCategory;
-	}
-
-	public String getNameCategory() {
-		return nameCategory;
-	}
-
-	public String getNameSubCategory() {
-		return nameSubCategory;
-	}
-
-	public void setIdCategory(Long idCategory) {
-		this.idCategory = idCategory;
-	}
-
-	public void setIdSubCategory(Long idSubCategory) {
-		this.idSubCategory = idSubCategory;
-	}
-
-	public void setNameCategory(String nameCategory) {
-		this.nameCategory = nameCategory;
-	}
-
-	public void setNameSubCategory(String nameSubCategory) {
-		this.nameSubCategory = nameSubCategory;
-	}
 }
