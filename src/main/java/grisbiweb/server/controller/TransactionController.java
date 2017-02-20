@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import grisbiweb.server.model.Transaction;
+import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.rest.mapper.TransactionMapper;
 import grisbiweb.server.rest.model.request.TransactionRequest;
 import grisbiweb.server.rest.model.response.ListTransactionResponse;
@@ -33,12 +33,12 @@ public class TransactionController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "the transaction parameter is not valid"),
-            @ApiResponse(code = 404, message = "Account not found") })
+            @ApiResponse(code = 404, message = "AccountOld not found") })
     @ApiOperation(value = "Create a new transaction in the grisbi data file", response = Response.class)
     public Response createTransaction(TransactionRequest transactionRequest) {
 
-        Transaction transaction = TransactionMapper.mapTransactionRequest(transactionRequest);
-        transactionService.createTransaction(transaction);
+        TransactionOld transactionOld = TransactionMapper.mapTransactionRequest(transactionRequest);
+        transactionService.createTransaction(transactionOld);
 
         return Response.status(201).build();
     }
@@ -47,8 +47,8 @@ public class TransactionController {
     @ApiOperation(value = "get all transaction from an account", response = ListTransactionResponse.class)
     public ListTransactionResponse getTransactionsByAccountNumber(
             @ApiParam(value = "account id") @PathVariable("accountId") String accountId) {
-        List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountId);
-        List<TransactionResponse> transactionUis = TransactionMapper.mapTransactions(transactions);
+        List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountId);
+        List<TransactionResponse> transactionUis = TransactionMapper.mapTransactions(transactionOlds);
         return new ListTransactionResponse(transactionUis);
     }
 
@@ -66,10 +66,10 @@ public class TransactionController {
             @ApiParam(value = "account id") @PathVariable("accountNumber") String accountNumber, //
             @ApiParam(value = "page number") @PathVariable("page") Integer page, //
             @ApiParam(value = "item per page") @PathVariable("perpage") Integer perpage) {
-        List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountNumber, page,
+        List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountNumber, page,
                 perpage);
 
-        List<TransactionResponse> transactionsUI = TransactionMapper.mapTransactions(transactions);
+        List<TransactionResponse> transactionsUI = TransactionMapper.mapTransactions(transactionOlds);
         return new ListTransactionResponse(transactionsUI);
     }
 }

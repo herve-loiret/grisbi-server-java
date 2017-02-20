@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "Party")
+@XmlRootElement(name = "PartyOld")
 public class PartyXml {
 
     @XmlAttribute(name = "Search", required = true)

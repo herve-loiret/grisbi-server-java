@@ -1,6 +1,6 @@
 package grisbiweb.server.service;
 
-import grisbiweb.server.model.Party;
+import grisbiweb.server.model.PartyOld;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.model.CurrencyXml;
 import grisbiweb.server.xml.model.PartyXml;
@@ -34,22 +34,22 @@ public enum GrisbiService {
 	}
 
 
-	public List<Party> getParties() {
-		List<Party> parties = new ArrayList<>();
+	public List<PartyOld> getParties() {
+		List<PartyOld> partyOlds = new ArrayList<>();
 		for(PartyXml party : this.grisbiXmlManager.loadGrisbi().getParty()){
-			Party partyGws = new Party(party);
-			parties.add(partyGws);
+			PartyOld partyGws = new PartyOld(party);
+			partyOlds.add(partyGws);
 		}
-		return parties;
+		return partyOlds;
 	}
 
-	public Party getPartyById(String id) {
+	public PartyOld getPartyById(String id) {
 		if (id == null) {
 			return null;
 		}
 		for (PartyXml party : grisbiXmlManager.loadGrisbi().getParty()) {
 			if (id.equals(party.getNb())) {
-				return new Party(party);
+				return new PartyOld(party);
 			}
 		}
 		return null;

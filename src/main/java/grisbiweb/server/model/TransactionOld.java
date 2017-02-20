@@ -13,15 +13,15 @@ import java.util.Date;
  * @author yoshi
  *
  */
-public class Transaction {
+public class TransactionOld {
 
 	private TransactionXml transactionXml;
 
-	public Transaction() {
+	public TransactionOld() {
 		this.transactionXml = new TransactionXml();
 	}
 
-	public Transaction(TransactionXml transaction) {
+	public TransactionOld(TransactionXml transaction) {
 		this.transactionXml = transaction;
 	}
 

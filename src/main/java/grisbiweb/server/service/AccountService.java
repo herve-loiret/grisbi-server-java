@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import grisbiweb.server.exception.AccountNotFoundException;
-import grisbiweb.server.model.Account;
-import grisbiweb.server.model.Account.AccountType;
-import grisbiweb.server.model.Transaction;
+import grisbiweb.server.model.AccountOld;
+import grisbiweb.server.model.AccountOld.AccountType;
+import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.model.AccountXml;
 
@@ -20,56 +20,56 @@ public enum AccountService {
 
 	private TransactionService transactionService = TransactionService.INSTANCE;
 
-	public Account getAccountById(String accountId) {
+	public AccountOld getAccountById(String accountId) {
 
-		Account account = null;
+		AccountOld accountOld = null;
 		for (AccountXml accountXml : grisbiXmlManager.loadGrisbi().getAccount()) {
 			if (accountId.equals(accountXml.getNumber())) {
-				account = new Account(accountXml);
+				accountOld = new AccountOld(accountXml);
 				break;
 			}
 		}
 
-		if (account == null) {
+		if (accountOld == null) {
 			throw new AccountNotFoundException();
 		} else {
-			return account;
+			return accountOld;
 		}
 	}
 
-	public List<Account> getAccountsByCurrencyId(String currencyId) {
-		List<Account> accounts = new ArrayList<>();
-		for (Account account : getOpenedAccounts()) {
-			if (currencyId.equals(account.getCurrencyId())) {
-				accounts.add(account);
+	public List<AccountOld> getAccountsByCurrencyId(String currencyId) {
+		List<AccountOld> accountOlds = new ArrayList<>();
+		for (AccountOld accountOld : getOpenedAccounts()) {
+			if (currencyId.equals(accountOld.getCurrencyId())) {
+				accountOlds.add(accountOld);
 			}
 		}
-		return accounts;
+		return accountOlds;
 	}
 
-	private List<Account> getAccountsByType(AccountType accountType) {
-		List<Account> accounts = new ArrayList<>();
-		for (Account account : getOpenedAccounts()) {
-			if (account.getAccountType() == accountType) {
-				accounts.add(account);
+	private List<AccountOld> getAccountsByType(AccountType accountType) {
+		List<AccountOld> accountOlds = new ArrayList<>();
+		for (AccountOld accountOld : getOpenedAccounts()) {
+			if (accountOld.getAccountType() == accountType) {
+				accountOlds.add(accountOld);
 			}
 		}
-		return accounts;
+		return accountOlds;
 	}
 
 	public BigDecimal getBalance(String accountId, boolean onlyReconciled) {
 
-		Account account = this.getAccountById(accountId);
+		AccountOld accountOld = this.getAccountById(accountId);
 
-		List<Transaction> transactions = transactionService
+		List<TransactionOld> transactionOlds = transactionService
 				.getTransactionsOrderedByAccountId(accountId);
 
-		BigDecimal solde = account.getInitialBalance();
+		BigDecimal solde = accountOld.getInitialBalance();
 
-		for (Transaction transaction : transactions) {
-			BigDecimal amount = transaction.getAmount();
-			if (!transaction.isChildTransaction()) {
-				if (!onlyReconciled || transaction.isTransactionPointeOuArchive()) {
+		for (TransactionOld transactionOld : transactionOlds) {
+			BigDecimal amount = transactionOld.getAmount();
+			if (!transactionOld.isChildTransaction()) {
+				if (!onlyReconciled || transactionOld.isTransactionPointeOuArchive()) {
 					solde = solde.add(amount);
 				}
 			}
@@ -80,24 +80,24 @@ public enum AccountService {
 
 	public BigDecimal getBalanceTotalByAccountType(AccountType accountType, boolean onlyReconciled) {
 		BigDecimal balanceTotal = new BigDecimal(0);
-		for (Account accountGws : this.getAccountsByType(accountType)) {
+		for (AccountOld accountGws : this.getAccountsByType(accountType)) {
 			balanceTotal = balanceTotal.add(this.getBalance(accountGws.getId(), onlyReconciled));
 		}
 		return balanceTotal;
 	}
 
 	public BigDecimal getInitialBalance(String accountNumber) {
-		Account account = this.getAccountById(accountNumber);
-		return account.getInitialBalance();
+		AccountOld accountOld = this.getAccountById(accountNumber);
+		return accountOld.getInitialBalance();
 	}
 
-	public List<Account> getOpenedAccounts() {
-		List<Account> accounts = new ArrayList<>();
+	public List<AccountOld> getOpenedAccounts() {
+		List<AccountOld> accountOlds = new ArrayList<>();
 		for (AccountXml account : this.grisbiXmlManager.loadGrisbi().getAccount()) {
 			if ("0".equals(account.getClosedAccount())) {
-				accounts.add(new Account(account));
+				accountOlds.add(new AccountOld(account));
 			}
 		}
-		return accounts;
+		return accountOlds;
 	}
 }

@@ -97,7 +97,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "Transaction")
+@XmlRootElement(name = "TransactionOld")
 public class TransactionXml {
 
     @XmlAttribute(name = "Mo", required = true)

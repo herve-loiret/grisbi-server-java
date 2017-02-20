@@ -1,6 +1,6 @@
 package grisbiweb.server.xml;
 
-import grisbiweb.server.model.Transaction;
+import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.utils.FileUtils;
 import grisbiweb.server.xml.model.TransactionXml;
 
@@ -27,7 +27,7 @@ public enum XmlWriter {
 	}
 
 	private String createXmlElement(TransactionXml transactionXml) {
-		StringBuilder element = new StringBuilder("	<Transaction");
+		StringBuilder element = new StringBuilder("	<TransactionOld");
 		element.append(" Ac=" + createValue(transactionXml.getAc()));
 		element.append(" Nb=" + createValue(transactionXml.getNb()));
 		element.append(" Id=" + createValue(transactionXml.getId()));
@@ -75,7 +75,7 @@ public enum XmlWriter {
 				if (line.contains("<Payment") && !alreadyOneTransaction) {
 					lastLine = allLines;
 				}
-				if (line.contains("<Transaction")) {
+				if (line.contains("<TransactionOld")) {
 					alreadyOneTransaction = true;
 					lastLine = allLines;
 				}
@@ -113,9 +113,9 @@ public enum XmlWriter {
 		outFile.renameTo(file);
 	}
 
-	public synchronized void writeTransaction(Transaction transaction) {
+	public synchronized void writeTransaction(TransactionOld transactionOld) {
 
-		TransactionXml transactionXml = transaction.getTransactionXml();
+		TransactionXml transactionXml = transactionOld.getTransactionXml();
 		String line = this.createXmlElement(transactionXml);
 
 		try {

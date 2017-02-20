@@ -1,6 +1,6 @@
 package grisbiweb.server.service;
 
-import grisbiweb.server.model.Transaction;
+import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.XmlWriter;
 import grisbiweb.server.xml.model.TransactionXml;
@@ -17,57 +17,57 @@ public enum TransactionService {
 
 	private XmlWriter xmlWriter = XmlWriter.INSTANCE;
 
-	public void createTransaction(Transaction transaction) {
-		transaction.setId(findNextTransactionId());
-		xmlWriter.writeTransaction(transaction);
+	public void createTransaction(TransactionOld transactionOld) {
+		transactionOld.setId(findNextTransactionId());
+		xmlWriter.writeTransaction(transactionOld);
 	}
 
 	private Long findNextTransactionId() {
 		Long id = 0L;
-		for (Transaction transaction : this.getTransactions()) {
-			if (id.compareTo(transaction.getIdLong()) < 0) {
-				id = transaction.getIdLong();
+		for (TransactionOld transactionOld : this.getTransactions()) {
+			if (id.compareTo(transactionOld.getIdLong()) < 0) {
+				id = transactionOld.getIdLong();
 			}
 		}
 		return ++id;
 	}
 
-	public Transaction getForeignTransaction(Transaction transaction) {
-		return this.getTransactionById(transaction.getForeignTransactionId());
+	public TransactionOld getForeignTransaction(TransactionOld transactionOld) {
+		return this.getTransactionById(transactionOld.getForeignTransactionId());
 	}
 
-	public Transaction getTransactionById(String idTransaction) {
+	public TransactionOld getTransactionById(String idTransaction) {
 		for (TransactionXml oneTransaction : grisbiXmlManager.loadGrisbi().getTransaction()) {
-			Transaction transaction = new Transaction(oneTransaction);
-			if (transaction.getId().equals(idTransaction)) {
-				return transaction;
+			TransactionOld transactionOld = new TransactionOld(oneTransaction);
+			if (transactionOld.getId().equals(idTransaction)) {
+				return transactionOld;
 			}
 		}
 		return null;
 	}
 
-	private List<Transaction> getTransactions() {
+	private List<TransactionOld> getTransactions() {
 		List<TransactionXml> transactionsXml = grisbiXmlManager.loadGrisbi().getTransaction();
-		List<Transaction> transactions = new ArrayList<>();
+		List<TransactionOld> transactionOlds = new ArrayList<>();
 		for (TransactionXml transactionXml : transactionsXml) {
-			transactions.add(new Transaction(transactionXml));
+			transactionOlds.add(new TransactionOld(transactionXml));
 		}
-		return transactions;
+		return transactionOlds;
 	}
 
-	public List<Transaction> getTransactionsOrderedByAccountId(String accountId) {
+	public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId) {
 		return getTransactionsOrderedByAccountId(accountId, null, null);
 	}
 
-	public List<Transaction> getTransactionsOrderedByAccountId(String accountId, Integer page,
+	public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId, Integer page,
 			Integer perPage) {
 
-		List<Transaction> transactionsAccount = new ArrayList<>();
-		List<Transaction> transactions = this.getTransactions();
+		List<TransactionOld> transactionsAccount = new ArrayList<>();
+		List<TransactionOld> transactionOlds = this.getTransactions();
 
-		for (Transaction transaction : transactions) {
-			if (transaction.getAccountId().equals(accountId)) {
-				transactionsAccount.add(transaction);
+		for (TransactionOld transactionOld : transactionOlds) {
+			if (transactionOld.getAccountId().equals(accountId)) {
+				transactionsAccount.add(transactionOld);
 			}
 		}
 

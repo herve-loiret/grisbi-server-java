@@ -2,11 +2,11 @@ package grisbiweb.server.model;
 
 import grisbiweb.server.xml.model.SubCategoryXml;
 
-public class SubCategory {
+public class SubCategoryOld {
 
 	private SubCategoryXml subCategory;
 
-	public SubCategory(SubCategoryXml subCategory) {
+	public SubCategoryOld(SubCategoryXml subCategory) {
 		this.subCategory = subCategory;
 	}
 

@@ -1,11 +1,11 @@
 package grisbiweb.server.rest.mapper;
 
 import grisbiweb.server.exception.TransactionRequestNotValidException;
-import grisbiweb.server.model.Account;
-import grisbiweb.server.model.Category;
-import grisbiweb.server.model.Party;
-import grisbiweb.server.model.SubCategory;
-import grisbiweb.server.model.Transaction;
+import grisbiweb.server.model.AccountOld;
+import grisbiweb.server.model.CategoryOld;
+import grisbiweb.server.model.PartyOld;
+import grisbiweb.server.model.SubCategoryOld;
+import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.rest.model.request.TransactionRequest;
 import grisbiweb.server.rest.model.response.TransactionResponse;
 import grisbiweb.server.service.AccountService;
@@ -46,82 +46,82 @@ public class TransactionMapper {
 	 */
 	private static List<TransactionResponse> transactionUIs = null;
 
-	private static void mapAmount(Transaction transaction, TransactionResponse transactionUI) {
-		BigDecimal amount = transaction.getAmount();
-		if (transaction.isDebit()) {
+	private static void mapAmount(TransactionOld transactionOld, TransactionResponse transactionUI) {
+		BigDecimal amount = transactionOld.getAmount();
+		if (transactionOld.isDebit()) {
 			transactionUI.setDebit(amount.doubleValue());
 		} else {
 			transactionUI.setCredit(amount.doubleValue());
 		}
 	}
 
-	private static void mapParty(Transaction transaction, TransactionResponse transactionUI) {
-		String partyId = transaction.getPartyId();
+	private static void mapParty(TransactionOld transactionOld, TransactionResponse transactionUI) {
+		String partyId = transactionOld.getPartyId();
 		if (partyId != null) {
-			Party party = grisbiService.getPartyById(partyId);
-			if (party != null) {
-				transactionUI.setParty(party.getName());
+			PartyOld partyOld = grisbiService.getPartyById(partyId);
+			if (partyOld != null) {
+				transactionUI.setParty(partyOld.getName());
 			}
 		}
 	}
 
-	private static TransactionResponse mapTransaction(Transaction transaction) {
+	private static TransactionResponse mapTransaction(TransactionOld transactionOld) {
 
 		TransactionResponse transactionUI = new TransactionResponse();
 
-		mapAmount(transaction, transactionUI);
+		mapAmount(transactionOld, transactionUI);
 
-		transactionUI.setId(transaction.getIdLong());
-		transactionUI.setDate(transaction.getDate());
-		transactionUI.setId(transaction.getIdLong());
-		String categoryId = transaction.getCategoryId();
-		String subCategoryId = transaction.getSubCategoryId();
+		transactionUI.setId(transactionOld.getIdLong());
+		transactionUI.setDate(transactionOld.getDate());
+		transactionUI.setId(transactionOld.getIdLong());
+		String categoryId = transactionOld.getCategoryId();
+		String subCategoryId = transactionOld.getSubCategoryId();
 
-		if (transaction.isATransfer()) {
-			Transaction transactionDistante = transactionService.getForeignTransaction(transaction);
+		if (transactionOld.isATransfer()) {
+			TransactionOld transactionDistante = transactionService.getForeignTransaction(transactionOld);
 			if (transactionDistante != null) {
-				Account accountDistant = accountService.getAccountById(transactionDistante
+				AccountOld accountDistant = accountService.getAccountById(transactionDistante
 						.getAccountId());
 				if (accountDistant != null) {
 					transactionUI.setCategory("Virement : " + accountDistant.getName());
 				}
 			}
 		} else {
-			Category category = categoryManager.getCategoryById(categoryId);
-			if (category != null) {
-				transactionUI.setCategory(category.getName());
-				SubCategory subCategory = categoryManager.getSubCategoryByIds(categoryId,
+			CategoryOld categoryOld = categoryManager.getCategoryById(categoryId);
+			if (categoryOld != null) {
+				transactionUI.setCategory(categoryOld.getName());
+				SubCategoryOld subCategoryOld = categoryManager.getSubCategoryByIds(categoryId,
 						subCategoryId);
-				if (subCategory != null) {
+				if (subCategoryOld != null) {
 					transactionUI.setCategory(transactionUI.getCategory() + " : "
-							+ subCategory.getName());
+							+ subCategoryOld.getName());
 				}
 			}
 		}
 
-		mapParty(transaction, transactionUI);
+		mapParty(transactionOld, transactionUI);
 
 		// P/R
-		if (transaction.isTransactionPointe()) {
+		if (transactionOld.isTransactionPointe()) {
 			transactionUI.setPr("P");
 		}
 
 		// solde
-		if (transaction.isChildTransaction()) {
+		if (transactionOld.isChildTransaction()) {
 			// dans une transaction enfant, on ne cumul pas le solde
-			String transactionParentId = transaction.getTransactionParentId();
+			String transactionParentId = transactionOld.getTransactionParentId();
 			TransactionResponse transactionParent = transactionById.get(transactionParentId);
 			if (transactionParent != null) {
 				transactionParent.getSubTransactions().add(transactionUI);
 			}
 		} else {
 			// c'est une transaction parente ou une transaction normale
-			cptTransactionAll = cptTransactionAll.add(transaction.getAmount());
+			cptTransactionAll = cptTransactionAll.add(transactionOld.getAmount());
 			transactionUI.setSolde(cptTransactionAll.doubleValue());
 
 			// save in list
 			transactionUIs.add(transactionUI);
-			transactionById.put(transaction.getId(), transactionUI);
+			transactionById.put(transactionOld.getId(), transactionUI);
 		}
 
 		return transactionUI;
@@ -135,9 +135,9 @@ public class TransactionMapper {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Transaction mapTransactionRequest(TransactionRequest transactionRequest) {
+	public static TransactionOld mapTransactionRequest(TransactionRequest transactionRequest) {
 
-		Transaction transaction = new Transaction();
+		TransactionOld transactionOld = new TransactionOld();
 
 		Date date;
 		try {
@@ -167,58 +167,58 @@ public class TransactionMapper {
 		// only to check and throw exception if account doesn't exist... (TODO change that)
 		accountService.getAccountById(accountId);
 
-		transaction.setAccountId(accountId);
+		transactionOld.setAccountId(accountId);
 		// Nb = (generated by service)
-		transaction.setOfxId("(null)"); // not supported yet
-		transaction.setDate(date);
-		transaction.setValueDate(null); // not supported yet
-		transaction.setAmount(amount);
-		transaction.setCurrencyId("1"); // not supported yet
-		transaction.setExchange(false); // not supported yet
-		transaction.setExchangeRate(null); // not supported yet
-		transaction.setExchangeFees(null); // not supported yet
-		transaction.setPartyId(partyId);
-		transaction.setCategoryId(categoryId);
-		transaction.setSubCategoryId(subCategoryId);
-		transaction.setBreakdown("0"); // not supported yet
-		transaction.setNotes("(null)"); // not supported yet
-		transaction.setPaiementMethodId("1"); // not supported yet
-		transaction.setPaiementMethodContent("(null)"); // not supported yet
-		transaction.setTransactionStatusId("0"); // not supported yet
-		transaction.setArchiveNumber("0"); // not supported yet
-		transaction.setAutomatic(false); // not supported yet
-		transaction.setReconcileNumber("0"); // not supported yet
-		transaction.setFinancialYearNumber("0");// not supported yet
-		transaction.setBudgetImputationId("0");// not supported yet
-		transaction.setSubCategoryId("0");// not supported yet
-		transaction.setAccountingDocument(null);// not supported yet
-		transaction.setBankReferences("(null)");// not supported yet
-		transaction.setForeignTransactionId("0"); // not supported yet
-		transaction.setTransactionParentId("0");// not supported yet
+		transactionOld.setOfxId("(null)"); // not supported yet
+		transactionOld.setDate(date);
+		transactionOld.setValueDate(null); // not supported yet
+		transactionOld.setAmount(amount);
+		transactionOld.setCurrencyId("1"); // not supported yet
+		transactionOld.setExchange(false); // not supported yet
+		transactionOld.setExchangeRate(null); // not supported yet
+		transactionOld.setExchangeFees(null); // not supported yet
+		transactionOld.setPartyId(partyId);
+		transactionOld.setCategoryId(categoryId);
+		transactionOld.setSubCategoryId(subCategoryId);
+		transactionOld.setBreakdown("0"); // not supported yet
+		transactionOld.setNotes("(null)"); // not supported yet
+		transactionOld.setPaiementMethodId("1"); // not supported yet
+		transactionOld.setPaiementMethodContent("(null)"); // not supported yet
+		transactionOld.setTransactionStatusId("0"); // not supported yet
+		transactionOld.setArchiveNumber("0"); // not supported yet
+		transactionOld.setAutomatic(false); // not supported yet
+		transactionOld.setReconcileNumber("0"); // not supported yet
+		transactionOld.setFinancialYearNumber("0");// not supported yet
+		transactionOld.setBudgetImputationId("0");// not supported yet
+		transactionOld.setSubCategoryId("0");// not supported yet
+		transactionOld.setAccountingDocument(null);// not supported yet
+		transactionOld.setBankReferences("(null)");// not supported yet
+		transactionOld.setForeignTransactionId("0"); // not supported yet
+		transactionOld.setTransactionParentId("0");// not supported yet
 
-		return transaction;
+		return transactionOld;
 	}
 
 	/**
 	 * 
 	 * why synchronized ?
 	 * 
-	 * @param transactions
+	 * @param transactionOlds
 	 * @return
 	 */
 	public static synchronized List<TransactionResponse> mapTransactions(
-			List<Transaction> transactions) {
+			List<TransactionOld> transactionOlds) {
 
 		transactionUIs = new ArrayList<>();
 		transactionById = new HashMap<>();
 
-		if (transactions != null && !transactions.isEmpty()) {
+		if (transactionOlds != null && !transactionOlds.isEmpty()) {
 
 			cptTransactionAll = accountService
-					.getInitialBalance(transactions.get(0).getAccountId());
+					.getInitialBalance(transactionOlds.get(0).getAccountId());
 
-			for (Transaction transaction : transactions) {
-				mapTransaction(transaction);
+			for (TransactionOld transactionOld : transactionOlds) {
+				mapTransaction(transactionOld);
 			}
 		}
 		return transactionUIs;

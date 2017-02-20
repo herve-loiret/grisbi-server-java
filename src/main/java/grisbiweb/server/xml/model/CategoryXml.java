@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "Category")
+@XmlRootElement(name = "CategoryOld")
 public class CategoryXml {
 
     @XmlAttribute(name = "Kd", required = true)

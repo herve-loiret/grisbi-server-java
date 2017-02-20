@@ -2,11 +2,11 @@ package grisbiweb.server.model;
 
 import grisbiweb.server.xml.model.CategoryXml;
 
-public class Category {
+public class CategoryOld {
 
 	private CategoryXml category;
 
-	public Category(CategoryXml category) {
+	public CategoryOld(CategoryXml category) {
 		this.category = category;
 	}
 

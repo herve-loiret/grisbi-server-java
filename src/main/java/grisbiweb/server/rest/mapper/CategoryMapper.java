@@ -1,7 +1,7 @@
 package grisbiweb.server.rest.mapper;
 
-import grisbiweb.server.model.Category;
-import grisbiweb.server.model.SubCategory;
+import grisbiweb.server.model.CategoryOld;
+import grisbiweb.server.model.SubCategoryOld;
 import grisbiweb.server.rest.model.response.CategoryResponse;
 import grisbiweb.server.service.CategoryService;
 
@@ -15,21 +15,21 @@ public class CategoryMapper {
 	public static List<CategoryResponse> getCategoriesUI() {
 		List<CategoryResponse> categoriesUI = new ArrayList<>();
 		// TODO à optimiser...
-		for (Category category : categoryManager.getCategoryById().values()) {
+		for (CategoryOld categoryOld : categoryManager.getCategoryById().values()) {
 			CategoryResponse categoryUI = new CategoryResponse();
-			categoryUI.setIdCategory(category.getidLong());
-			categoryUI.setNameCategory(category.getName());
+			categoryUI.setIdCategory(categoryOld.getidLong());
+			categoryUI.setNameCategory(categoryOld.getName());
 			categoriesUI.add(categoryUI);
-			for (SubCategory subCategory : categoryManager.getSubCategoriesByIdAndCategory()
+			for (SubCategoryOld subCategoryOld : categoryManager.getSubCategoriesByIdAndCategory()
 					.values()) {
-				if (subCategory.getIdCategory().equals(category.getId())) {
+				if (subCategoryOld.getIdCategory().equals(categoryOld.getId())) {
 					CategoryResponse subCategoryUI = new CategoryResponse();
 					
 					subCategoryUI.setIdCategory(categoryUI.getIdCategory());
 					subCategoryUI.setNameCategory(categoryUI.getNameCategory());
 					
-					subCategoryUI.setIdSubCategory(subCategory.getIdLong());
-					subCategoryUI.setNameSubCategory(subCategory.getName());
+					subCategoryUI.setIdSubCategory(subCategoryOld.getIdLong());
+					subCategoryUI.setNameSubCategory(subCategoryOld.getName());
 					categoriesUI.add(subCategoryUI);
 				}
 			}

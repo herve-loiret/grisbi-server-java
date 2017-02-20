@@ -64,6 +64,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <version>${uk.co.jemos.podam.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,11 +101,11 @@
                 <artifactId>maven-processor-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <defaultOutputDirectory> ${project.build.directory}/generated-sources/mapstruct                     </defaultOutputDirectory>
+                    <defaultOutputDirectory>${project.build.directory}/generated-sources/mapstruct</defaultOutputDirectory>
                     <processors>
                         <processor>org.mapstruct.ap.MappingProcessor</processor>
                     </processors>
-                    <sourceDirectory> ${project.build.directory}/delombok                     </sourceDirectory>
+                    <sourceDirectory> ${project.build.directory}/delombok</sourceDirectory>
                 </configuration>
                 <executions>
                     <execution>

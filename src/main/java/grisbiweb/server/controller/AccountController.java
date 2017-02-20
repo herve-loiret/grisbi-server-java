@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.exception.NotImplementedException;
-import grisbiweb.server.model.Account.AccountType;
+import grisbiweb.server.model.AccountOld.AccountType;
 import grisbiweb.server.rest.mapper.AccountMapper;
 import grisbiweb.server.rest.model.response.AccountResponse;
 import grisbiweb.server.service.AccountService;
@@ -42,7 +42,7 @@ public class AccountController {
      */
     @RequestMapping(value = "/{accountId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get account by id", response = AccountResponse.class)
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
     public AccountResponse getAccount(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
         return AccountMapper.mapAccount(accountService.getAccountById(accountId));
@@ -65,7 +65,7 @@ public class AccountController {
      * @return @
      */
     @RequestMapping(value = "/{accountId}/balance", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
     @ApiOperation(value = "calculate the balance of this account", response = BigDecimal.class)
     public BigDecimal getBalanceByAccountId(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
@@ -78,7 +78,7 @@ public class AccountController {
      * @return @
      */
     @RequestMapping(value = "/{accountId}/balance/reconciled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
     @ApiOperation(value = "calculate the reconciled balance of this account", response = BigDecimal.class)
     public BigDecimal getBalanceReconciledByAccountId(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {

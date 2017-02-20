@@ -2,11 +2,11 @@ package grisbiweb.server.model;
 
 import grisbiweb.server.xml.model.PartyXml;
 
-public class Party {
+public class PartyOld {
 
 	private PartyXml party;
 	
-	public Party(PartyXml party) {
+	public PartyOld(PartyXml party) {
 		this.party = party;
 	}
 	
