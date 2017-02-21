@@ -32,10 +32,10 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element ref="{}Color"/>
  *         &lt;element ref="{}Print"/>
  *         &lt;element ref="{}Currency" maxOccurs="unbounded"/>
- *         &lt;element ref="{}AccountOld" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}Account" maxOccurs="unbounded"/>
  *         &lt;element ref="{}Payment" maxOccurs="unbounded"/>
- *         &lt;element ref="{}TransactionOld" maxOccurs="unbounded"/>
- *         &lt;element ref="{}PartyOld" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}Transaction" maxOccurs="unbounded"/>
+ *         &lt;element ref="{}Party" maxOccurs="unbounded"/>
  *         &lt;group ref="{}GroupCategories" maxOccurs="unbounded"/>
  *         &lt;element ref="{}Bank" maxOccurs="unbounded"/>
  *         &lt;element ref="{}Reconcile" maxOccurs="unbounded"/>
@@ -74,16 +74,16 @@ public class GrisbiXml {
     protected PrintXml print;
     @XmlElement(name = "Currency", required = true)
     protected List<CurrencyXml> currency;
-    @XmlElement(name = "AccountOld", required = true)
+    @XmlElement(name = "Account", required = true)
     protected List<AccountXml> account;
     @XmlElement(name = "Payment", required = true)
     protected List<PaymentXml> payment;
-    @XmlElement(name = "TransactionOld", required = true)
+    @XmlElement(name = "Transaction", required = true)
     protected List<TransactionXml> transaction;
-    @XmlElement(name = "PartyOld", required = true)
+    @XmlElement(name = "Party", required = true)
     protected List<PartyXml> party;
     @XmlElements({
-        @XmlElement(name = "CategoryOld", required = true, type = CategoryXml.class),
+        @XmlElement(name = "Category", required = true, type = CategoryXml.class),
         @XmlElement(name = "Sub_category", required = true, type = SubCategoryXml.class)
     })
     protected List<Object> groupCategories;

@@ -3,6 +3,7 @@ package grisbiweb.server.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.exception.NotImplementedException;
-import grisbiweb.server.model.AccountOld.AccountType;
-import grisbiweb.server.rest.mapper.AccountMapper;
+import grisbiweb.server.mapper.AccountMapper;
+import grisbiweb.server.model.Account.AccountType;
 import grisbiweb.server.rest.model.response.AccountResponse;
 import grisbiweb.server.service.AccountService;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,11 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping(path = "/accounts")
 public class AccountController {
 
-    private AccountService accountService = AccountService.INSTANCE;
+    @Autowired
+    private AccountService accountService;
+    
+    @Autowired
+    private AccountMapper accountMapper;
 
     /**
      * delete one account
@@ -95,7 +100,7 @@ public class AccountController {
     @ApiOperation(value = "calculate total balance of this type account", response = BigDecimal.class)
     public BigDecimal getBalanceTotalByAccountType(
             @ApiParam(value = "type of the account", allowableValues = "BANK,ASSET,LIABILITY,CASH") @PathVariable("typeAccountStr") String typeAccountStr) {
-        AccountType typeAccount = AccountType.getEnumByString(typeAccountStr);
+        AccountType typeAccount = AccountMapper.getAccountTypeFromStringName(typeAccountStr);
         return accountService.getBalanceTotalByAccountType(typeAccount, false);
     }
 
@@ -109,7 +114,7 @@ public class AccountController {
     @ApiOperation(value = "calculate total reconciled balance of this type account", response = BigDecimal.class)
     public BigDecimal getBalanceTotalReconciledByAccountType(
             @ApiParam(value = "type of the account", allowableValues = "BANK,ASSET,LIABILITY,CASH") @PathVariable("typeAccountStr") String typeAccountStr) {
-        AccountType typeAccount = AccountType.getEnumByString(typeAccountStr);
+        AccountType typeAccount = AccountMapper.getAccountTypeFromStringName(typeAccountStr);
         return accountService.getBalanceTotalByAccountType(typeAccount, true);
     }
 

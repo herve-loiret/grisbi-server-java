@@ -1,6 +1,6 @@
 package grisbiweb.server.rest.model.response;
 
-import grisbiweb.server.model.AccountOld.AccountType;
+import grisbiweb.server.model.Account.AccountType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

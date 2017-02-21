@@ -68,7 +68,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "AccountOld")
+@XmlRootElement(name = "Account")
 public class AccountXml {
 
     @XmlAttribute(name = "Form_columns_width", required = true)

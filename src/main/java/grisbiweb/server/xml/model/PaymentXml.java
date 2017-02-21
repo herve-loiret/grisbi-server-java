@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * &lt;complexType>
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="AccountOld" use="required">
+ *       &lt;attribute name="Account" use="required">
  *         &lt;simpleType>
  *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}NMTOKEN">
  *             &lt;enumeration value="0"/>
@@ -87,7 +87,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "Payment")
 public class PaymentXml {
 
-    @XmlAttribute(name = "AccountOld", required = true)
+    @XmlAttribute(name = "Account", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     protected String account;
     @XmlAttribute(name = "Current_number", required = true)
