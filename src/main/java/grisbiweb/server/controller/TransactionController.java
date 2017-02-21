@@ -35,6 +35,9 @@ public class TransactionController {
     
     @Autowired
     private AccountService accountService;
+    
+    @Autowired
+    private TransactionMapper transactionMapper;
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "the transaction parameter is not valid"),
@@ -53,7 +56,7 @@ public class TransactionController {
     public ListTransactionResponse getTransactionsByAccountNumber(
             @ApiParam(value = "account id") @PathVariable("accountId") String accountId) {
         List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountId);
-        List<TransactionResponse> transactionUis = TransactionMapper.mapTransactions(transactionOlds, accountService);
+        List<TransactionResponse> transactionUis = transactionMapper.mapTransactions(transactionOlds, accountService);
         return new ListTransactionResponse(transactionUis);
     }
 
@@ -74,7 +77,7 @@ public class TransactionController {
         List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountNumber, page,
                 perpage);
 
-        List<TransactionResponse> transactionsUI = TransactionMapper.mapTransactions(transactionOlds, accountService);
+        List<TransactionResponse> transactionsUI = transactionMapper.mapTransactions(transactionOlds, accountService);
         return new ListTransactionResponse(transactionsUI);
     }
 }

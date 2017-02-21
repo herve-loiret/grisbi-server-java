@@ -8,9 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import grisbiweb.server.exception.TransactionRequestNotValidException;
 import grisbiweb.server.model.Account;
-import grisbiweb.server.model.CategoryOld;
+import grisbiweb.server.model.Category;
 import grisbiweb.server.model.PartyOld;
 import grisbiweb.server.model.SubCategoryOld;
 import grisbiweb.server.model.TransactionOld;
@@ -23,11 +26,14 @@ import grisbiweb.server.service.TransactionService;
 import grisbiweb.server.utils.DateUtils;
 import grisbiweb.server.utils.NumberUtils;
 
+@Service
 public class TransactionMapper {
+
+    @Autowired
+    private CategoryService categoryService;
 
     private static GrisbiService grisbiService = GrisbiService.INSTANCE;
     private static TransactionService transactionService = TransactionService.INSTANCE;
-    private static CategoryService categoryManager = CategoryService.INSTANCE;
 
     /**
      * permet de récuperer les transaction déjà mappé par leur id permet de
@@ -64,7 +70,7 @@ public class TransactionMapper {
         }
     }
 
-    private static TransactionResponse mapTransaction(TransactionOld transactionOld, AccountService accountService) {
+    private TransactionResponse mapTransaction(TransactionOld transactionOld, AccountService accountService) {
 
         TransactionResponse transactionUI = new TransactionResponse();
 
@@ -85,10 +91,10 @@ public class TransactionMapper {
                 }
             }
         } else {
-            CategoryOld categoryOld = categoryManager.getCategoryById(categoryId);
-            if (categoryOld != null) {
-                transactionUI.setCategory(categoryOld.getName());
-                SubCategoryOld subCategoryOld = categoryManager.getSubCategoryByIds(categoryId, subCategoryId);
+            Category category = categoryService.getCategoryById(categoryId);
+            if (category != null) {
+                transactionUI.setCategory(category.getName());
+                SubCategoryOld subCategoryOld = categoryService.getSubCategoryByIds(categoryId, subCategoryId);
                 if (subCategoryOld != null) {
                     transactionUI.setCategory(transactionUI.getCategory() + " : " + subCategoryOld.getName());
                 }
@@ -203,7 +209,8 @@ public class TransactionMapper {
      * @param transactionOlds
      * @return
      */
-    public static synchronized List<TransactionResponse> mapTransactions(List<TransactionOld> transactionOlds, AccountService accountService) {
+    public synchronized List<TransactionResponse> mapTransactions(List<TransactionOld> transactionOlds,
+            AccountService accountService) {
 
         transactionUIs = new ArrayList<>();
         transactionById = new HashMap<>();

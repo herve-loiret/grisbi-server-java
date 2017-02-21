@@ -27,9 +27,6 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     
-    @Autowired
-    private AccountMapper accountMapper;
-
     /**
      * delete one account
      *
