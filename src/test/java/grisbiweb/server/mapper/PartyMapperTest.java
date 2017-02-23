@@ -14,6 +14,7 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 public class PartyMapperTest {
+    
     @Test
     public void should_mapper_map_party_list() {
         PartyMapper mapper = Mappers.getMapper(PartyMapper.class);

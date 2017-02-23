@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import grisbiweb.server.mapper.CategoryMapper;
+import grisbiweb.server.mapper.SubCategoryMapper;
 import grisbiweb.server.model.Category;
-import grisbiweb.server.model.SubCategoryOld;
+import grisbiweb.server.model.SubCategory;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.model.CategoryXml;
 import grisbiweb.server.xml.model.SubCategoryXml;
@@ -23,6 +24,9 @@ public class CategoryService implements InitializingBean {
     private CategoryMapper categoryMapper;
 
     @Autowired
+    private SubCategoryMapper subCategoryMapper;
+
+    @Autowired
     private GrisbiXmlManager grisbiXmlManager;
 
     @Override
@@ -32,7 +36,7 @@ public class CategoryService implements InitializingBean {
                 Category categoryOld = categoryMapper.categoryXmlToCategory((CategoryXml) object);
                 this.categoryById.put(categoryOld.getId(), categoryOld);
             } else {
-                SubCategoryOld subCategoryOld = new SubCategoryOld((SubCategoryXml) object);
+                SubCategory subCategoryOld = subCategoryMapper.subCategoryXmlToSubCategory((SubCategoryXml) object);
                 Category categoryOld = categoryById.get(subCategoryOld.getIdCategory());
                 Pair<Category, String> key = new ImmutablePair<>(categoryOld, subCategoryOld.getId());
                 this.subCategoriesByIdAndCategory.put(key, subCategoryOld);
@@ -41,7 +45,7 @@ public class CategoryService implements InitializingBean {
     }
 
     private Map<String, Category> categoryById = new HashMap<>();
-    private Map<Pair<Category, String>, SubCategoryOld> subCategoriesByIdAndCategory = new HashMap<>();
+    private Map<Pair<Category, String>, SubCategory> subCategoriesByIdAndCategory = new HashMap<>();
 
     public Map<String, Category> getCategoryById() {
         return categoryById;
@@ -51,15 +55,14 @@ public class CategoryService implements InitializingBean {
         return this.categoryById.get(categoryId);
     }
 
-    public Map<Pair<Category, String>, SubCategoryOld> getSubCategoriesByIdAndCategory() {
+    public Map<Pair<Category, String>, SubCategory> getSubCategoriesByIdAndCategory() {
         return subCategoriesByIdAndCategory;
     }
 
-    public SubCategoryOld getSubCategoryByIds(String categoryId, String subCategoryId) {
-        Category categoryOld = this.getCategoryById(categoryId);
-        Pair<Category, String> key = new ImmutablePair<>(categoryOld, subCategoryId);
-        SubCategoryOld subCategoryOld = this.subCategoriesByIdAndCategory.get(key);
-        return subCategoryOld;
+    public SubCategory getSubCategoryByIds(String categoryId, String subCategoryId) {
+        Category category = this.getCategoryById(categoryId);
+        Pair<Category, String> key = new ImmutablePair<>(category, subCategoryId);
+        return this.subCategoriesByIdAndCategory.get(key);
     }
 
 }

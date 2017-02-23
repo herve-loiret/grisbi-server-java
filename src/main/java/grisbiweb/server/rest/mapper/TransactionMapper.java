@@ -15,7 +15,7 @@ import grisbiweb.server.exception.TransactionRequestNotValidException;
 import grisbiweb.server.model.Account;
 import grisbiweb.server.model.Category;
 import grisbiweb.server.model.Party;
-import grisbiweb.server.model.SubCategoryOld;
+import grisbiweb.server.model.SubCategory;
 import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.rest.model.request.TransactionRequest;
 import grisbiweb.server.rest.model.response.TransactionResponse;
@@ -34,9 +34,12 @@ public class TransactionMapper {
 
     @Autowired
     private GrisbiService grisbiService;
-    
+
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private AccountService accountService;
 
     /**
      * permet de récuperer les transaction déjà mappé par leur id permet de
@@ -73,7 +76,7 @@ public class TransactionMapper {
         }
     }
 
-    private TransactionResponse mapTransaction(TransactionOld transactionOld, AccountService accountService) {
+    private TransactionResponse mapTransaction(TransactionOld transactionOld) {
 
         TransactionResponse transactionUI = new TransactionResponse();
 
@@ -97,9 +100,9 @@ public class TransactionMapper {
             Category category = categoryService.getCategoryById(categoryId);
             if (category != null) {
                 transactionUI.setCategory(category.getName());
-                SubCategoryOld subCategoryOld = categoryService.getSubCategoryByIds(categoryId, subCategoryId);
-                if (subCategoryOld != null) {
-                    transactionUI.setCategory(transactionUI.getCategory() + " : " + subCategoryOld.getName());
+                SubCategory subCategory = categoryService.getSubCategoryByIds(categoryId, subCategoryId);
+                if (subCategory != null) {
+                    transactionUI.setCategory(transactionUI.getCategory() + " : " + subCategory.getName());
                 }
             }
         }
@@ -140,8 +143,7 @@ public class TransactionMapper {
      * @return
      * @throws ParseException
      */
-    public static TransactionOld mapTransactionRequest(TransactionRequest transactionRequest,
-            AccountService accountService) {
+    public TransactionOld mapTransactionRequest(TransactionRequest transactionRequest) {
 
         if ((transactionRequest.getDebit() != null && transactionRequest.getCredit() != null)
                 || (transactionRequest.getDebit() == null && transactionRequest.getCredit() == null)) {
@@ -212,8 +214,7 @@ public class TransactionMapper {
      * @param transactionOlds
      * @return
      */
-    public synchronized List<TransactionResponse> mapTransactions(List<TransactionOld> transactionOlds,
-            AccountService accountService) {
+    public synchronized List<TransactionResponse> mapTransactions(List<TransactionOld> transactionOlds) {
 
         transactionUIs = new ArrayList<>();
         transactionById = new HashMap<>();
@@ -223,7 +224,7 @@ public class TransactionMapper {
             cptTransactionAll = accountService.getInitialBalance(transactionOlds.get(0).getAccountId());
 
             for (TransactionOld transactionOld : transactionOlds) {
-                mapTransaction(transactionOld, accountService);
+                mapTransaction(transactionOld);
             }
         }
         return transactionUIs;

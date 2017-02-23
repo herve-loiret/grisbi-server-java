@@ -18,7 +18,6 @@ import grisbiweb.server.rest.mapper.TransactionMapper;
 import grisbiweb.server.rest.model.request.TransactionRequest;
 import grisbiweb.server.rest.model.response.ListTransactionResponse;
 import grisbiweb.server.rest.model.response.TransactionResponse;
-import grisbiweb.server.service.AccountService;
 import grisbiweb.server.service.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,10 +32,7 @@ public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
-    
-    @Autowired
-    private AccountService accountService;
-    
+
     @Autowired
     private TransactionMapper transactionMapper;
 
@@ -46,7 +42,7 @@ public class TransactionController {
     @ApiOperation(value = "Create a new transaction in the grisbi data file", response = Response.class)
     public Response createTransaction(TransactionRequest transactionRequest) {
 
-        TransactionOld transactionOld = TransactionMapper.mapTransactionRequest(transactionRequest, accountService);
+        TransactionOld transactionOld = transactionMapper.mapTransactionRequest(transactionRequest);
         transactionService.createTransaction(transactionOld);
 
         return Response.status(201).build();
@@ -57,7 +53,7 @@ public class TransactionController {
     public ListTransactionResponse getTransactionsByAccountNumber(
             @ApiParam(value = "account id") @PathVariable("accountId") String accountId) {
         List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountId);
-        List<TransactionResponse> transactionUis = transactionMapper.mapTransactions(transactionOlds, accountService);
+        List<TransactionResponse> transactionUis = transactionMapper.mapTransactions(transactionOlds);
         return new ListTransactionResponse(transactionUis);
     }
 
@@ -78,7 +74,7 @@ public class TransactionController {
         List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountNumber, page,
                 perpage);
 
-        List<TransactionResponse> transactionsUI = transactionMapper.mapTransactions(transactionOlds, accountService);
+        List<TransactionResponse> transactionsUI = transactionMapper.mapTransactions(transactionOlds);
         return new ListTransactionResponse(transactionsUI);
     }
 }

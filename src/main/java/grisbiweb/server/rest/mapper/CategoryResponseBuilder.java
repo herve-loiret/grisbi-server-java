@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import grisbiweb.server.model.Category;
-import grisbiweb.server.model.SubCategoryOld;
+import grisbiweb.server.model.SubCategory;
 import grisbiweb.server.rest.model.response.CategoryResponse;
 import grisbiweb.server.service.CategoryService;
 
@@ -25,7 +25,7 @@ public class CategoryResponseBuilder {
             categoryUI.setIdCategory(category.getIdLong());
             categoryUI.setNameCategory(category.getName());
             categoriesUI.add(categoryUI);
-            for (SubCategoryOld subCategory : categoryService.getSubCategoriesByIdAndCategory().values()) {
+            for (SubCategory subCategory : categoryService.getSubCategoriesByIdAndCategory().values()) {
                 if (subCategory.getIdCategory().equals(category.getId())) {
                     CategoryResponse subCategoryUI = new CategoryResponse();
 
