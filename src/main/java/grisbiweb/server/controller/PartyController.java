@@ -2,6 +2,7 @@ package grisbiweb.server.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +19,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "/parties", description = "Operations about parties")
 public class PartyController {
 
-    private GrisbiService grisbiService = GrisbiService.INSTANCE;
+    @Autowired
+    private GrisbiService grisbiService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get all parties", response = PartyResponse.class, responseContainer = "List")

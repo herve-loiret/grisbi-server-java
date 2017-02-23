@@ -21,10 +21,13 @@ public class CategoryService implements InitializingBean {
 
     @Autowired
     private CategoryMapper categoryMapper;
-    
+
+    @Autowired
+    private GrisbiXmlManager grisbiXmlManager;
+
     @Override
     public void afterPropertiesSet() {
-        for (Object object : GrisbiXmlManager.INSTANCE.loadGrisbi().getGroupCategories()) {
+        for (Object object : grisbiXmlManager.loadGrisbi().getGroupCategories()) {
             if (object instanceof CategoryXml) {
                 Category categoryOld = categoryMapper.categoryXmlToCategory((CategoryXml) object);
                 this.categoryById.put(categoryOld.getId(), categoryOld);
@@ -36,7 +39,7 @@ public class CategoryService implements InitializingBean {
             }
         }
     }
-    
+
     private Map<String, Category> categoryById = new HashMap<>();
     private Map<Pair<Category, String>, SubCategoryOld> subCategoriesByIdAndCategory = new HashMap<>();
 

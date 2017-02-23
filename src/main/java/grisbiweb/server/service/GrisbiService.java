@@ -1,18 +1,21 @@
 package grisbiweb.server.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import grisbiweb.server.model.PartyOld;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.model.CurrencyXml;
 import grisbiweb.server.xml.model.PartyXml;
 
-import java.util.ArrayList;
-import java.util.List;
+@Service
+public class GrisbiService {
 
-public enum GrisbiService {
-
-	INSTANCE;
-
-	private GrisbiXmlManager grisbiXmlManager = GrisbiXmlManager.INSTANCE;
+    @Autowired
+	private GrisbiXmlManager grisbiXmlManager;
 		
 	/**
 	 * <Currency Nb="1" Na="Euro" Co="€" Ico="EUR" Fl="2" />

@@ -31,7 +31,8 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/transactions", description = "Operations about transactions")
 public class TransactionController {
 
-    private TransactionService transactionService = TransactionService.INSTANCE;
+    @Autowired
+    private TransactionService transactionService;
     
     @Autowired
     private AccountService accountService;

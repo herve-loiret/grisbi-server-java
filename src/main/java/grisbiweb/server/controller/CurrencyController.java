@@ -19,7 +19,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "/currencies", description = "Operations about currencies")
 public class CurrencyController {
 
-    private GrisbiService grisbiService = GrisbiService.INSTANCE;
+    @Autowired
+    private GrisbiService grisbiService;
 
     @Autowired
     private CurrencyMapper currencyMapper;

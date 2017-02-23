@@ -21,9 +21,11 @@ public class AccountService {
     @Autowired
     private AccountMapper accountMapper;
 
-    private GrisbiXmlManager grisbiXmlManager = GrisbiXmlManager.INSTANCE;
+    @Autowired
+    private GrisbiXmlManager grisbiXmlManager;
 
-    private TransactionService transactionService = TransactionService.INSTANCE;
+    @Autowired
+    private TransactionService transactionService;
 
     public Account getAccountById(String accountId) {
 

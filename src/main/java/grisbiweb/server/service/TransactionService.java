@@ -1,93 +1,95 @@
 package grisbiweb.server.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.XmlWriter;
 import grisbiweb.server.xml.model.TransactionXml;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+@Service
+public class TransactionService {
 
-public enum TransactionService {
+    @Autowired
+    private GrisbiXmlManager grisbiXmlManager;
 
-	INSTANCE;
+    private XmlWriter xmlWriter = XmlWriter.INSTANCE;
 
-	private GrisbiXmlManager grisbiXmlManager = GrisbiXmlManager.INSTANCE;
+    public void createTransaction(TransactionOld transactionOld) {
+        transactionOld.setId(findNextTransactionId());
+        xmlWriter.writeTransaction(transactionOld);
+    }
 
-	private XmlWriter xmlWriter = XmlWriter.INSTANCE;
+    private Long findNextTransactionId() {
+        Long id = 0L;
+        for (TransactionOld transactionOld : this.getTransactions()) {
+            if (id.compareTo(transactionOld.getIdLong()) < 0) {
+                id = transactionOld.getIdLong();
+            }
+        }
+        return ++id;
+    }
 
-	public void createTransaction(TransactionOld transactionOld) {
-		transactionOld.setId(findNextTransactionId());
-		xmlWriter.writeTransaction(transactionOld);
-	}
+    public TransactionOld getForeignTransaction(TransactionOld transactionOld) {
+        return this.getTransactionById(transactionOld.getForeignTransactionId());
+    }
 
-	private Long findNextTransactionId() {
-		Long id = 0L;
-		for (TransactionOld transactionOld : this.getTransactions()) {
-			if (id.compareTo(transactionOld.getIdLong()) < 0) {
-				id = transactionOld.getIdLong();
-			}
-		}
-		return ++id;
-	}
+    public TransactionOld getTransactionById(String idTransaction) {
+        for (TransactionXml oneTransaction : grisbiXmlManager.loadGrisbi().getTransaction()) {
+            TransactionOld transactionOld = new TransactionOld(oneTransaction);
+            if (transactionOld.getId().equals(idTransaction)) {
+                return transactionOld;
+            }
+        }
+        return null;
+    }
 
-	public TransactionOld getForeignTransaction(TransactionOld transactionOld) {
-		return this.getTransactionById(transactionOld.getForeignTransactionId());
-	}
+    private List<TransactionOld> getTransactions() {
+        List<TransactionXml> transactionsXml = grisbiXmlManager.loadGrisbi().getTransaction();
+        List<TransactionOld> transactionOlds = new ArrayList<>();
+        for (TransactionXml transactionXml : transactionsXml) {
+            transactionOlds.add(new TransactionOld(transactionXml));
+        }
+        return transactionOlds;
+    }
 
-	public TransactionOld getTransactionById(String idTransaction) {
-		for (TransactionXml oneTransaction : grisbiXmlManager.loadGrisbi().getTransaction()) {
-			TransactionOld transactionOld = new TransactionOld(oneTransaction);
-			if (transactionOld.getId().equals(idTransaction)) {
-				return transactionOld;
-			}
-		}
-		return null;
-	}
+    public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId) {
+        return getTransactionsOrderedByAccountId(accountId, null, null);
+    }
 
-	private List<TransactionOld> getTransactions() {
-		List<TransactionXml> transactionsXml = grisbiXmlManager.loadGrisbi().getTransaction();
-		List<TransactionOld> transactionOlds = new ArrayList<>();
-		for (TransactionXml transactionXml : transactionsXml) {
-			transactionOlds.add(new TransactionOld(transactionXml));
-		}
-		return transactionOlds;
-	}
+    public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId, Integer page, Integer perPage) {
 
-	public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId) {
-		return getTransactionsOrderedByAccountId(accountId, null, null);
-	}
+        List<TransactionOld> transactionsAccount = new ArrayList<>();
+        List<TransactionOld> transactionOlds = this.getTransactions();
 
-	public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId, Integer page,
-			Integer perPage) {
+        for (TransactionOld transactionOld : transactionOlds) {
+            if (transactionOld.getAccountId().equals(accountId)) {
+                transactionsAccount.add(transactionOld);
+            }
+        }
 
-		List<TransactionOld> transactionsAccount = new ArrayList<>();
-		List<TransactionOld> transactionOlds = this.getTransactions();
+        Collections.sort(transactionsAccount, new TransactionGwsComparator());
 
-		for (TransactionOld transactionOld : transactionOlds) {
-			if (transactionOld.getAccountId().equals(accountId)) {
-				transactionsAccount.add(transactionOld);
-			}
-		}
+        // manage pagination
+        if (page != null && perPage != null) {
+            int from = (page - 1) * perPage;
+            if (from > transactionsAccount.size()) {
+                throw new RuntimeException("This page doesn't exist !");
+            }
 
-		Collections.sort(transactionsAccount, new TransactionGwsComparator());
+            int to = from + perPage;
+            if (to > transactionsAccount.size()) {
+                to = transactionsAccount.size();
+            }
+            transactionsAccount = transactionsAccount.subList(from, to);
+        }
 
-		// manage pagination
-		if (page != null && perPage != null) {
-			int from = (page - 1) * perPage;
-			if (from > transactionsAccount.size()) {
-				throw new RuntimeException("This page doesn't exist !");
-			}
-
-			int to = from + perPage;
-			if (to > transactionsAccount.size()) {
-				to = transactionsAccount.size();
-			}
-			transactionsAccount = transactionsAccount.subList(from, to);
-		}
-
-		return transactionsAccount;
-	}
+        return transactionsAccount;
+    }
 
 }

@@ -32,8 +32,11 @@ public class TransactionMapper {
     @Autowired
     private CategoryService categoryService;
 
-    private static GrisbiService grisbiService = GrisbiService.INSTANCE;
-    private static TransactionService transactionService = TransactionService.INSTANCE;
+    @Autowired
+    private GrisbiService grisbiService;
+    
+    @Autowired
+    private TransactionService transactionService;
 
     /**
      * permet de récuperer les transaction déjà mappé par leur id permet de
@@ -60,7 +63,7 @@ public class TransactionMapper {
         }
     }
 
-    private static void mapParty(TransactionOld transactionOld, TransactionResponse transactionUI) {
+    private void mapParty(TransactionOld transactionOld, TransactionResponse transactionUI) {
         String partyId = transactionOld.getPartyId();
         if (partyId != null) {
             PartyOld partyOld = grisbiService.getPartyById(partyId);
