@@ -1,9 +1,5 @@
 package grisbiweb.server.xml;
 
-import grisbiweb.server.model.TransactionOld;
-import grisbiweb.server.utils.FileUtils;
-import grisbiweb.server.xml.model.TransactionXml;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +9,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+
+import grisbiweb.server.model.TransactionOld;
+import grisbiweb.server.utils.FileUtils;
+import grisbiweb.server.xml.model.TransactionXml;
 
 public enum XmlWriter {
 

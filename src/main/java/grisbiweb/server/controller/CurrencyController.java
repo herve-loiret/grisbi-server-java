@@ -2,12 +2,13 @@ package grisbiweb.server.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import grisbiweb.server.rest.mapper.CurrencyMapper;
+import grisbiweb.server.mapper.CurrencyMapper;
 import grisbiweb.server.rest.model.response.CurrencyResponse;
 import grisbiweb.server.service.GrisbiService;
 import io.swagger.annotations.Api;
@@ -20,9 +21,12 @@ public class CurrencyController {
 
     private GrisbiService grisbiService = GrisbiService.INSTANCE;
 
+    @Autowired
+    private CurrencyMapper currencyMapper;
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get all currencies", response = CurrencyResponse.class, responseContainer = "List")
-    public List<CurrencyResponse> getCurrencies()  {
-        return CurrencyMapper.mapCurrencies(grisbiService.getCurrencies());
+    public List<CurrencyResponse> getCurrencies() {
+        return currencyMapper.currencyXmlToCurrencyResponse(grisbiService.getCurrencies());
     }
 }
