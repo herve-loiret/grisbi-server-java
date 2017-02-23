@@ -1,6 +1,7 @@
 package grisbiweb.server.controller;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +29,8 @@ public class PartyControllerTest {
 
         mockMvc.perform(get("/parties")) //
                 .andExpect(status().isOk()) //
-                .andExpect(jsonPath("$", hasSize(26)));
+                .andExpect(jsonPath("$", hasSize(26)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("Huguette Lefacteur")));
     }
 }

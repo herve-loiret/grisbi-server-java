@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import grisbiweb.server.exception.TransactionRequestNotValidException;
 import grisbiweb.server.model.Account;
 import grisbiweb.server.model.Category;
-import grisbiweb.server.model.PartyOld;
+import grisbiweb.server.model.Party;
 import grisbiweb.server.model.SubCategoryOld;
 import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.rest.model.request.TransactionRequest;
@@ -66,9 +66,9 @@ public class TransactionMapper {
     private void mapParty(TransactionOld transactionOld, TransactionResponse transactionUI) {
         String partyId = transactionOld.getPartyId();
         if (partyId != null) {
-            PartyOld partyOld = grisbiService.getPartyById(partyId);
-            if (partyOld != null) {
-                transactionUI.setParty(partyOld.getName());
+            Party party = grisbiService.getPartyById(partyId);
+            if (party != null) {
+                transactionUI.setParty(party.getName());
             }
         }
     }

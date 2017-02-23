@@ -17,8 +17,10 @@ public interface PartyMapper {
     @Mapping(source = "idLong", target = "id")
     PartyResponse partyToPartyResponse(Party party);
 
+    List<Party> partyXmlToParty(List<PartyXml> partiesXml);
+
     @Mapping(source = "nb", target = "id")
     @Mapping(source = "na", target = "name")
-    Party PartyXmlToParty(PartyXml partyXml);
+    Party partyXmlToParty(PartyXml partyXml);
 
 }
