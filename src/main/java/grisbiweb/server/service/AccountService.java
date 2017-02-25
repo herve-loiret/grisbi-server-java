@@ -11,7 +11,7 @@ import grisbiweb.server.exception.AccountNotFoundException;
 import grisbiweb.server.mapper.AccountMapper;
 import grisbiweb.server.model.Account;
 import grisbiweb.server.model.Account.AccountType;
-import grisbiweb.server.model.TransactionOld;
+import grisbiweb.server.model.Transaction;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.model.AccountXml;
 
@@ -68,14 +68,14 @@ public class AccountService {
 
         Account account = this.getAccountById(accountId);
 
-        List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountId);
+        List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountId);
 
         BigDecimal solde = account.getInitialBalance();
 
-        for (TransactionOld transactionOld : transactionOlds) {
-            BigDecimal amount = transactionOld.getAmount();
-            if (!transactionOld.isChildTransaction()) {
-                if (!onlyReconciled || transactionOld.isTransactionPointeOuArchive()) {
+        for (Transaction transaction : transactions) {
+            BigDecimal amount = transaction.getAmount();
+            if (!transaction.isChildTransaction()) {
+                if (!onlyReconciled || transaction.isTransactionPointeOuArchive()) {
                     solde = solde.add(amount);
                 }
             }

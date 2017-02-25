@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
-import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.XmlWriter;
 import grisbiweb.server.xml.model.TransactionXml;
@@ -18,60 +18,63 @@ public class TransactionService {
 
     @Autowired
     private GrisbiXmlManager grisbiXmlManager;
+    
+    @Autowired
+    private TransactionMapper transactionMapper;
 
     @Autowired
     private XmlWriter xmlWriter;
 
-    public void createTransaction(Transaction transactionOld) {
-        transactionOld.setIdLong(findNextTransactionId());
-        xmlWriter.writeTransaction(transactionOld);
+    public void createTransaction(Transaction transaction) {
+        transaction.setIdLong(findNextTransactionId());
+        xmlWriter.writeTransaction(transaction);
     }
 
     private Long findNextTransactionId() {
         Long id = 0L;
-        for (TransactionOld transactionOld : this.getTransactions()) {
-            if (id.compareTo(transactionOld.getIdLong()) < 0) {
-                id = transactionOld.getIdLong();
+        for (Transaction transaction : this.getTransactions()) {
+            if (id.compareTo(transaction.getIdLong()) < 0) {
+                id = transaction.getIdLong();
             }
         }
         return ++id;
     }
 
-    public TransactionOld getForeignTransaction(TransactionOld transactionOld) {
-        return this.getTransactionById(transactionOld.getForeignTransactionId());
+    public Transaction getForeignTransaction(Transaction transaction) {
+        return this.getTransactionById(transaction.getForeignTransactionId());
     }
 
-    public TransactionOld getTransactionById(String idTransaction) {
+    public Transaction getTransactionById(String idTransaction) {
         for (TransactionXml oneTransaction : grisbiXmlManager.loadGrisbi().getTransaction()) {
-            TransactionOld transactionOld = new TransactionOld(oneTransaction);
-            if (transactionOld.getId().equals(idTransaction)) {
-                return transactionOld;
+            Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
+            if (transaction.getId().equals(idTransaction)) {
+                return transaction;
             }
         }
         return null;
     }
 
-    private List<TransactionOld> getTransactions() {
+    private List<Transaction> getTransactions() {
         List<TransactionXml> transactionsXml = grisbiXmlManager.loadGrisbi().getTransaction();
-        List<TransactionOld> transactionOlds = new ArrayList<>();
+        List<Transaction> transactions = new ArrayList<>();
         for (TransactionXml transactionXml : transactionsXml) {
-            transactionOlds.add(new TransactionOld(transactionXml));
+            transactions.add(transactionMapper.transactionXmlToTransaction(transactionXml));
         }
-        return transactionOlds;
+        return transactions;
     }
 
-    public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId) {
+    public List<Transaction> getTransactionsOrderedByAccountId(String accountId) {
         return getTransactionsOrderedByAccountId(accountId, null, null);
     }
 
-    public List<TransactionOld> getTransactionsOrderedByAccountId(String accountId, Integer page, Integer perPage) {
+    public List<Transaction> getTransactionsOrderedByAccountId(String accountId, Integer page, Integer perPage) {
 
-        List<TransactionOld> transactionsAccount = new ArrayList<>();
-        List<TransactionOld> transactionOlds = this.getTransactions();
+        List<Transaction> transactionsAccount = new ArrayList<>();
+        List<Transaction> transactions = this.getTransactions();
 
-        for (TransactionOld transactionOld : transactionOlds) {
-            if (transactionOld.getAccountId().equals(accountId)) {
-                transactionsAccount.add(transactionOld);
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountId().equals(accountId)) {
+                transactionsAccount.add(transaction);
             }
         }
 

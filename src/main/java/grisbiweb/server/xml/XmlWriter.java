@@ -36,7 +36,7 @@ public class XmlWriter {
     }
 
     private String createXmlElement(TransactionXml transactionXml) {
-        StringBuilder element = new StringBuilder("	<TransactionOld");
+        StringBuilder element = new StringBuilder("	<Transaction");
         element.append(" Ac=" + createValue(transactionXml.getAc()));
         element.append(" Nb=" + createValue(transactionXml.getNb()));
         element.append(" Id=" + createValue(transactionXml.getId()));
@@ -84,7 +84,7 @@ public class XmlWriter {
                 if (line.contains("<Payment") && !alreadyOneTransaction) {
                     lastLine = allLines;
                 }
-                if (line.contains("<TransactionOld")) {
+                if (line.contains("<Transaction")) {
                     alreadyOneTransaction = true;
                     lastLine = allLines;
                 }

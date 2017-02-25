@@ -19,7 +19,6 @@ import grisbiweb.server.model.Category;
 import grisbiweb.server.model.Party;
 import grisbiweb.server.model.SubCategory;
 import grisbiweb.server.model.Transaction;
-import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.service.AccountService;
 import grisbiweb.server.service.CategoryService;
 import grisbiweb.server.service.GrisbiService;
@@ -58,17 +57,17 @@ public class TransactionMapper {
      */
     private static List<TransactionDto> transactionUIs = null;
 
-    private static void mapAmount(TransactionOld transactionOld, TransactionDto transactionUI) {
-        BigDecimal amount = transactionOld.getAmount();
-        if (transactionOld.isDebit()) {
+    private static void mapAmount(Transaction transaction, TransactionDto transactionUI) {
+        BigDecimal amount = transaction.getAmount();
+        if (transaction.isDebit()) {
             transactionUI.setDebit(amount.doubleValue());
         } else {
             transactionUI.setCredit(amount.doubleValue());
         }
     }
 
-    private void mapParty(TransactionOld transactionOld, TransactionDto transactionUI) {
-        String partyId = transactionOld.getPartyId();
+    private void mapParty(Transaction transaction, TransactionDto transactionUI) {
+        String partyId = transaction.getPartyId();
         if (partyId != null) {
             Party party = grisbiService.getPartyById(partyId);
             if (party != null) {
@@ -77,20 +76,20 @@ public class TransactionMapper {
         }
     }
 
-    private TransactionDto mapTransaction(TransactionOld transactionOld) {
+    private TransactionDto mapTransaction(Transaction transaction) {
 
         TransactionDto transactionUI = new TransactionDto();
 
-        mapAmount(transactionOld, transactionUI);
+        mapAmount(transaction, transactionUI);
 
-        transactionUI.setId(transactionOld.getIdLong());
-        transactionUI.setDate(transactionOld.getDate());
-        transactionUI.setId(transactionOld.getIdLong());
-        String categoryId = transactionOld.getCategoryId();
-        String subCategoryId = transactionOld.getSubCategoryId();
+        transactionUI.setId(transaction.getIdLong());
+        transactionUI.setDate(transaction.getDate());
+        transactionUI.setId(transaction.getIdLong());
+        String categoryId = transaction.getCategoryId();
+        String subCategoryId = transaction.getSubCategoryId();
 
-        if (transactionOld.isATransfer()) {
-            TransactionOld transactionDistante = transactionService.getForeignTransaction(transactionOld);
+        if (transaction.isATransfer()) {
+            Transaction transactionDistante = transactionService.getForeignTransaction(transaction);
             if (transactionDistante != null) {
                 Account accountDistant = accountService.getAccountById(transactionDistante.getAccountId());
                 if (accountDistant != null) {
@@ -108,29 +107,29 @@ public class TransactionMapper {
             }
         }
 
-        mapParty(transactionOld, transactionUI);
+        mapParty(transaction, transactionUI);
 
         // P/R
-        if (transactionOld.isTransactionPointe()) {
+        if (transaction.isTransactionPointe()) {
             transactionUI.setPr("P");
         }
 
         // solde
-        if (transactionOld.isChildTransaction()) {
+        if (transaction.isChildTransaction()) {
             // dans une transaction enfant, on ne cumul pas le solde
-            String transactionParentId = transactionOld.getTransactionParentId();
+            String transactionParentId = transaction.getTransactionParentId();
             TransactionDto transactionParent = transactionById.get(transactionParentId);
             if (transactionParent != null) {
                 transactionParent.getSubTransactions().add(transactionUI);
             }
         } else {
             // c'est une transaction parente ou une transaction normale
-            cptTransactionAll = cptTransactionAll.add(transactionOld.getAmount());
+            cptTransactionAll = cptTransactionAll.add(transaction.getAmount());
             transactionUI.setSolde(cptTransactionAll.doubleValue());
 
             // save in list
             transactionUIs.add(transactionUI);
-            transactionById.put(transactionOld.getId(), transactionUI);
+            transactionById.put(transaction.getId(), transactionUI);
         }
 
         return transactionUI;
@@ -158,7 +157,7 @@ public class TransactionMapper {
             throw new TransactionRequestNotValidException("date");
         }
 
-        Transaction transactionOld = new Transaction();
+        Transaction transaction = new Transaction();
         String categoryId = transactionCreationDto.getCategoryId();
         String subCategoryId = transactionCreationDto.getSubCategoryId();
         String partyId = transactionCreationDto.getPartyId();
@@ -176,56 +175,56 @@ public class TransactionMapper {
         // change that)
         accountService.getAccountById(accountId);
 
-        transactionOld.setAccountId(accountId);
+        transaction.setAccountId(accountId);
         // Nb = (generated by service)
-        transactionOld.setOfxId("(null)"); // not supported yet
-        transactionOld.setDate(date);
-        transactionOld.setValueDate(null); // not supported yet
-        transactionOld.setAmount(amount);
-        transactionOld.setCurrencyId("1"); // not supported yet
-        transactionOld.setExchange(false); // not supported yet
-        transactionOld.setExchangeRate(null); // not supported yet
-        transactionOld.setExchangeFees(null); // not supported yet
-        transactionOld.setPartyId(partyId);
-        transactionOld.setCategoryId(categoryId);
-        transactionOld.setSubCategoryId(subCategoryId);
-        transactionOld.setBreakdown("0"); // not supported yet
-        transactionOld.setNotes("(null)"); // not supported yet
-        transactionOld.setPaiementMethodId("1"); // not supported yet
-        transactionOld.setPaiementMethodContent("(null)"); // not supported yet
-        transactionOld.setTransactionStatusId("0"); // not supported yet
-        transactionOld.setArchiveNumber("0"); // not supported yet
-        transactionOld.setAutomatic(false); // not supported yet
-        transactionOld.setReconcileNumber("0"); // not supported yet
-        transactionOld.setFinancialYearNumber("0");// not supported yet
-        transactionOld.setBudgetImputationId("0");// not supported yet
-        transactionOld.setSubCategoryId("0");// not supported yet
-        transactionOld.setAccountingDocument(null);// not supported yet
-        transactionOld.setBankReferences("(null)");// not supported yet
-        transactionOld.setForeignTransactionId("0"); // not supported yet
-        transactionOld.setTransactionParentId("0");// not supported yet
+        transaction.setOfxId("(null)"); // not supported yet
+        transaction.setDate(date);
+        transaction.setValueDate(null); // not supported yet
+        transaction.setAmount(amount);
+        transaction.setCurrencyId("1"); // not supported yet
+        transaction.setExchange(false); // not supported yet
+        transaction.setExchangeRate(null); // not supported yet
+        transaction.setExchangeFees(null); // not supported yet
+        transaction.setPartyId(partyId);
+        transaction.setCategoryId(categoryId);
+        transaction.setSubCategoryId(subCategoryId);
+        transaction.setBreakdown("0"); // not supported yet
+        transaction.setNotes("(null)"); // not supported yet
+        transaction.setPaiementMethodId("1"); // not supported yet
+        transaction.setPaiementMethodContent("(null)"); // not supported yet
+        transaction.setTransactionStatusId("0"); // not supported yet
+        transaction.setArchiveNumber("0"); // not supported yet
+        transaction.setAutomatic(false); // not supported yet
+        transaction.setReconcileNumber("0"); // not supported yet
+        transaction.setFinancialYearNumber("0");// not supported yet
+        transaction.setBudgetImputationId("0");// not supported yet
+        transaction.setSubCategoryId("0");// not supported yet
+        transaction.setAccountingDocument(null);// not supported yet
+        transaction.setBankReferences("(null)");// not supported yet
+        transaction.setForeignTransactionId("0"); // not supported yet
+        transaction.setTransactionParentId("0");// not supported yet
 
-        return transactionOld;
+        return transaction;
     }
 
     /**
      * 
      * why synchronized ?
      * 
-     * @param transactionOlds
+     * @param transactions
      * @return
      */
-    public synchronized List<TransactionDto> mapTransactions(List<TransactionOld> transactionOlds) {
+    public synchronized List<TransactionDto> mapTransactions(List<Transaction> transactions) {
 
         transactionUIs = new ArrayList<>();
         transactionById = new HashMap<>();
 
-        if (transactionOlds != null && !transactionOlds.isEmpty()) {
+        if (transactions != null && !transactions.isEmpty()) {
 
-            cptTransactionAll = accountService.getInitialBalance(transactionOlds.get(0).getAccountId());
+            cptTransactionAll = accountService.getInitialBalance(transactions.get(0).getAccountId());
 
-            for (TransactionOld transactionOld : transactionOlds) {
-                mapTransaction(transactionOld);
+            for (Transaction transaction : transactions) {
+                mapTransaction(transaction);
             }
         }
         return transactionUIs;

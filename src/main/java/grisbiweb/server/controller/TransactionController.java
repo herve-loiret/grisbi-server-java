@@ -15,7 +15,6 @@ import grisbiweb.server.dto.ListTransactionDto;
 import grisbiweb.server.dto.TransactionCreationDto;
 import grisbiweb.server.dto.TransactionDto;
 import grisbiweb.server.model.Transaction;
-import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.rest.mapper.TransactionMapper;
 import grisbiweb.server.service.TransactionService;
 import io.swagger.annotations.Api;
@@ -41,16 +40,16 @@ public class TransactionController {
             @ApiResponse(code = 404, message = "AccountOld not found") })
     @ApiOperation(value = "Create a new transaction in the grisbi data file")
     public void createTransaction(TransactionCreationDto transactionCreationDto) {
-        Transaction transactionOld = transactionMapper.mapTransactionRequest(transactionCreationDto);
-        transactionService.createTransaction(transactionOld);
+        Transaction transaction = transactionMapper.mapTransactionRequest(transactionCreationDto);
+        transactionService.createTransaction(transaction);
     }
 
     @RequestMapping(value = "/{accountId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get all transaction from an account", response = ListTransactionDto.class)
     public ListTransactionDto getTransactionsByAccountNumber(
             @ApiParam(value = "account id") @PathVariable("accountId") String accountId) {
-        List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountId);
-        List<TransactionDto> transactionUis = transactionMapper.mapTransactions(transactionOlds);
+        List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountId);
+        List<TransactionDto> transactionUis = transactionMapper.mapTransactions(transactions);
         return new ListTransactionDto(transactionUis);
     }
 
@@ -67,10 +66,10 @@ public class TransactionController {
             @ApiParam(value = "account id") @PathVariable("accountNumber") String accountNumber, //
             @ApiParam(value = "page number") @PathVariable("page") Integer page, //
             @ApiParam(value = "item per page") @PathVariable("perpage") Integer perpage) {
-        List<TransactionOld> transactionOlds = transactionService.getTransactionsOrderedByAccountId(accountNumber, page,
+        List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountNumber, page,
                 perpage);
 
-        List<TransactionDto> transactionsUI = transactionMapper.mapTransactions(transactionOlds);
+        List<TransactionDto> transactionsUI = transactionMapper.mapTransactions(transactions);
         return new ListTransactionDto(transactionsUI);
     }
 }
