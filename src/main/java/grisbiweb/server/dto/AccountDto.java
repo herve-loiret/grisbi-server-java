@@ -1,4 +1,4 @@
-package grisbiweb.server.rest.model.response;
+package grisbiweb.server.dto;
 
 import grisbiweb.server.model.Account.AccountType;
 import io.swagger.annotations.ApiModel;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @ApiModel
 @Getter
 @Setter
-public class AccountResponse {
+public class AccountDto {
 
 	@ApiModelProperty(value = "id of the account")
 	private Long id;

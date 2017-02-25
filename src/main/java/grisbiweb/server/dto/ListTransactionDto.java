@@ -1,4 +1,4 @@
-package grisbiweb.server.rest.model.response;
+package grisbiweb.server.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +9,14 @@ import lombok.Getter;
 
 @ApiModel
 @Getter
-public class ListTransactionResponse {
+public class ListTransactionDto {
 
-    private List<TransactionResponse> transactionsResponse = new ArrayList<>();
+    private List<TransactionDto> transactionsResponse = new ArrayList<>();
 
     @ApiModelProperty(value = "total item (for pagination purpose", required = true)
     private int totalItem;
 
-    public ListTransactionResponse(List<TransactionResponse> transactionsResponse) {
+    public ListTransactionDto(List<TransactionDto> transactionsResponse) {
         this.transactionsResponse = transactionsResponse;
         totalItem = transactionsResponse.size();
     }

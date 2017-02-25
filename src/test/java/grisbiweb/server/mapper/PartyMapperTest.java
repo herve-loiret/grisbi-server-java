@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 
+import grisbiweb.server.dto.PartyDto;
 import grisbiweb.server.model.Party;
-import grisbiweb.server.rest.model.response.PartyResponse;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -24,7 +24,7 @@ public class PartyMapperTest {
         party.setId("1234");
         parties.add(party);
 
-        List<PartyResponse> partiesResponses = mapper.partyToPartyResponse(parties);
+        List<PartyDto> partiesResponses = mapper.partyToPartyResponse(parties);
 
         assertThat(partiesResponses.size()).isEqualTo(1);
         assertThat(partiesResponses.get(0).getName()).as("name").isEqualTo(party.getName());

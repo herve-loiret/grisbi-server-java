@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import grisbiweb.server.model.Transaction;
 import grisbiweb.server.model.TransactionOld;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.XmlWriter;
@@ -21,8 +22,8 @@ public class TransactionService {
     @Autowired
     private XmlWriter xmlWriter;
 
-    public void createTransaction(TransactionOld transactionOld) {
-        transactionOld.setId(findNextTransactionId());
+    public void createTransaction(Transaction transactionOld) {
+        transactionOld.setIdLong(findNextTransactionId());
         xmlWriter.writeTransaction(transactionOld);
     }
 

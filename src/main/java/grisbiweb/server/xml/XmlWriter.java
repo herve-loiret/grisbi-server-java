@@ -13,7 +13,8 @@ import java.io.PrintWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import grisbiweb.server.model.TransactionOld;
+import grisbiweb.server.mapper.TransactionMapper;
+import grisbiweb.server.model.Transaction;
 import grisbiweb.server.service.GrisbiFileService;
 import grisbiweb.server.xml.model.TransactionXml;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ public class XmlWriter {
 
     @Autowired
     private GrisbiFileService grisbiFileService;
+
+    @Autowired
+    private TransactionMapper transactionMapper;
 
     private StringBuilder createValue(String value) {
         return new StringBuilder("\"")
@@ -105,8 +109,9 @@ public class XmlWriter {
         String thisLine = "";
         int i = 1;
         while ((thisLine = in.readLine()) != null) {
-            if (i == lineNumber)
+            if (i == lineNumber) {
                 out.println(line);
+            }
             out.println(thisLine);
             i++;
         }
@@ -118,14 +123,16 @@ public class XmlWriter {
         outFile.renameTo(file);
     }
 
-    public synchronized void writeTransaction(TransactionOld transactionOld) {
+    public void writeTransaction(Transaction transaction) {
 
-        TransactionXml transactionXml = transactionOld.getTransactionXml();
+        TransactionXml transactionXml = transactionMapper.transactionToTransactionXml(transaction);
         String line = this.createXmlElement(transactionXml);
 
         try {
             int lineNumber = findLineOfLastTransaction();
-            insertStringInFile(grisbiFileService.getGrisbiFile(), lineNumber, line);
+            synchronized (this) {
+                insertStringInFile(grisbiFileService.getGrisbiFile(), lineNumber, line);
+            }
         } catch (IOException e) {
             log.error("Error while trying to insert transaction in grisbi file", e);
         }

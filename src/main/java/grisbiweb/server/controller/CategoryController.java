@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import grisbiweb.server.dto.CategoryDto;
 import grisbiweb.server.rest.mapper.CategoryResponseBuilder;
-import grisbiweb.server.rest.model.response.CategoryResponse;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -20,8 +20,8 @@ public class CategoryController {
     private CategoryResponseBuilder categoryResponseBuilder;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "get all categories", response = CategoryResponse.class, responseContainer = "List")
-    public List<CategoryResponse> getCategoriesUI() {
+    @ApiOperation(value = "get all categories", response = CategoryDto.class, responseContainer = "List")
+    public List<CategoryDto> getCategoriesUI() {
         return categoryResponseBuilder.getCategoriesUI();
     }
 }

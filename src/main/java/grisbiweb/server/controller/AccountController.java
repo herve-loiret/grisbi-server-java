@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import grisbiweb.server.dto.AccountDto;
 import grisbiweb.server.exception.NotImplementedException;
 import grisbiweb.server.mapper.AccountMapper;
 import grisbiweb.server.model.Account.AccountType;
-import grisbiweb.server.rest.model.response.AccountResponse;
 import grisbiweb.server.service.AccountService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,7 +33,7 @@ public class AccountController {
      * @return @
      */
     @RequestMapping(value = "/{accountNumber}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AccountResponse> deleteAccount(@PathVariable("accountNumber") String accountId) {
+    public List<AccountDto> deleteAccount(@PathVariable("accountNumber") String accountId) {
         throw new NotImplementedException();
     }
 
@@ -43,9 +43,9 @@ public class AccountController {
      * @return @
      */
     @RequestMapping(value = "/{accountId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "get account by id", response = AccountResponse.class)
+    @ApiOperation(value = "get account by id", response = AccountDto.class)
     @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
-    public AccountResponse getAccount(
+    public AccountDto getAccount(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
         return AccountMapper.mapAccount(accountService.getAccountById(accountId));
     }
@@ -56,8 +56,8 @@ public class AccountController {
      * @return @
      */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "get all accounts", response = AccountResponse.class, responseContainer = "List")
-    public List<AccountResponse> getAccounts() {
+    @ApiOperation(value = "get all accounts", response = AccountDto.class, responseContainer = "List")
+    public List<AccountDto> getAccounts() {
         return AccountMapper.mapAccounts(accountService.getOpenedAccounts());
     }
 
@@ -121,7 +121,7 @@ public class AccountController {
      * @return @
      */
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AccountResponse> postAccount() {
+    public List<AccountDto> postAccount() {
         throw new NotImplementedException();
     }
 
@@ -131,7 +131,7 @@ public class AccountController {
      * @return @
      */
     @RequestMapping(value = "/{accountId}", method = RequestMethod.PUT)
-    public List<AccountResponse> putAccount(@PathVariable("accountId") String accountId) {
+    public List<AccountDto> putAccount(@PathVariable("accountId") String accountId) {
         throw new NotImplementedException();
     }
 }

@@ -11,14 +11,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import grisbiweb.server.dto.TransactionCreationDto;
+import grisbiweb.server.dto.TransactionDto;
 import grisbiweb.server.exception.TransactionRequestNotValidException;
 import grisbiweb.server.model.Account;
 import grisbiweb.server.model.Category;
 import grisbiweb.server.model.Party;
 import grisbiweb.server.model.SubCategory;
+import grisbiweb.server.model.Transaction;
 import grisbiweb.server.model.TransactionOld;
-import grisbiweb.server.rest.model.request.TransactionRequest;
-import grisbiweb.server.rest.model.response.TransactionResponse;
 import grisbiweb.server.service.AccountService;
 import grisbiweb.server.service.CategoryService;
 import grisbiweb.server.service.GrisbiService;
@@ -45,7 +46,7 @@ public class TransactionMapper {
      * permet de récuperer les transaction déjà mappé par leur id permet de
      * rajouter les transaction enfantes aux parents
      */
-    private static Map<String, TransactionResponse> transactionById = null;
+    private static Map<String, TransactionDto> transactionById = null;
 
     /**
      * permet de calculer le solde
@@ -55,9 +56,9 @@ public class TransactionMapper {
     /**
      * la liste des transactions
      */
-    private static List<TransactionResponse> transactionUIs = null;
+    private static List<TransactionDto> transactionUIs = null;
 
-    private static void mapAmount(TransactionOld transactionOld, TransactionResponse transactionUI) {
+    private static void mapAmount(TransactionOld transactionOld, TransactionDto transactionUI) {
         BigDecimal amount = transactionOld.getAmount();
         if (transactionOld.isDebit()) {
             transactionUI.setDebit(amount.doubleValue());
@@ -66,7 +67,7 @@ public class TransactionMapper {
         }
     }
 
-    private void mapParty(TransactionOld transactionOld, TransactionResponse transactionUI) {
+    private void mapParty(TransactionOld transactionOld, TransactionDto transactionUI) {
         String partyId = transactionOld.getPartyId();
         if (partyId != null) {
             Party party = grisbiService.getPartyById(partyId);
@@ -76,9 +77,9 @@ public class TransactionMapper {
         }
     }
 
-    private TransactionResponse mapTransaction(TransactionOld transactionOld) {
+    private TransactionDto mapTransaction(TransactionOld transactionOld) {
 
-        TransactionResponse transactionUI = new TransactionResponse();
+        TransactionDto transactionUI = new TransactionDto();
 
         mapAmount(transactionOld, transactionUI);
 
@@ -118,7 +119,7 @@ public class TransactionMapper {
         if (transactionOld.isChildTransaction()) {
             // dans une transaction enfant, on ne cumul pas le solde
             String transactionParentId = transactionOld.getTransactionParentId();
-            TransactionResponse transactionParent = transactionById.get(transactionParentId);
+            TransactionDto transactionParent = transactionById.get(transactionParentId);
             if (transactionParent != null) {
                 transactionParent.getSubTransactions().add(transactionUI);
             }
@@ -139,38 +140,38 @@ public class TransactionMapper {
     /**
      * , "debit":1, "credit":2, "party":{"id":1,"name":"Huguette Lefacteur"}}
      * 
-     * @param transactionRequest
+     * @param transactionCreationDto
      * @return
      * @throws ParseException
      */
-    public TransactionOld mapTransactionRequest(TransactionRequest transactionRequest) {
+    public Transaction mapTransactionRequest(TransactionCreationDto transactionCreationDto) {
 
-        if ((transactionRequest.getDebit() != null && transactionRequest.getCredit() != null)
-                || (transactionRequest.getDebit() == null && transactionRequest.getCredit() == null)) {
+        if ((transactionCreationDto.getDebit() != null && transactionCreationDto.getCredit() != null)
+                || (transactionCreationDto.getDebit() == null && transactionCreationDto.getCredit() == null)) {
             throw new TransactionRequestNotValidException("credit and debit");
         }
 
         Date date;
         try {
-            date = DateUtils.getFrenchDateFormat().parse(transactionRequest.getDate());
+            date = DateUtils.getFrenchDateFormat().parse(transactionCreationDto.getDate());
         } catch (ParseException | NullPointerException e) {
             throw new TransactionRequestNotValidException("date");
         }
 
-        TransactionOld transactionOld = new TransactionOld();
-        String categoryId = transactionRequest.getCategoryId();
-        String subCategoryId = transactionRequest.getSubCategoryId();
-        String partyId = transactionRequest.getPartyId();
+        Transaction transactionOld = new Transaction();
+        String categoryId = transactionCreationDto.getCategoryId();
+        String subCategoryId = transactionCreationDto.getSubCategoryId();
+        String partyId = transactionCreationDto.getPartyId();
 
         BigDecimal amount = null;
-        if (transactionRequest.getDebit() != null) {
-            amount = NumberUtils.parseNumber(transactionRequest.getDebit());
+        if (transactionCreationDto.getDebit() != null) {
+            amount = NumberUtils.parseNumber(transactionCreationDto.getDebit());
             amount = amount.negate();
         } else {
-            amount = NumberUtils.parseNumber(transactionRequest.getCredit());
+            amount = NumberUtils.parseNumber(transactionCreationDto.getCredit());
         }
 
-        String accountId = transactionRequest.getAccountId();
+        String accountId = transactionCreationDto.getAccountId();
         // only to check and throw exception if account doesn't exist... (TODO
         // change that)
         accountService.getAccountById(accountId);
@@ -214,7 +215,7 @@ public class TransactionMapper {
      * @param transactionOlds
      * @return
      */
-    public synchronized List<TransactionResponse> mapTransactions(List<TransactionOld> transactionOlds) {
+    public synchronized List<TransactionDto> mapTransactions(List<TransactionOld> transactionOlds) {
 
         transactionUIs = new ArrayList<>();
         transactionById = new HashMap<>();

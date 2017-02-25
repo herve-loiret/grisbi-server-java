@@ -1,4 +1,4 @@
-package grisbiweb.server.rest.model.response;
+package grisbiweb.server.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @ApiModel
 @Getter
 @Setter
-public class PartyResponse {
+public class PartyDto {
 
     @ApiModelProperty(value = "id of the party", required = true)
     private Long id;

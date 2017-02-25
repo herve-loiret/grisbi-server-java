@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 
+import grisbiweb.server.dto.CategoryDto;
 import grisbiweb.server.model.Category;
-import grisbiweb.server.rest.model.response.CategoryResponse;
 import grisbiweb.server.xml.model.CategoryXml;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -32,9 +32,9 @@ public class CategoryMapperTest {
         Category category = podam.manufacturePojo(Category.class);
         category.setId("1234");
 
-        CategoryResponse categoryResponse = mapper.categoryToCategoryResponse(category);
+        CategoryDto categoryDto = mapper.categoryToCategoryResponse(category);
         
-        assertThat(categoryResponse.getIdCategory()).isEqualTo(category.getIdLong());
-        assertThat(categoryResponse.getNameCategory()).isEqualTo(category.getName());
+        assertThat(categoryDto.getIdCategory()).isEqualTo(category.getIdLong());
+        assertThat(categoryDto.getNameCategory()).isEqualTo(category.getName());
     }
 }

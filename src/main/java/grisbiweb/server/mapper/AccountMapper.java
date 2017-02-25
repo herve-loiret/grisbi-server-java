@@ -6,9 +6,9 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import grisbiweb.server.dto.AccountDto;
 import grisbiweb.server.model.Account;
 import grisbiweb.server.model.Account.AccountType;
-import grisbiweb.server.rest.model.response.AccountResponse;
 import grisbiweb.server.xml.model.AccountXml;
 
 @Mapper(componentModel = "spring", uses = {})
@@ -49,8 +49,8 @@ public interface AccountMapper {
     }
     
     
-    public static AccountResponse mapAccount(Account accountOld) {
-        AccountResponse accountUI = new AccountResponse();
+    public static AccountDto mapAccount(Account accountOld) {
+        AccountDto accountUI = new AccountDto();
         accountUI.setId(Long.valueOf(accountOld.getId()));
         accountUI.setName(accountOld.getName());
         accountUI.setTypeAccount(accountOld.getAccountType());
@@ -58,8 +58,8 @@ public interface AccountMapper {
         return accountUI;
     }
 
-    public static List<AccountResponse> mapAccounts(List<Account> accountOlds) {
-        List<AccountResponse> accountUIs = new ArrayList<>();
+    public static List<AccountDto> mapAccounts(List<Account> accountOlds) {
+        List<AccountDto> accountUIs = new ArrayList<>();
         for (Account accountOld : accountOlds) {
             accountUIs.add(mapAccount(accountOld));
         }

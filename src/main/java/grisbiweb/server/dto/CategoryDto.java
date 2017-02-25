@@ -1,4 +1,4 @@
-package grisbiweb.server.rest.model.response;
+package grisbiweb.server.dto;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 @ApiModel
 @Getter
 @Setter
-public class CategoryResponse {
+public class CategoryDto {
 	
 	private Long idCategory;
 

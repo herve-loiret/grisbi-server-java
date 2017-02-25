@@ -11,6 +11,7 @@ public class Transaction {
     private String accountId;
     private String accountingDocument;
     private BigDecimal amount;
+    private String archiveNumber;
     private String bankReferences;
     private String breakdown;
     private String budgetImputationId;
@@ -26,15 +27,23 @@ public class Transaction {
     private String numberCheckTransfer;
     private String ofxId;
     private String paiementMethodId;
+    private String paiementMethodContent;
     private String partyId;
     private String subCategoryId;
     private String transactionParentId;
     private String transactionStatusId;
     private String notes;
     private Date valueDate;
+    private Boolean automatic;
+    private String reconcileNumber;
+    private String financialYearNumber;
 
     public Long getIdLong() {
         return Long.valueOf(this.id);
+    }
+    
+    public void setIdLong(Long idLong){
+        this.id = String.valueOf(idLong);
     }
 
     public boolean isATransfer() {

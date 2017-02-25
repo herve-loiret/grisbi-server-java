@@ -1,4 +1,4 @@
-package grisbiweb.server.rest.model.response;
+package grisbiweb.server.dto;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TransactionResponse {
+public class TransactionDto {
 
     private Long id;
     private Date date;
@@ -25,7 +25,7 @@ public class TransactionResponse {
     private String category;
     private String currencyId;
     private String pr;
-    private List<TransactionResponse> subTransactions = new ArrayList<>();
+    private List<TransactionDto> subTransactions = new ArrayList<>();
 
     public String getCreditUI() {
         return credit == null ? "" : credit + " €";

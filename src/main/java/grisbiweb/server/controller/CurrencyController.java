@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import grisbiweb.server.dto.CurrencyDto;
 import grisbiweb.server.mapper.CurrencyMapper;
-import grisbiweb.server.rest.model.response.CurrencyResponse;
 import grisbiweb.server.service.GrisbiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +26,8 @@ public class CurrencyController {
     private CurrencyMapper currencyMapper;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "get all currencies", response = CurrencyResponse.class, responseContainer = "List")
-    public List<CurrencyResponse> getCurrencies() {
+    @ApiOperation(value = "get all currencies", response = CurrencyDto.class, responseContainer = "List")
+    public List<CurrencyDto> getCurrencies() {
         return currencyMapper.currencyXmlToCurrencyResponse(grisbiService.getCurrencies());
     }
 }

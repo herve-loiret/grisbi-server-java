@@ -1,4 +1,4 @@
-package grisbiweb.server.rest.model.request;
+package grisbiweb.server.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @ApiModel
 @Getter
 @Setter
-public class TransactionRequest {
+public class TransactionCreationDto {
 
     @ApiModelProperty(value = "id of the account", required = true)
     private String accountId;

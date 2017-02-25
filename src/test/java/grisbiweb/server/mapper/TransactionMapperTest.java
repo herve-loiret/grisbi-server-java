@@ -22,6 +22,7 @@ public class TransactionMapperTest {
         transactionXml.setDt("11/23/2017");
         transactionXml.setDv("10/22/2017");
         transactionXml.setExr("0");
+        transactionXml.setAu("1");
 
         Transaction transaction = mapper.transactionXmlToTransaction(transactionXml);
 
@@ -48,6 +49,8 @@ public class TransactionMapperTest {
         softly.assertThat(transaction.getNumberCheckTransfer()).as("getNumberCheckTransfer")
                 .isEqualTo(transactionXml.getPc());
         softly.assertThat(transaction.getOfxId()).as("getOfxId").isEqualTo(transactionXml.getId());
+        softly.assertThat(transaction.getPaiementMethodContent()).as("paiementMethodContent")
+                .isEqualTo(transactionXml.getPc());
         softly.assertThat(transaction.getPaiementMethodId()).as("getPaiementMethodId")
                 .isEqualTo(transactionXml.getPn());
         softly.assertThat(transaction.getPartyId()).as("getPartyId").isEqualTo(transactionXml.getPa());
@@ -69,6 +72,11 @@ public class TransactionMapperTest {
                 .isEqualTo("1".equals(transactionXml.getMa()));
         softly.assertThat(transaction.isTransactionPointeOuArchive()).as("isTransactionPointe")
                 .isEqualTo(transaction.isTransactionPointe() || transaction.isTransactionArchive());
+        softly.assertThat(transaction.getArchiveNumber()).as("archiveNumber").isEqualTo(transactionXml.getAr());
+        softly.assertThat(transaction.getAutomatic()).as("automatic").isTrue();
+        softly.assertThat(transaction.getReconcileNumber()).as("reconcileNumber").isEqualTo(transactionXml.getRe());
+        softly.assertThat(transaction.getFinancialYearNumber()).as("financialYearNumber")
+                .isEqualTo(transactionXml.getFi());
         softly.assertAll();
     }
 }
