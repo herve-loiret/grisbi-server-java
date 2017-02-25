@@ -18,7 +18,8 @@ public class TransactionService {
     @Autowired
     private GrisbiXmlManager grisbiXmlManager;
 
-    private XmlWriter xmlWriter = XmlWriter.INSTANCE;
+    @Autowired
+    private XmlWriter xmlWriter;
 
     public void createTransaction(TransactionOld transactionOld) {
         transactionOld.setId(findNextTransactionId());

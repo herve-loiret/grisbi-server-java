@@ -6,15 +6,21 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import grisbiweb.server.utils.FileUtils;
+import grisbiweb.server.service.GrisbiFileService;
 import grisbiweb.server.xml.model.GrisbiXml;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class GrisbiXmlManager {
 
     private final String BUSINESS_PACKAGE = "grisbiweb.server.xml.model";
+
+    @Autowired
+    private GrisbiFileService grisbiFileService;
 
     private GrisbiXml grisbi;
 
@@ -24,7 +30,7 @@ public class GrisbiXmlManager {
         if (grisbi == null) {
             reload();
         } else {
-            File file = FileUtils.findGrisbiAccountFile();
+            File file = grisbiFileService.getGrisbiFile();
             if (lastModified < file.lastModified()) {
                 reload();
             }
@@ -36,11 +42,11 @@ public class GrisbiXmlManager {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(BUSINESS_PACKAGE);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            File file = FileUtils.findGrisbiAccountFile();
+            File file = grisbiFileService.getGrisbiFile();
             lastModified = file.lastModified();
             grisbi = (GrisbiXml) unmarshaller.unmarshal(file);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            log.error("Error while accessing grisbi file", e);
         }
     }
 

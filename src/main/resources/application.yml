@@ -9,3 +9,6 @@ server:
 spring:
   application:
     name: grisbi-web
+    
+grisbiweb:
+  fileuri: classpath:account.gsb
