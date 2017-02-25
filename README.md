@@ -55,3 +55,8 @@ For now, methods implemented are :
 
 - [Definitions](docs/definitions.md)
 - [Paths](docs/paths.md)
+
+### Swagger url
+- when you run the spring boot application, you can access swagger with theses urls :
+  - http://localhost:8080/grisbiweb/swagger/index.html
+  - http://localhost:8080/grisbiweb/v2/api-docs

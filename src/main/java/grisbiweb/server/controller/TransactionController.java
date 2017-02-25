@@ -2,15 +2,13 @@ package grisbiweb.server.controller;
 
 import java.util.List;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.model.TransactionOld;
@@ -37,15 +35,13 @@ public class TransactionController {
     private TransactionMapper transactionMapper;
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "the transaction parameter is not valid"),
             @ApiResponse(code = 404, message = "AccountOld not found") })
-    @ApiOperation(value = "Create a new transaction in the grisbi data file", response = Response.class)
-    public Response createTransaction(TransactionRequest transactionRequest) {
-
+    @ApiOperation(value = "Create a new transaction in the grisbi data file")
+    public void createTransaction(TransactionRequest transactionRequest) {
         TransactionOld transactionOld = transactionMapper.mapTransactionRequest(transactionRequest);
         transactionService.createTransaction(transactionOld);
-
-        return Response.status(201).build();
     }
 
     @RequestMapping(value = "/{accountId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,8 +60,7 @@ public class TransactionController {
      * @param perpage
      * @return @
      */
-    @GET
-    @Path("/{accountNumber}/page/{page}/perpage/{perpage}")
+    @RequestMapping(value = "/{accountNumber}/page/{page}/perpage/{perpage}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get all transaction from an account, with pagination", response = ListTransactionResponse.class)
     public ListTransactionResponse getTransactionsPaginateByAccountNumber(
             @ApiParam(value = "account id") @PathVariable("accountNumber") String accountNumber, //

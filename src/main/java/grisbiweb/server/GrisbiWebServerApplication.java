@@ -11,4 +11,5 @@ public class GrisbiWebServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(GrisbiWebServerApplication.class, args);
     }
+
 }

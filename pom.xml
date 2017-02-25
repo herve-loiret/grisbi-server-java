@@ -25,6 +25,7 @@
         <projectlombok.version>1.16.12</projectlombok.version>
         <projectlombok.maven.version>${projectlombok.version}.0</projectlombok.maven.version>
         <uk.co.jemos.podam.version>7.0.4.RELEASE</uk.co.jemos.podam.version>
+        <springfox.swagger.vesion>2.2.2</springfox.swagger.vesion>
     </properties>
 
     <dependencies>
@@ -54,9 +55,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jersey-jaxrs</artifactId>
-            <version>1.5.4</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox.swagger.vesion}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger.vesion}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.0</version>
         </dependency>
 
         <dependency>
