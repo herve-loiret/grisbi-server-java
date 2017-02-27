@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class TransactionDto {
             return null;
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
         return simpleDateFormat.format(date);
     }
 

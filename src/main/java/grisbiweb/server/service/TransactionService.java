@@ -46,9 +46,9 @@ public class TransactionService {
 
     public Transaction getTransactionById(String idTransaction) {
         for (TransactionXml oneTransaction : grisbiXmlManager.loadGrisbi().getTransaction()) {
-            Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
-            if (transaction.getId().equals(idTransaction)) {
-                return transaction;
+            Transaction transactionOld = transactionMapper.transactionXmlToTransaction(oneTransaction);
+            if (transactionOld.getId().equals(idTransaction)) {
+                return transactionOld;
             }
         }
         return null;
@@ -70,9 +70,9 @@ public class TransactionService {
     public List<Transaction> getTransactionsOrderedByAccountId(String accountId, Integer page, Integer perPage) {
 
         List<Transaction> transactionsAccount = new ArrayList<>();
-        List<Transaction> transactions = this.getTransactions();
+        List<Transaction> transactionOlds = this.getTransactions();
 
-        for (Transaction transaction : transactions) {
+        for (Transaction transaction : transactionOlds) {
             if (transaction.getAccountId().equals(accountId)) {
                 transactionsAccount.add(transaction);
             }

@@ -10,29 +10,29 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CategoryDto {
-	
-	private Long idCategory;
 
-	private Long idSubCategory;
+    private Long idCategory;
 
-	private String nameCategory;
+    private Long idSubCategory;
 
-	private String nameSubCategory;
+    private String nameCategory;
 
-	public String getCompleteId() {
-		String compelteId = String.valueOf(idCategory);
-		if (idSubCategory != null) {
-			compelteId = compelteId + "-" + idSubCategory;
-		}
-		return compelteId;
-	}
+    private String nameSubCategory;
 
-	public String getCompleteName() {
-		String completeName = nameCategory;
-		if (StringUtils.isNotEmpty(nameSubCategory)) {
-			completeName += " : " + nameSubCategory;
-		}
-		return completeName;
-	}
+    public String getCompleteId() {
+        StringBuilder compelteId = new StringBuilder(String.valueOf(idCategory));
+        if (idSubCategory != null) {
+            compelteId.append('-').append(idSubCategory);
+        }
+        return compelteId.toString();
+    }
+
+    public String getCompleteName() {
+        StringBuilder completeName = new StringBuilder(nameCategory);
+        if (StringUtils.isNotEmpty(nameSubCategory)) {
+            completeName.append(" : ").append(nameSubCategory);
+        }
+        return completeName.toString();
+    }
 
 }

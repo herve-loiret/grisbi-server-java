@@ -36,36 +36,36 @@ public class XmlWriter {
     }
 
     private String createXmlElement(TransactionXml transactionXml) {
-        StringBuilder element = new StringBuilder("	<Transaction");
-        element.append(" Ac=" + createValue(transactionXml.getAc()));
-        element.append(" Nb=" + createValue(transactionXml.getNb()));
-        element.append(" Id=" + createValue(transactionXml.getId()));
-        element.append(" Dt=" + createValue(transactionXml.getDt()));
-        element.append(" Dv=" + createValue(transactionXml.getDv()));
-        element.append(" Cu=" + createValue(transactionXml.getCu()));
-        element.append(" Am=" + createValue(transactionXml.getAm()));
-        element.append(" Exb=" + createValue(transactionXml.getExb()));
-        element.append(" Exr=" + createValue(transactionXml.getExr()));
-        element.append(" Exf=" + createValue(transactionXml.getExf()));
-        element.append(" Pa=" + createValue(transactionXml.getPa()));
-        element.append(" Ca=" + createValue(transactionXml.getCa()));
-        element.append(" Sca=" + createValue(transactionXml.getSca()));
-        element.append(" Br=" + createValue(transactionXml.getBr()));
-        element.append(" No=" + createValue(transactionXml.getNo()));
-        element.append(" Pn=" + createValue(transactionXml.getPn()));
-        element.append(" Pc=" + createValue(transactionXml.getPc()));
-        element.append(" Ma=" + createValue(transactionXml.getMa()));
-        element.append(" Ar=" + createValue(transactionXml.getAr()));
-        element.append(" Au=" + createValue(transactionXml.getAu()));
-        element.append(" Re=" + createValue(transactionXml.getRe()));
-        element.append(" Fi=" + createValue(transactionXml.getFi()));
-        element.append(" Bu=" + createValue(transactionXml.getBu()));
-        element.append(" Sbu=" + createValue(transactionXml.getSbu()));
-        element.append(" Vo=" + createValue(transactionXml.getVo()));
-        element.append(" Ba=" + createValue(transactionXml.getBa()));
-        element.append(" Trt=" + createValue(transactionXml.getTrt()));
-        element.append(" Mo=" + createValue(transactionXml.getMo()));
-        element.append("/>");
+        StringBuilder element = new StringBuilder("	<Transaction")
+                .append(" Ac=").append(createValue(transactionXml.getAc()))
+                .append(" Nb=").append(createValue(transactionXml.getNb()))
+                .append(" Id=").append(createValue(transactionXml.getId()))
+                .append(" Dt=").append(createValue(transactionXml.getDt()))
+                .append(" Dv=").append(createValue(transactionXml.getDv()))
+                .append(" Cu=").append(createValue(transactionXml.getCu()))
+                .append(" Am=").append(createValue(transactionXml.getAm()))
+                .append(" Exb=").append(createValue(transactionXml.getExb()))
+                .append(" Exr=").append(createValue(transactionXml.getExr()))
+                .append(" Exf=").append(createValue(transactionXml.getExf()))
+                .append(" Pa=").append(createValue(transactionXml.getPa()))
+                .append(" Ca=").append(createValue(transactionXml.getCa()))
+                .append(" Sca=").append(createValue(transactionXml.getSca()))
+                .append(" Br=").append(createValue(transactionXml.getBr()))
+                .append(" No=").append(createValue(transactionXml.getNo()))
+                .append(" Pn=").append(createValue(transactionXml.getPn()))
+                .append(" Pc=").append(createValue(transactionXml.getPc()))
+                .append(" Ma=").append(createValue(transactionXml.getMa()))
+                .append(" Ar=").append(createValue(transactionXml.getAr()))
+                .append(" Au=").append(createValue(transactionXml.getAu()))
+                .append(" Re=").append(createValue(transactionXml.getRe()))
+                .append(" Fi=").append(createValue(transactionXml.getFi()))
+                .append(" Bu=").append(createValue(transactionXml.getBu()))
+                .append(" Sbu=").append(createValue(transactionXml.getSbu()))
+                .append(" Vo=").append(createValue(transactionXml.getVo()))
+                .append(" Ba=").append(createValue(transactionXml.getBa()))
+                .append(" Trt=").append(createValue(transactionXml.getTrt()))
+                .append(" Mo=").append(createValue(transactionXml.getMo()))
+                .append("/>");
         return element.toString();
     }
 

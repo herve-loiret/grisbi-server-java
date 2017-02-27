@@ -145,8 +145,8 @@ public class TransactionMapper {
      */
     public Transaction mapTransactionRequest(TransactionCreationDto transactionCreationDto) {
 
-        if ((transactionCreationDto.getDebit() != null && transactionCreationDto.getCredit() != null)
-                || (transactionCreationDto.getDebit() == null && transactionCreationDto.getCredit() == null)) {
+        if (transactionCreationDto.getDebit() != null && transactionCreationDto.getCredit() != null
+                || transactionCreationDto.getDebit() == null && transactionCreationDto.getCredit() == null) {
             throw new TransactionRequestNotValidException("credit and debit");
         }
 

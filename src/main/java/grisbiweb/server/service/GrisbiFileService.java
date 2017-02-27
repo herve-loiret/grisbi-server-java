@@ -9,16 +9,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import grisbiweb.server.config.GrisbiwebConfiguration;
-import lombok.extern.slf4j.Slf4j;
+import grisbiweb.server.exception.ConfigFileException;
 
 @Service
-@Slf4j
 public class GrisbiFileService {
 
     private static final String CLASSPATH_PREFIX = "classpath:";
     private static final String FILE_PREFIX = "file:";
-
-    private static final String CONFIGFILE_LOCATION = "grisbiweb.server.configfile.location";
 
     @Autowired
     private GrisbiwebConfiguration grisbiwebConfiguration;
@@ -28,7 +25,7 @@ public class GrisbiFileService {
         String fileUri = grisbiwebConfiguration.getFileUri();
 
         if (StringUtils.isEmpty(fileUri)) {
-            throw new RuntimeException("The grisbi file uri is not set in the config");
+            throw new ConfigFileException("The grisbi file uri is not set in the config");
         }
 
         File file = null;
@@ -50,7 +47,7 @@ public class GrisbiFileService {
             ClassPathResource classPathResource = new ClassPathResource(trimed);
             file = classPathResource.getFile();
         } catch (IOException e) {
-            log.error("can not read grisbi file uri : " + fileUri, e);
+            throw new ConfigFileException("can not read grisbi file uri : " + fileUri, e);
         }
         return file;
     }

@@ -29,6 +29,9 @@ public class CategoryService implements InitializingBean {
     @Autowired
     private GrisbiXmlManager grisbiXmlManager;
 
+    private Map<String, Category> categoryById = new HashMap<>();
+    private Map<Pair<Category, String>, SubCategory> subCategoriesByIdAndCategory = new HashMap<>();
+
     @Override
     public void afterPropertiesSet() {
         for (Object object : grisbiXmlManager.loadGrisbi().getGroupCategories()) {
@@ -43,9 +46,6 @@ public class CategoryService implements InitializingBean {
             }
         }
     }
-
-    private Map<String, Category> categoryById = new HashMap<>();
-    private Map<Pair<Category, String>, SubCategory> subCategoriesByIdAndCategory = new HashMap<>();
 
     public Map<String, Category> getCategoryById() {
         return categoryById;

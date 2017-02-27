@@ -85,7 +85,7 @@ public class AccountService {
     }
 
     public BigDecimal getBalanceTotalByAccountType(AccountType accountType, boolean onlyReconciled) {
-        BigDecimal balanceTotal = new BigDecimal(0);
+        BigDecimal balanceTotal = BigDecimal.ZERO;
         for (Account accountGws : this.getAccountsByType(accountType)) {
             balanceTotal = balanceTotal.add(this.getBalance(accountGws.getId(), onlyReconciled));
         }
