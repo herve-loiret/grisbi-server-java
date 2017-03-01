@@ -38,19 +38,54 @@ public class AccountControllerTest {
     @Test
     @SneakyThrows
     public void should_get_one_account() {
-        mockMvc.perform(get("/accounts/{accountId}", "1")) 
-        .andExpect(jsonPath("$.id", is(1))) //
-        .andExpect(jsonPath("$.name", is("Compte Monsieur"))) //
-        .andExpect(jsonPath("$.typeAccount", is("BANK"))) //
-        .andExpect(jsonPath("$.currencyId", is("1")));
-        
+        mockMvc.perform(get("/accounts/{accountId}", "1"))
+                .andExpect(jsonPath("$.id", is(1))) //
+                .andExpect(jsonPath("$.name", is("Compte Monsieur"))) //
+                .andExpect(jsonPath("$.typeAccount", is("BANK"))) //
+                .andExpect(jsonPath("$.currencyId", is("1")));
+
     }
 
     @Test
     @SneakyThrows
-    public void should_get_account_balance() {
-        mockMvc.perform(get("/accounts/{accountId}/balance", "1")) //
-                .andExpect(content().string("-17158.83"));
+    public void should_get_account_1_balance() {
+        mockMvc.perform(get("/accounts/{accountId}/balance", "1")).andExpect(content().string("-17158.83"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void should_get_account_2_balance() {
+        mockMvc.perform(get("/accounts/{accountId}/balance", "2")).andExpect(content().string("416.83"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void should_get_account_3_balance() {
+        mockMvc.perform(get("/accounts/{accountId}/balance", "3")).andExpect(content().string("0.00"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void should_get_account_4_balance() {
+        mockMvc.perform(get("/accounts/{accountId}/balance", "4")).andExpect(content().string("407.87"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void should_get_account_5_balance() {
+        mockMvc.perform(get("/accounts/{accountId}/balance", "5")).andExpect(content().string("28.50"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void should_get_account_6_balance() {
+        mockMvc.perform(get("/accounts/{accountId}/balance", "6")).andExpect(content().string("110.00"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void should_get_account_7_balance() {
+        mockMvc.perform(get("/accounts/{accountId}/balance", "7")).andExpect(content().string("0.00"));
     }
 
     @Test

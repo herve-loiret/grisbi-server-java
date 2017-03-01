@@ -18,7 +18,7 @@ public class TransactionService {
 
     @Autowired
     private GrisbiXmlManager grisbiXmlManager;
-    
+
     @Autowired
     private TransactionMapper transactionMapper;
 
@@ -78,7 +78,8 @@ public class TransactionService {
             }
         }
 
-        Collections.sort(transactionsAccount, new TransactionGwsComparator());
+        Collections.sort(transactionsAccount,
+                (transaction1, transaction2) -> transaction1.getDate().compareTo(transaction2.getDate()));
 
         // manage pagination
         if (page != null && perPage != null) {
