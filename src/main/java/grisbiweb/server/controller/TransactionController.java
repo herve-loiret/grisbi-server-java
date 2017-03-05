@@ -46,7 +46,7 @@ public class TransactionController {
 
     @RequestMapping(value = "/{accountId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get all transaction from an account", response = ListTransactionDto.class)
-    public ListTransactionDto getTransactionsByAccountNumber(
+    public ListTransactionDto getTransactionsByAccountId(
             @ApiParam(value = "account id") @PathVariable("accountId") String accountId) {
         List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountId);
         List<TransactionDto> transactionUis = transactionMapper.mapTransactions(transactions);

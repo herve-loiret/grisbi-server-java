@@ -1,6 +1,5 @@
 package grisbiweb.server.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mapstruct.Mapper;
@@ -20,49 +19,36 @@ public interface AccountMapper {
     @Mapping(target = "accountType", expression = "java( AccountMapper.getAccountTypeFromStringId(accountXml.getKind()) )")
     Account accountXmlToAccount(AccountXml accountXml);
 
-    public static Account.AccountType getAccountTypeFromStringId(String kind) {
+    public List<AccountDto> accountToAccountDto(List<Account> accounts);
+
+    public AccountDto accountToAccountDto(Account account);
+
+    public static Account.AccountType getAccountTypeFromStringId(String id) {
         AccountType accountType = null;
-        if ("0".equals(kind)) {
+        if ("0".equals(id)) {
             accountType = AccountType.BANK;
-        } else if ("1".equals(kind)) {
+        } else if ("1".equals(id)) {
             accountType = AccountType.CASH;
-        } else if ("2".equals(kind)) {
+        } else if ("2".equals(id)) {
             accountType = AccountType.LIABILITY;
-        } else if ("3".equals(kind)) {
+        } else if ("3".equals(id)) {
             accountType = AccountType.ASSET;
         }
         return accountType;
-    }
-    
-    public static AccountType getAccountTypeFromStringName(String value) {
-        AccountType accountType = null;
-        if ("BANK".equalsIgnoreCase(value)) {
-            accountType = AccountType.BANK;
-        } else if ("ASSET".equalsIgnoreCase(value)) {
-            accountType = AccountType.ASSET;
-        } else if ("LIABILITY".equalsIgnoreCase(value)) {
-            accountType = AccountType.LIABILITY;
-        } else if ("CASH".equalsIgnoreCase(value)) {
-            accountType = AccountType.CASH;
-        }
-        return accountType;
-    }
-    
-    
-    public static AccountDto mapAccount(Account accountOld) {
-        AccountDto accountUI = new AccountDto();
-        accountUI.setId(Long.valueOf(accountOld.getId()));
-        accountUI.setName(accountOld.getName());
-        accountUI.setTypeAccount(accountOld.getAccountType());
-        accountUI.setCurrencyId(accountOld.getCurrencyId());
-        return accountUI;
     }
 
-    public static List<AccountDto> mapAccounts(List<Account> accountOlds) {
-        List<AccountDto> accountUIs = new ArrayList<>();
-        for (Account accountOld : accountOlds) {
-            accountUIs.add(mapAccount(accountOld));
+    public static AccountType getAccountTypeFromStringName(String name) {
+        AccountType accountType = null;
+        if ("BANK".equalsIgnoreCase(name)) {
+            accountType = AccountType.BANK;
+        } else if ("ASSET".equalsIgnoreCase(name)) {
+            accountType = AccountType.ASSET;
+        } else if ("LIABILITY".equalsIgnoreCase(name)) {
+            accountType = AccountType.LIABILITY;
+        } else if ("CASH".equalsIgnoreCase(name)) {
+            accountType = AccountType.CASH;
         }
-        return accountUIs;
+        return accountType;
     }
+
 }

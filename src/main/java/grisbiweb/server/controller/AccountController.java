@@ -15,6 +15,7 @@ import grisbiweb.server.exception.NotImplementedException;
 import grisbiweb.server.mapper.AccountMapper;
 import grisbiweb.server.model.Account.AccountType;
 import grisbiweb.server.service.AccountService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -22,11 +23,15 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(path = "/accounts")
+@Api(value = "/accounts")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
-    
+
+    @Autowired
+    private AccountMapper accountMapper;
+
     /**
      * delete one account
      *
@@ -47,7 +52,7 @@ public class AccountController {
     @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
     public AccountDto getAccount(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
-        return AccountMapper.mapAccount(accountService.getAccountById(accountId));
+        return accountMapper.accountToAccountDto(accountService.getAccountById(accountId));
     }
 
     /**
@@ -58,7 +63,7 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get all accounts", response = AccountDto.class, responseContainer = "List")
     public List<AccountDto> getAccounts() {
-        return AccountMapper.mapAccounts(accountService.getOpenedAccounts());
+        return accountMapper.accountToAccountDto(accountService.getOpenedAccounts());
     }
 
     /**

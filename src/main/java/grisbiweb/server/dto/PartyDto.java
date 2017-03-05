@@ -10,10 +10,13 @@ import lombok.Setter;
 @Setter
 public class PartyDto {
 
-    @ApiModelProperty(value = "id of the party", required = true)
+    @ApiModelProperty(value = "id of the party", required = false)
     private Long id;
 
     @ApiModelProperty(value = "name of the party", required = true)
     private String name;
+
+    @ApiModelProperty(value = "description of the party", required = false)
+    private String description;
 
 }

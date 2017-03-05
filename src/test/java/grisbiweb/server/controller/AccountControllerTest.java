@@ -41,7 +41,7 @@ public class AccountControllerTest {
         mockMvc.perform(get("/accounts/{accountId}", "1"))
                 .andExpect(jsonPath("$.id", is(1))) //
                 .andExpect(jsonPath("$.name", is("Compte Monsieur"))) //
-                .andExpect(jsonPath("$.typeAccount", is("BANK"))) //
+                .andExpect(jsonPath("$.accountType", is("BANK"))) //
                 .andExpect(jsonPath("$.currencyId", is("1")));
 
     }
@@ -102,7 +102,7 @@ public class AccountControllerTest {
                 .andExpect(jsonPath("$", hasSize(7)))//
                 .andExpect(jsonPath("$[0].id", is(2))) //
                 .andExpect(jsonPath("$[0].name", is("Emprunt voiture"))) //
-                .andExpect(jsonPath("$[0].typeAccount", is("LIABILITY"))) //
+                .andExpect(jsonPath("$[0].accountType", is("LIABILITY"))) //
                 .andExpect(jsonPath("$[0].currencyId", is("1")));
     }
 

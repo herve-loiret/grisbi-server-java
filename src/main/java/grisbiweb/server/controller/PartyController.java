@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.dto.PartyDto;
-import grisbiweb.server.mapper.PartyMapper;
-import grisbiweb.server.service.GrisbiService;
+import grisbiweb.server.service.PartyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -20,14 +19,17 @@ import io.swagger.annotations.ApiOperation;
 public class PartyController {
 
     @Autowired
-    private GrisbiService grisbiService;
-
-    @Autowired
-    private PartyMapper partyMapper;
+    private PartyService partyService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "get all parties", response = PartyDto.class, responseContainer = "List")
     public List<PartyDto> getParties() {
-        return partyMapper.partyToPartyResponse(grisbiService.getParties());
+        return partyService.getParties();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "create a new party", response = PartyDto.class)
+    public PartyDto postParty(PartyDto partyDto) {
+        return partyService.createParty(partyDto);
     }
 }

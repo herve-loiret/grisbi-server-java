@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.dto.CategoryDto;
 import grisbiweb.server.rest.mapper.CategoryResponseBuilder;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(path = "/categories")
+@Api(value = "/categories")
 public class CategoryController {
 
     @Autowired

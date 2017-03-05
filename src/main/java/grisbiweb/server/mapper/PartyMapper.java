@@ -12,15 +12,16 @@ import grisbiweb.server.xml.model.PartyXml;
 @Mapper(componentModel = "spring", uses = {})
 public interface PartyMapper {
 
-    List<PartyDto> partyToPartyResponse(List<Party> party);
+    List<PartyDto> partyToPartyDto(List<Party> party);
 
     @Mapping(source = "idLong", target = "id")
-    PartyDto partyToPartyResponse(Party party);
+    PartyDto partyToPartyDto(Party party);
 
     List<Party> partyXmlToParty(List<PartyXml> partiesXml);
 
     @Mapping(source = "nb", target = "id")
     @Mapping(source = "na", target = "name")
+    @Mapping(expression = "java(\"(null)\".equals(partyXml.getTxt()) ? null : partyXml.getTxt())", target = "description")
     Party partyXmlToParty(PartyXml partyXml);
 
 }

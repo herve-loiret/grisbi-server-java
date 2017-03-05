@@ -18,7 +18,7 @@ public class AccountDto {
 	private String name;
 
 	@ApiModelProperty(value = "id of the currency used in this account")
-	private AccountType typeAccount;
+	private AccountType accountType;
 
 	@ApiModelProperty(value = "id of the currency used in this account")
 	private String currencyId;

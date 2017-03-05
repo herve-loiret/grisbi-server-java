@@ -9,6 +9,9 @@ server:
 spring:
   application:
     name: grisbi-web
-    
+  jackson:
+    serialization:
+      indent-output: true
+      
 grisbiweb:
   fileuri: classpath:account.gsb
