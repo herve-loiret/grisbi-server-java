@@ -23,8 +23,7 @@ public class Transaction {
     private BigDecimal exchangeFees;
     private BigDecimal exchangeRate;
     private String foreignTransactionId;
-    private String id;
-    private String numberCheckTransfer;
+    private Long id;
     private String ofxId;
     private String paiementMethodId;
     private String paiementMethodContent;
@@ -37,14 +36,6 @@ public class Transaction {
     private Boolean automatic;
     private String reconcileNumber;
     private String financialYearNumber;
-
-    public Long getIdLong() {
-        return Long.valueOf(this.id);
-    }
-    
-    public void setIdLong(Long idLong){
-        this.id = String.valueOf(idLong);
-    }
 
     public boolean isATransfer() {
         return !"0".equals(this.getForeignTransactionId());

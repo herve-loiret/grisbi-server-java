@@ -43,11 +43,9 @@ public class TransactionMapperTest {
         softly.assertThat(transaction.getExchange()).as("getExchange").isEqualTo(transactionXml.getExb().equals("1")); // PODAM
         softly.assertThat(transaction.getForeignTransactionId()).as("getForeignTransactionId")
                 .isEqualTo(transactionXml.getTrt());
-        softly.assertThat(transaction.getId()).isEqualTo(transactionXml.getNb()).as("getId");
-        softly.assertThat(transaction.getIdLong()).isEqualTo(Long.valueOf(transactionXml.getNb())).as("getIdLong");
+        softly.assertThat(transaction.getId()).isEqualTo(Long.valueOf(transactionXml.getNb())).as("getId");
+        softly.assertThat(transaction.getId()).as("getId").isEqualTo(Long.valueOf(transactionXml.getNb()));
         softly.assertThat(transaction.getNotes()).isEqualTo(transactionXml.getNo()).as("getNotes");
-        softly.assertThat(transaction.getNumberCheckTransfer()).as("getNumberCheckTransfer")
-                .isEqualTo(transactionXml.getPc());
         softly.assertThat(transaction.getOfxId()).as("getOfxId").isEqualTo(transactionXml.getId());
         softly.assertThat(transaction.getPaiementMethodContent()).as("paiementMethodContent")
                 .isEqualTo(transactionXml.getPc());

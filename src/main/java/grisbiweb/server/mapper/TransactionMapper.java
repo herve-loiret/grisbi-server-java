@@ -32,10 +32,9 @@ public interface TransactionMapper {
     @Mapping(source = "trt", target = "foreignTransactionId")
     @Mapping(source = "nb", target = "id")
     @Mapping(source = "no", target = "notes")
-    @Mapping(source = "pc", target = "numberCheckTransfer")
     @Mapping(source = "id", target = "ofxId")
     @Mapping(source = "pn", target = "paiementMethodId")
-    @Mapping(source = "pc", target = "paiementMethodContent")
+    @Mapping(source = "pc", target = "paiementMethodContent") // !!
     @Mapping(source = "pa", target = "partyId")
     @Mapping(source = "sca", target = "subCategoryId")
     @Mapping(source = "mo", target = "transactionParentId")
@@ -58,7 +57,6 @@ public interface TransactionMapper {
     @Mapping(target = "trt", source = "foreignTransactionId")
     @Mapping(target = "nb", source = "id")
     @Mapping(target = "no", source = "notes")
-//    @Mapping(target = "pc", source = "numberCheckTransfer") //TODO FIX BUG DOUBLE PC
     @Mapping(target = "id", source = "ofxId")
     @Mapping(target = "pn", source = "paiementMethodId")
     @Mapping(target = "pc", source = "paiementMethodContent")
@@ -69,13 +67,23 @@ public interface TransactionMapper {
     @Mapping(target = "ar", source = "archiveNumber")
     @Mapping(target = "re", source = "reconcileNumber")
     @Mapping(target = "fi", source = "financialYearNumber")
-//    @Mapping(expression = "java(mapValueDate(transactionXml))", target = "valueDate")
-//    @Mapping(expression = "java(\"1\".equals(transactionXml.getAu()) ? true : false)", target = "automatic")
-//    @Mapping(expression = "java(mapAmount(transactionXml))", target = "amount")
-//    @Mapping(expression = "java(grisbiweb.server.utils.DateUtils.parseEnglishDate(transactionXml.getDt()))", target = "date")
-//    @Mapping(expression = "java(transactionXml.getExb().equals(\"1\"))", target = "exchange")
-//    @Mapping(expression = "java(grisbiweb.server.utils.NumberUtils.parseNumber(transactionXml.getExf()))", target = "exchangeFees")
-//    @Mapping(expression = "java(grisbiweb.server.utils.NumberUtils.parseNumber(transactionXml.getExr()))", target = "exchangeRate")
+    // @Mapping(expression = "java(mapValueDate(transactionXml))", target =
+    // "valueDate")
+    // @Mapping(expression = "java(\"1\".equals(transactionXml.getAu()) ? true :
+    // false)", target = "automatic")
+    // @Mapping(expression = "java(mapAmount(transactionXml))", target =
+    // "amount")
+    // @Mapping(expression =
+    // "java(grisbiweb.server.utils.DateUtils.parseEnglishDate(transactionXml.getDt()))",
+    // target = "date")
+    // @Mapping(expression = "java(transactionXml.getExb().equals(\"1\"))",
+    // target = "exchange")
+    // @Mapping(expression =
+    // "java(grisbiweb.server.utils.NumberUtils.parseNumber(transactionXml.getExf()))",
+    // target = "exchangeFees")
+    // @Mapping(expression =
+    // "java(grisbiweb.server.utils.NumberUtils.parseNumber(transactionXml.getExr()))",
+    // target = "exchangeRate")
     public TransactionXml transactionToTransactionXml(Transaction transaction);
 
     default BigDecimal mapAmount(TransactionXml transactionXml) {

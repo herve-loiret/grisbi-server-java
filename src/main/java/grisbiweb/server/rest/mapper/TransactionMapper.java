@@ -82,9 +82,8 @@ public class TransactionMapper {
 
         mapAmount(transaction, transactionUI);
 
-        transactionUI.setId(transaction.getIdLong());
+        transactionUI.setId(transaction.getId());
         transactionUI.setDate(transaction.getDate());
-        transactionUI.setId(transaction.getIdLong());
         String categoryId = transaction.getCategoryId();
         String subCategoryId = transaction.getSubCategoryId();
 
@@ -129,7 +128,7 @@ public class TransactionMapper {
 
             // save in list
             transactionUIs.add(transactionUI);
-            transactionById.put(transaction.getId(), transactionUI);
+            transactionById.put(String.valueOf(transaction.getId()), transactionUI);
         }
 
         return transactionUI;

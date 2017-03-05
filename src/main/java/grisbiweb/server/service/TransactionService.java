@@ -26,15 +26,15 @@ public class TransactionService {
     private XmlWriter xmlWriter;
 
     public void createTransaction(Transaction transaction) {
-        transaction.setIdLong(findNextTransactionId());
+        transaction.setId(findNextTransactionId());
         xmlWriter.writeTransaction(transaction);
     }
 
     private Long findNextTransactionId() {
         Long id = 0L;
         for (Transaction transaction : this.getTransactions()) {
-            if (id.compareTo(transaction.getIdLong()) < 0) {
-                id = transaction.getIdLong();
+            if (id.compareTo(transaction.getId()) < 0) {
+                id = transaction.getId();
             }
         }
         return ++id;

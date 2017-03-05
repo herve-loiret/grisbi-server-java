@@ -1,2 +1,7 @@
+logging:
+  level: 
+    org.springframework.web: INFO
+    grisbiweb.server: TRACE
+
 grisbiweb:
   fileuri: classpath:account.gsb

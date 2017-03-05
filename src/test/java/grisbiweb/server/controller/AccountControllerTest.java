@@ -79,7 +79,7 @@ public class AccountControllerTest {
     @Test
     @SneakyThrows
     public void should_get_account_6_balance() {
-        mockMvc.perform(get("/accounts/{accountId}/balance", "6")).andExpect(content().string("110.00"));
+        mockMvc.perform(get("/accounts/{accountId}/balance", "6")).andExpect(content().string("-20941.00"));
     }
 
     @Test

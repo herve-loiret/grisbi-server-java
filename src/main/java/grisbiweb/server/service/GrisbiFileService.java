@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import grisbiweb.server.config.GrisbiwebConfiguration;
 import grisbiweb.server.exception.ConfigFileException;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class GrisbiFileService {
 
     private static final String CLASSPATH_PREFIX = "classpath:";
@@ -35,6 +37,8 @@ public class GrisbiFileService {
         } else if (fileUri.startsWith(FILE_PREFIX)) {
             file = new File(fileUri.replaceFirst(FILE_PREFIX, ""));
         }
+
+        log.info("grisbi file served : {}", file.getAbsolutePath());
 
         return file;
 

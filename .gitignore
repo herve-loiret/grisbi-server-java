@@ -25,3 +25,4 @@ nbdist/
 
 ### MAC OS ###
 .DS_Store
+/.eclipse-pmd

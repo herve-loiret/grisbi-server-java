@@ -14,8 +14,10 @@ import grisbiweb.server.model.Account.AccountType;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.xml.GrisbiXmlManager;
 import grisbiweb.server.xml.model.AccountXml;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class AccountService {
 
     @Autowired
@@ -65,7 +67,7 @@ public class AccountService {
     }
 
     public BigDecimal getBalance(String accountId, boolean onlyReconciled) {
-
+        log.trace("calculating balance for account {}", accountId);
         Account account = this.getAccountById(accountId);
 
         List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountId);
@@ -76,6 +78,7 @@ public class AccountService {
             BigDecimal amount = transaction.getAmount();
             if (!transaction.isChildTransaction()) {
                 if (!onlyReconciled || transaction.isTransactionPointeOuArchive()) {
+                    log.debug("adding amount of {}", transaction);
                     solde = solde.add(amount);
                 }
             }
