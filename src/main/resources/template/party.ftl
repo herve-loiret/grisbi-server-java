@@ -1,0 +1,1 @@
+    <Party Nb="${party.nb}" Na="${party.na}" Txt="${party.txt}" Search="${party.search}" />

@@ -9,19 +9,31 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
 import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.service.GrisbiFileService;
+import grisbiweb.server.xml.model.PartyXml;
 import grisbiweb.server.xml.model.TransactionXml;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class XmlWriter {
+public class XmlWriter implements InitializingBean {
+
+    @Value(value = "classpath:template")
+    private Resource template;
 
     @Autowired
     private GrisbiFileService grisbiFileService;
@@ -29,10 +41,28 @@ public class XmlWriter {
     @Autowired
     private TransactionMapper transactionMapper;
 
+    private Configuration configuration;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        configuration = new Configuration(Configuration.VERSION_2_3_25);
+        configuration.setDirectoryForTemplateLoading(template.getFile());
+        configuration.setDefaultEncoding("UTF-8");
+        configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+    }
+
     private StringBuilder createValue(String value) {
         return new StringBuilder("\"")
                 .append(value)
                 .append("\"");
+    }
+
+    @SneakyThrows
+    public String createXmlStringParty(PartyXml partyXml) {
+        Template template = configuration.getTemplate("party.ftl");
+        StringWriter stringWriter = new StringWriter();
+        template.process(partyXml, stringWriter);
+        return stringWriter.toString();
     }
 
     private String createXmlElement(TransactionXml transactionXml) {
@@ -138,4 +168,5 @@ public class XmlWriter {
         }
 
     }
+
 }
