@@ -1,5 +1,7 @@
 package grisbiweb.server.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +26,8 @@ public class XmlWriterTest {
     public void should_create_xml_string_party_work() {
         PartyXml partyXml = factory.manufacturePojo(PartyXml.class);
         String partyString = xmlWriter.createXmlStringParty(partyXml);
+        assertThat(partyString).isEqualTo("    <Party Nb=\"" + partyXml.getNb()
+                + "\" Na=\"" + partyXml.getNa() + "\" Txt=\"" + partyXml.getTxt() + "\" Search=\""
+                + partyXml.getSearch() + "\" />");
     }
 }
