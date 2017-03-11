@@ -7,6 +7,7 @@ import java.util.Date;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import grisbiweb.server.dto.TransactionCreationDto;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.utils.DateUtils;
 import grisbiweb.server.utils.NumberUtils;
@@ -111,4 +112,11 @@ public interface TransactionMapper {
         }
         return date;
     }
+
+    /**
+     * TODO
+     * @param transactionCreation
+     * @return
+     */
+    Transaction TransactionCreationDtoToTransaction(TransactionCreationDto transactionCreation);
 }

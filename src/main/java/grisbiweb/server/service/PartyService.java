@@ -25,4 +25,9 @@ public class PartyService {
 
         return null;
     }
+
+    public void deleteParty(Long partyId) {
+        
+        
+    }
 }

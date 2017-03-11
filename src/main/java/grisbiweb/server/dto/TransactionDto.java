@@ -7,14 +7,10 @@ import java.util.List;
 import java.util.Locale;
 
 import io.swagger.annotations.ApiModel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 @ApiModel
-@Getter
-@Setter
-@ToString
+@Data
 public class TransactionDto {
 
     private Long id;

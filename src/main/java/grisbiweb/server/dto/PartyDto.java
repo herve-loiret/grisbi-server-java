@@ -2,12 +2,10 @@ package grisbiweb.server.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @ApiModel
-@Getter
-@Setter
+@Data
 public class PartyDto {
 
     @ApiModelProperty(value = "id of the party", required = false)

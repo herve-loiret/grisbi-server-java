@@ -1,11 +1,9 @@
-package grisbiweb.server.controller;
+package grisbiweb.server.controller.it;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,34 +16,30 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import grisbiweb.server.config.WebMvcConfiguration;
+import grisbiweb.server.controller.CurrencyController;
 import lombok.SneakyThrows;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PartyController.class)
+@WebMvcTest(CurrencyController.class)
 @Import({ WebMvcConfiguration.class })
-public class PartyControllerTest {
+public class CategoryControllerITest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     @SneakyThrows
-    public void should_return_list_of_parties() {
-        mockMvc.perform(get("/parties")) //
+    public void should_return_list_of_categories() {
+
+        mockMvc.perform(get("/categories")) //
                 .andExpect(status().isOk()) //
-                .andExpect(jsonPath("$", hasSize(26)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].description", isEmptyOrNullString()))
-                .andExpect(jsonPath("$[0].name", is("Huguette Lefacteur")));
+                .andExpect(jsonPath("$", hasSize(29))) //
+                .andExpect(jsonPath("$[0].idCategory", is(33))) //
+                .andExpect(jsonPath("$[0].idSubCategory", isEmptyOrNullString())) //
+                .andExpect(jsonPath("$[0].nameCategory", is("Débit CB DD")))//
+                .andExpect(jsonPath("$[0].nameSubCategory", isEmptyOrNullString()))//
+                .andExpect(jsonPath("$[0].completeId", is("33")))//
+                .andExpect(jsonPath("$[0].completeName", is("Débit CB DD")));
     }
 
-    @Test
-    @SneakyThrows
-    public void should_create_a_party() {
-        mockMvc.perform(post("/parties")) //
-                .andExpect(status().isOk()) //
-                .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.description", notNullValue()))
-                .andExpect(jsonPath("$.name", notNullValue()));
-    }
 }

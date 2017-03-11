@@ -1,4 +1,4 @@
-package grisbiweb.server.controller;
+package grisbiweb.server.controller.it;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
@@ -15,11 +15,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import grisbiweb.server.config.WebMvcConfiguration;
+import grisbiweb.server.controller.TransactionController;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TransactionController.class)
 @Import({ WebMvcConfiguration.class })
-public class TransactionControllerTest {
+public class TransactionControllerITest {
 
     @Autowired
     private MockMvc mockMvc;

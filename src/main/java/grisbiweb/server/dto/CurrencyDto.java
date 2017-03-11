@@ -1,12 +1,10 @@
 package grisbiweb.server.dto;
 
 import io.swagger.annotations.ApiModel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @ApiModel
-@Getter
-@Setter
+@Data
 public class CurrencyDto {
 
     private Long id;

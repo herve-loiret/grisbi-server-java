@@ -45,17 +45,17 @@ public class TransactionMapper {
      * permet de récuperer les transaction déjà mappé par leur id permet de
      * rajouter les transaction enfantes aux parents
      */
-    private static Map<String, TransactionDto> transactionById = null;
+    private static Map<String, TransactionDto> transactionById;
 
     /**
      * permet de calculer le solde
      */
-    private static BigDecimal cptTransactionAll = null;
+    private static BigDecimal cptTransactionAll;
 
     /**
      * la liste des transactions
      */
-    private static List<TransactionDto> transactionUIs = null;
+    private static List<TransactionDto> transactionUIs;
 
     private static void mapAmount(Transaction transaction, TransactionDto transactionUI) {
         BigDecimal amount = transaction.getAmount();
@@ -152,8 +152,8 @@ public class TransactionMapper {
         Date date;
         try {
             date = DateUtils.getFrenchDateFormat().parse(transactionCreationDto.getDate());
-        } catch (ParseException | NullPointerException e) {
-            throw new TransactionRequestNotValidException("date");
+        } catch (ParseException e) {
+            throw new TransactionRequestNotValidException("date", e);
         }
 
         Transaction transaction = new Transaction();
@@ -162,11 +162,11 @@ public class TransactionMapper {
         String partyId = transactionCreationDto.getPartyId();
 
         BigDecimal amount = null;
-        if (transactionCreationDto.getDebit() != null) {
+        if (transactionCreationDto.getDebit() == null) {
+            amount = NumberUtils.parseNumber(transactionCreationDto.getCredit());
+        } else {
             amount = NumberUtils.parseNumber(transactionCreationDto.getDebit());
             amount = amount.negate();
-        } else {
-            amount = NumberUtils.parseNumber(transactionCreationDto.getCredit());
         }
 
         String accountId = transactionCreationDto.getAccountId();

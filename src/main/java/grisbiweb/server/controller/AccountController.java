@@ -37,8 +37,8 @@ public class AccountController {
      *
      * @return @
      */
-    @RequestMapping(value = "/{accountNumber}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AccountDto> deleteAccount(@PathVariable("accountNumber") String accountId) {
+    @RequestMapping(value = "/{accountId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<AccountDto> deleteAccount(@PathVariable("accountId") String accountId) {
         throw new NotImplementedException();
     }
 

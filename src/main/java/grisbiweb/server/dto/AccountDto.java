@@ -3,12 +3,10 @@ package grisbiweb.server.dto;
 import grisbiweb.server.model.Account.AccountType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @ApiModel
-@Getter
-@Setter
+@Data
 public class AccountDto {
 
 	@ApiModelProperty(value = "id of the account")

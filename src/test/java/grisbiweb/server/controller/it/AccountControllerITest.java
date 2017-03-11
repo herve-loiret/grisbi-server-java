@@ -1,4 +1,4 @@
-package grisbiweb.server.controller;
+package grisbiweb.server.controller.it;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -19,12 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import grisbiweb.server.config.WebMvcConfiguration;
+import grisbiweb.server.controller.AccountController;
 import lombok.SneakyThrows;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AccountController.class)
 @Import({ WebMvcConfiguration.class })
-public class AccountControllerTest {
+public class AccountControllerITest {
 
     @Autowired
     private MockMvc mockMvc;

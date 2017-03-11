@@ -94,6 +94,13 @@ public class AccountService {
         }
         return balanceTotal;
     }
+    
+    public boolean deleteAccount(String accountId){
+        boolean success = true;
+        
+        return success;
+        
+    }
 
     public BigDecimal getInitialBalance(String accountNumber) {
         Account account = this.getAccountById(accountNumber);

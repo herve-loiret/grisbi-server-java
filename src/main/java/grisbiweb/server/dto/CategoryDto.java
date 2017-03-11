@@ -3,12 +3,10 @@ package grisbiweb.server.dto;
 import org.apache.commons.lang3.StringUtils;
 
 import io.swagger.annotations.ApiModel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @ApiModel
-@Getter
-@Setter
+@Data
 public class CategoryDto {
 
     private Long idCategory;
