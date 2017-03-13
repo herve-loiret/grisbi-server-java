@@ -1,0 +1,1 @@
+    <Bank Nb="${nb}" Na="${na}" Co="${co}" BIC="${bic}" Adr="${adr}" Tel="${tel}" Mail="${mail}" Web="${web}" Nac="${nac}" Faxc="${faxc}" Telc="${telc}" Mailc="${mailc}" Rem="${rem}" />

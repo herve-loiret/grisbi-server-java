@@ -23,7 +23,11 @@ import freemarker.template.TemplateExceptionHandler;
 import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.service.GrisbiFileService;
+import grisbiweb.server.xml.model.AccountXml;
+import grisbiweb.server.xml.model.BankXml;
+import grisbiweb.server.xml.model.CategoryXml;
 import grisbiweb.server.xml.model.PartyXml;
+import grisbiweb.server.xml.model.SubCategoryXml;
 import grisbiweb.server.xml.model.TransactionXml;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -51,52 +55,52 @@ public class XmlWriter implements InitializingBean {
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
     }
 
-    private StringBuilder createValue(String value) {
-        return new StringBuilder("\"")
-                .append(value)
-                .append("\"");
-    }
-
     @SneakyThrows
-    public String createXmlStringParty(PartyXml partyXml) {
+    public String createXmlStringFrom(PartyXml partyXml) {
         Template template = configuration.getTemplate("party.ftl");
         StringWriter stringWriter = new StringWriter();
         template.process(partyXml, stringWriter);
         return stringWriter.toString();
     }
 
-    private String createXmlElement(TransactionXml transactionXml) {
-        StringBuilder element = new StringBuilder("	<Transaction")
-                .append(" Ac=").append(createValue(transactionXml.getAc()))
-                .append(" Nb=").append(createValue(transactionXml.getNb()))
-                .append(" Id=").append(createValue(transactionXml.getId()))
-                .append(" Dt=").append(createValue(transactionXml.getDt()))
-                .append(" Dv=").append(createValue(transactionXml.getDv()))
-                .append(" Cu=").append(createValue(transactionXml.getCu()))
-                .append(" Am=").append(createValue(transactionXml.getAm()))
-                .append(" Exb=").append(createValue(transactionXml.getExb()))
-                .append(" Exr=").append(createValue(transactionXml.getExr()))
-                .append(" Exf=").append(createValue(transactionXml.getExf()))
-                .append(" Pa=").append(createValue(transactionXml.getPa()))
-                .append(" Ca=").append(createValue(transactionXml.getCa()))
-                .append(" Sca=").append(createValue(transactionXml.getSca()))
-                .append(" Br=").append(createValue(transactionXml.getBr()))
-                .append(" No=").append(createValue(transactionXml.getNo()))
-                .append(" Pn=").append(createValue(transactionXml.getPn()))
-                .append(" Pc=").append(createValue(transactionXml.getPc()))
-                .append(" Ma=").append(createValue(transactionXml.getMa()))
-                .append(" Ar=").append(createValue(transactionXml.getAr()))
-                .append(" Au=").append(createValue(transactionXml.getAu()))
-                .append(" Re=").append(createValue(transactionXml.getRe()))
-                .append(" Fi=").append(createValue(transactionXml.getFi()))
-                .append(" Bu=").append(createValue(transactionXml.getBu()))
-                .append(" Sbu=").append(createValue(transactionXml.getSbu()))
-                .append(" Vo=").append(createValue(transactionXml.getVo()))
-                .append(" Ba=").append(createValue(transactionXml.getBa()))
-                .append(" Trt=").append(createValue(transactionXml.getTrt()))
-                .append(" Mo=").append(createValue(transactionXml.getMo()))
-                .append("/>");
-        return element.toString();
+    @SneakyThrows
+    public String createXmlStringFrom(TransactionXml transactionXml) {
+        Template template = configuration.getTemplate("transaction.ftl");
+        StringWriter stringWriter = new StringWriter();
+        template.process(transactionXml, stringWriter);
+        return stringWriter.toString();
+    }
+
+    @SneakyThrows
+    public String createXmlStringFrom(CategoryXml categoryXml) {
+        Template template = configuration.getTemplate("category.ftl");
+        StringWriter stringWriter = new StringWriter();
+        template.process(categoryXml, stringWriter);
+        return stringWriter.toString();
+    }
+
+    @SneakyThrows
+    public String createXmlStringFrom(SubCategoryXml subCategoryXml) {
+        Template template = configuration.getTemplate("subcategory.ftl");
+        StringWriter stringWriter = new StringWriter();
+        template.process(subCategoryXml, stringWriter);
+        return stringWriter.toString();
+    }
+
+    @SneakyThrows
+    public String createXmlStringFrom(AccountXml accountXml) {
+        Template template = configuration.getTemplate("account.ftl");
+        StringWriter stringWriter = new StringWriter();
+        template.process(accountXml, stringWriter);
+        return stringWriter.toString();
+    }
+
+    @SneakyThrows
+    public String createXmlStringFrom(BankXml bankXml) {
+        Template template = configuration.getTemplate("bank.ftl");
+        StringWriter stringWriter = new StringWriter();
+        template.process(bankXml, stringWriter);
+        return stringWriter.toString();
     }
 
     private int findLineOfLastTransaction() throws FileNotFoundException, IOException {
@@ -156,7 +160,7 @@ public class XmlWriter implements InitializingBean {
     public void writeTransaction(Transaction transaction) {
 
         TransactionXml transactionXml = transactionMapper.transactionToTransactionXml(transaction);
-        String line = this.createXmlElement(transactionXml);
+        String line = this.createXmlStringFrom(transactionXml);
 
         try {
             int lineNumber = findLineOfLastTransaction();
