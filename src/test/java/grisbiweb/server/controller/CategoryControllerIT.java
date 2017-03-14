@@ -1,4 +1,4 @@
-package grisbiweb.server.controller.it;
+package grisbiweb.server.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -16,26 +16,30 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import grisbiweb.server.config.WebMvcConfiguration;
-import grisbiweb.server.controller.PartyController;
+import grisbiweb.server.controller.CurrencyController;
 import lombok.SneakyThrows;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PartyController.class)
+@WebMvcTest(CurrencyController.class)
 @Import({ WebMvcConfiguration.class })
-public class PartyControllerITest {
+public class CategoryControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     @SneakyThrows
-    public void should_return_list_of_parties() {
-        mockMvc.perform(get("/parties")) //
+    public void should_return_list_of_categories() {
+
+        mockMvc.perform(get("/categories")) //
                 .andExpect(status().isOk()) //
-                .andExpect(jsonPath("$", hasSize(26)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].description", isEmptyOrNullString()))
-                .andExpect(jsonPath("$[0].name", is("Huguette Lefacteur")));
+                .andExpect(jsonPath("$", hasSize(29))) //
+                .andExpect(jsonPath("$[0].idCategory", is(33))) //
+                .andExpect(jsonPath("$[0].idSubCategory", isEmptyOrNullString())) //
+                .andExpect(jsonPath("$[0].nameCategory", is("Débit CB DD")))//
+                .andExpect(jsonPath("$[0].nameSubCategory", isEmptyOrNullString()))//
+                .andExpect(jsonPath("$[0].completeId", is("33")))//
+                .andExpect(jsonPath("$[0].completeName", is("Débit CB DD")));
     }
 
 }

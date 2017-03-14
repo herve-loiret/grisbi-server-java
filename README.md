@@ -59,3 +59,8 @@ For now, methods implemented are :
 - when you run the spring boot application, you can access swagger with theses urls :
   - http://localhost:8080/grisbiweb/swagger/index.html
   - http://localhost:8080/grisbiweb/v2/api-docs
+
+## Code tips
+- use mvn test to run junit tests
+- use mvn verify to run integration test
+- use mvn spring-boot:run to run the application

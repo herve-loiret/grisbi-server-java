@@ -1,4 +1,4 @@
-package grisbiweb.server.controller.it;
+package grisbiweb.server.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
@@ -20,7 +20,7 @@ import grisbiweb.server.controller.TransactionController;
 @RunWith(SpringRunner.class)
 @WebMvcTest(TransactionController.class)
 @Import({ WebMvcConfiguration.class })
-public class TransactionControllerITest {
+public class TransactionControllerIT {
 
     @Autowired
     private MockMvc mockMvc;

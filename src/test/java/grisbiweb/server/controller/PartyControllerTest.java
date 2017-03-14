@@ -35,7 +35,7 @@ import lombok.SneakyThrows;
 @RunWith(SpringRunner.class)
 @WebMvcTest(PartyController.class)
 @Import({ WebMvcConfiguration.class })
-public class PartyControllerUTest {
+public class PartyControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
