@@ -83,7 +83,7 @@ public class XmlWriterTest {
     @Test
     public void should_create_xml_string_bank_work() {
         BankXml xml = factory.manufacturePojo(BankXml.class);
-        xml.setBIC("sdfsdf");
+        xml.setBIC(factory.manufacturePojo(String.class));
         
         String string = xmlWriter.createXmlStringFrom(xml);
 
