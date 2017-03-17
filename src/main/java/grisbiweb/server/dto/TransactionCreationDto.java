@@ -16,7 +16,7 @@ public class TransactionCreationDto {
     @ApiModelProperty(value = "id of the account", required = true)
     private String accountId;
 
-    @ApiModelProperty(value = "date of the transaction", required = true)
+    @ApiModelProperty(value = "date of the transaction, format ISO DATE", required = true)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
