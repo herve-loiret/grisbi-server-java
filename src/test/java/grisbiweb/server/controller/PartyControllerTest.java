@@ -19,14 +19,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import grisbiweb.server.config.WebMvcConfiguration;
 import grisbiweb.server.dto.PartyDto;
 import grisbiweb.server.service.PartyService;
 import grisbiweb.server.utils.TestHelper;
@@ -34,7 +32,6 @@ import lombok.SneakyThrows;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(PartyController.class)
-@Import({ WebMvcConfiguration.class })
 public class PartyControllerTest {
 
     @Autowired
@@ -50,7 +47,7 @@ public class PartyControllerTest {
         List<PartyDto> partyDtoInputs = TestHelper.FACTORY.manufacturePojo(ArrayList.class, PartyDto.class);
         when(partyService.getParties()).thenReturn(partyDtoInputs);
 
-        String result = mockMvc.perform(get("/parties")) //
+        String result = mockMvc.perform(get("/parties"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 

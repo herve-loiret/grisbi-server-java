@@ -1,5 +1,11 @@
 package grisbiweb.server.dto;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import grisbiweb.server.utils.DateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +18,8 @@ public class TransactionCreationDto {
     private String accountId;
 
     @ApiModelProperty(value = "date of the transaction", required = true)
-    private String date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.FRENCH_DATE_PATTERN)
+    private LocalDate date;
 
     @ApiModelProperty(value = "category id")
     private String categoryId;
@@ -23,10 +30,7 @@ public class TransactionCreationDto {
     @ApiModelProperty(value = "party id")
     private String partyId;
 
-    @ApiModelProperty(value = "credit - either credit or debit are mandatory")
-    private String debit;
-
-    @ApiModelProperty(value = "debit - either credit or debit are mandatory")
-    private String credit;
+    @ApiModelProperty(value = "amount of the transaction")
+    private BigDecimal amount;
 
 }
