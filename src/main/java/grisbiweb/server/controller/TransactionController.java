@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping(path = "/transactions", produces= MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(value = "/transactions", description = "Operations about transactions")
 public class TransactionController {
 
@@ -40,7 +41,7 @@ public class TransactionController {
     @ApiResponses(value = { @ApiResponse(code = 400, message = "the transaction parameter is not valid"),
             @ApiResponse(code = 404, message = "AccountOld not found") })
     @ApiOperation(value = "Create a new transaction in the grisbi data file")
-    public void createTransaction(TransactionCreationDto transactionCreationDto) {
+    public void createTransaction(@RequestBody TransactionCreationDto transactionCreationDto) {
         Transaction transaction = transactionMapper.mapTransactionRequest(transactionCreationDto);
         transactionService.createTransaction(transaction);
     }

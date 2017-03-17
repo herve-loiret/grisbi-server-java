@@ -3,9 +3,8 @@ package grisbiweb.server.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import grisbiweb.server.utils.DateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,7 +17,7 @@ public class TransactionCreationDto {
     private String accountId;
 
     @ApiModelProperty(value = "date of the transaction", required = true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.FRENCH_DATE_PATTERN)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
     @ApiModelProperty(value = "category id")

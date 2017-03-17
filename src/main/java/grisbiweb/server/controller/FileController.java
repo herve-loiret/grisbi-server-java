@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.service.GrisbiFileService;
@@ -25,7 +25,7 @@ public class FileController {
     private GrisbiFileService grisbiFileService;
 
     @SneakyThrows
-    @RequestMapping(value = "download", method = RequestMethod.GET)
+    @GetMapping(value = "download")
     public void getDownload(HttpServletResponse response) {
 
         File file = grisbiFileService.getGrisbiFile();

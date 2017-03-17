@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.dto.AccountDto;
@@ -22,7 +25,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping(path = "/accounts")
+@RequestMapping(path = "/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(value = "/accounts")
 public class AccountController {
 
@@ -37,7 +40,7 @@ public class AccountController {
      *
      * @return @
      */
-    @RequestMapping(value = "/{accountId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{accountId}")
     public List<AccountDto> deleteAccount(@PathVariable("accountId") String accountId) {
         throw new NotImplementedException();
     }
@@ -47,7 +50,7 @@ public class AccountController {
      * 
      * @return @
      */
-    @RequestMapping(value = "/{accountId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{accountId}")
     @ApiOperation(value = "get account by id", response = AccountDto.class)
     @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
     public AccountDto getAccount(
@@ -60,7 +63,7 @@ public class AccountController {
      * 
      * @return @
      */
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ApiOperation(value = "get all accounts", response = AccountDto.class, responseContainer = "List")
     public List<AccountDto> getAccounts() {
         return accountMapper.accountToAccountDto(accountService.getOpenedAccounts());
@@ -71,7 +74,7 @@ public class AccountController {
      * 
      * @return @
      */
-    @RequestMapping(value = "/{accountId}/balance", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{accountId}/balance")
     @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
     @ApiOperation(value = "calculate the balance of this account", response = BigDecimal.class)
     public BigDecimal getBalanceByAccountId(
@@ -84,7 +87,7 @@ public class AccountController {
      * 
      * @return @
      */
-    @RequestMapping(value = "/{accountId}/balance/reconciled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{accountId}/balance/reconciled")
     @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
     @ApiOperation(value = "calculate the reconciled balance of this account", response = BigDecimal.class)
     public BigDecimal getBalanceReconciledByAccountId(
@@ -97,7 +100,7 @@ public class AccountController {
      * 
      * @return @
      */
-    @RequestMapping(value = "/balance/{typeAccountStr}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/balance/{typeAccountStr}")
     @ApiResponses(value = { @ApiResponse(code = 404, message = "Type account not found") })
     @ApiOperation(value = "calculate total balance of this type account", response = BigDecimal.class)
     public BigDecimal getBalanceTotalByAccountType(
@@ -111,7 +114,7 @@ public class AccountController {
      * 
      * @return @
      */
-    @RequestMapping(value = "/balance/reconciled/{typeAccountStr}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/balance/reconciled/{typeAccountStr}")
     @ApiResponses(value = { @ApiResponse(code = 404, message = "Type account not found") })
     @ApiOperation(value = "calculate total reconciled balance of this type account", response = BigDecimal.class)
     public BigDecimal getBalanceTotalReconciledByAccountType(
@@ -125,7 +128,7 @@ public class AccountController {
      *
      * @return @
      */
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public List<AccountDto> postAccount() {
         throw new NotImplementedException();
     }
@@ -135,7 +138,7 @@ public class AccountController {
      *
      * @return @
      */
-    @RequestMapping(value = "/{accountId}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{accountId}")
     public List<AccountDto> putAccount(@PathVariable("accountId") String accountId) {
         throw new NotImplementedException();
     }
