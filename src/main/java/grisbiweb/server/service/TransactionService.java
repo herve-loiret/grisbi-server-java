@@ -98,4 +98,9 @@ public class TransactionService {
         return transactionsAccount;
     }
 
+    public long getTransactionTotal(String accountId) {
+        return this.getTransactions().stream().filter(transaction -> accountId.equals(transaction.getAccountId()))
+                .count();
+    }
+
 }

@@ -40,6 +40,23 @@ public class TransactionControllerTest {
 
     @Test
     @SneakyThrows
+    public void should_get_transactions_by_account_id_map_request() {
+//        TransactionCreationDto transactionCreationDto = TestHelper.manufacture(TransactionCreationDto.class);
+//        String accountId = TestHelper.generateString();
+//        when(transactionService.getTransactionsOrderedByAccountId(accountId)).thenReturn(listTransactionDto);
+//
+//        MvcResult mvcResult = mockMvc.perform(get("/transactions/{accountId}", accountId))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        ListTransactionDto listTransactionDto = TestHelper.MAPPER
+//                .readValue(mvcResult.getResponse().getContentAsString(), ListTransactionDto.class);
+//
+//        verify(transactionService, times(1)).getTransactionsOrderedByAccountId(accountId);
+    }
+
+    @Test
+    @SneakyThrows
     public void should_post_transactions_map_request() {
         TransactionCreationDto transactionCreationDto = TestHelper.manufacture(TransactionCreationDto.class);
         Transaction transaction = transactionMapper.mapTransactionRequest(transactionCreationDto);

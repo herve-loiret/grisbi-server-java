@@ -6,11 +6,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 @ApiModel
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionDto {
 
     private Long id;

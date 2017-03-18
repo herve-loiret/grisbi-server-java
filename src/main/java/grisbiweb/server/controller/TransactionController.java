@@ -41,7 +41,7 @@ public class TransactionController {
     @ApiResponses(value = { @ApiResponse(code = 400, message = "the transaction parameter is not valid"),
             @ApiResponse(code = 404, message = "Account not found") })
     @ApiOperation(value = "Create a new transaction in the grisbi data file")
-    public void createTransaction(@RequestBody TransactionCreationDto transactionCreationDto) {
+    public void postTransaction(@RequestBody TransactionCreationDto transactionCreationDto) {
         Transaction transaction = transactionMapper.mapTransactionRequest(transactionCreationDto);
         transactionService.createTransaction(transaction);
     }
@@ -52,7 +52,9 @@ public class TransactionController {
             @ApiParam(value = "account id") @PathVariable("accountId") String accountId) {
         List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountId);
         List<TransactionDto> transactionUis = transactionMapper.mapTransactions(transactions);
-        return new ListTransactionDto(transactionUis);
+        ListTransactionDto listTransactionDto = new ListTransactionDto(transactionUis);
+        listTransactionDto.setTotalItem(transactions.size());
+        return listTransactionDto;
     }
 
     /**
@@ -65,13 +67,22 @@ public class TransactionController {
     @GetMapping(value = "/{accountNumber}/page/{page}/perpage/{perpage}")
     @ApiOperation(value = "get all transaction from an account, with pagination", response = ListTransactionDto.class)
     public ListTransactionDto getTransactionsPaginateByAccountNumber(
-            @ApiParam(value = "account id") @PathVariable("accountNumber") String accountNumber, //
+            @ApiParam(value = "account id") @PathVariable("accountNumber") String accountId, //
             @ApiParam(value = "page number") @PathVariable("page") Integer page, //
-            @ApiParam(value = "item per page") @PathVariable("perpage") Integer perpage) {
-        List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountNumber, page,
-                perpage);
+            @ApiParam(value = "item per page") @PathVariable("perpage") Integer perPage) {
 
-        List<TransactionDto> transactionsUI = transactionMapper.mapTransactions(transactions);
-        return new ListTransactionDto(transactionsUI);
+        List<Transaction> transactions = transactionService.getTransactionsOrderedByAccountId(accountId);
+        int from = (page - 1) * perPage;
+        if (from > transactions.size()) {
+            throw new RuntimeException("This page doesn't exist !");
+        }
+        int to = from + perPage;
+        if (to > transactions.size()) {
+            to = transactions.size();
+        }
+        List<TransactionDto> transactionUis = transactionMapper.mapTransactions(transactions);
+        ListTransactionDto listTransactionDto = new ListTransactionDto(transactionUis.subList(from, to));
+        listTransactionDto.setTotalItem(transactions.size());
+        return listTransactionDto;
     }
 }

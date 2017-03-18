@@ -5,21 +5,18 @@ import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @ApiModel
-@EqualsAndHashCode
+@Data
+@NoArgsConstructor
 public class ListTransactionDto {
 
-    @Getter
     private List<TransactionDto> transactionsResponse = new ArrayList<>();
 
-    @Getter
-    @Setter
     @ApiModelProperty(value = "total item (for pagination purpose", required = true)
-    private int totalItem;
+    private long totalItem;
 
     public ListTransactionDto(List<TransactionDto> transactionsResponse) {
         this.transactionsResponse = transactionsResponse;

@@ -23,6 +23,10 @@ public final class TestHelper {
         return FACTORY.manufacturePojo(pojo);
     }
 
+    public static String generateString() {
+        return FACTORY.manufacturePojo(String.class);
+    }
+
     @SneakyThrows
     public static String serialize(Object object) {
         return MAPPER.writeValueAsString(object);
