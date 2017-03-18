@@ -95,6 +95,32 @@
 
     <build>
         <plugins>
+            <!-- tag::wsdl -->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.12.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <schemaLanguage>WSDL</schemaLanguage>
+                    <schemaDirectory>src/main/resources</schemaDirectory>
+                    <enableIntrospection>true</enableIntrospection>
+                    <bindingIncludes>
+                        <bindingInclude>grisbi.xjb</bindingInclude>
+                    </bindingIncludes>
+                    <schemaIncludes>
+                        <schemaInclude>grisbi.xsd</schemaInclude>
+                    </schemaIncludes>
+                    <generatePackage>grisbiweb.server.xml.model</generatePackage>
+                </configuration>
+            </plugin>
+            <!-- end::wsdl -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -166,32 +192,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- tag::wsdl -->
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.12.3</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <schemaLanguage>WSDL</schemaLanguage>
-                    <schemaDirectory>src/main/resources</schemaDirectory>
-                    <enableIntrospection>true</enableIntrospection>
-                    <bindingIncludes>
-                        <bindingInclude>grisbi.xjb</bindingInclude>
-                    </bindingIncludes>
-                    <schemaIncludes>
-                        <schemaInclude>grisbi.xsd</schemaInclude>
-                    </schemaIncludes>
-                    <generatePackage>grisbiweb.server.xml.model</generatePackage>
-                </configuration>
-            </plugin>
-            <!-- end::wsdl -->
         </plugins>
     </build>
 

@@ -47,6 +47,7 @@ public class GrisbiXmlManager {
             grisbi = (GrisbiXml) unmarshaller.unmarshal(file);
         } catch (JAXBException e) {
             log.error("Error while accessing grisbi file", e);
+            throw new RuntimeException(e);
         }
     }
 

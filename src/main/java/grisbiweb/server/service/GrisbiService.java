@@ -32,7 +32,7 @@ public class GrisbiService {
 
     public CurrencyXml getCurrencyById(String currencyId) {
         for (CurrencyXml currency : this.getCurrencies()) {
-            if (currency.getNb().equals(currencyId)) {
+            if (String.valueOf(currency.getNb()).equals(currencyId)) {
                 return currency;
             }
         }

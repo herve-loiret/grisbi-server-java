@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.grisbi.org" xmlns="http://www.grisbi.org" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
     <xs:simpleType name="switch">
-        <xs:restriction base="xs:integer">
+        <xs:restriction base="xs:string">
             <xs:enumeration value="0" />
             <xs:enumeration value="1" />
         </xs:restriction>
@@ -217,7 +217,7 @@
             <xs:attribute name="Fl" type="xs:float" use="required" />
             <xs:attribute name="Ico" type="xs:string" use="required" />
             <xs:attribute name="Na" type="xs:string" use="required" />
-            <xs:attribute name="Nb" type="xs:int" use="required" />
+            <xs:attribute name="Nb" type="xs:string" use="required" />
         </xs:complexType>
     </xs:element>
 
@@ -243,7 +243,7 @@
     <xs:element name="Party">
         <xs:complexType>
             <xs:attribute name="Na" type="xs:string" use="required" />
-            <xs:attribute name="Nb" type="xs:integer" use="required" />
+            <xs:attribute name="Nb" type="xs:string" use="required" />
             <xs:attribute name="Search" type="xs:string" use="required" />
             <xs:attribute name="Txt" type="xs:string" use="required" />
         </xs:complexType>
@@ -377,7 +377,7 @@
             <xs:attribute name="Mailc" type="xs:string" use="required" />
             <xs:attribute name="Na" type="xs:string" use="required" />
             <xs:attribute name="Nac" type="xs:string" use="required" />
-            <xs:attribute name="Nb" type="xs:int" use="required" />
+            <xs:attribute name="Nb" type="xs:string" use="required" />
             <xs:attribute name="Rem" type="xs:string" use="required" />
             <xs:attribute name="Tel" type="xs:string" use="required" />
             <xs:attribute name="Telc" type="xs:string" use="required" />

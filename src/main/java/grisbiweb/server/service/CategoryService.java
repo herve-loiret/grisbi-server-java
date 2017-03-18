@@ -34,16 +34,15 @@ public class CategoryService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        for (Object object : grisbiXmlManager.loadGrisbi().getGroupCategories()) {
-            if (object instanceof CategoryXml) {
-                Category categoryOld = categoryMapper.categoryXmlToCategory((CategoryXml) object);
-                this.categoryById.put(categoryOld.getId(), categoryOld);
-            } else {
-                SubCategory subCategoryOld = subCategoryMapper.subCategoryXmlToSubCategory((SubCategoryXml) object);
-                Category categoryOld = categoryById.get(subCategoryOld.getIdCategory());
-                Pair<Category, String> key = new ImmutablePair<>(categoryOld, subCategoryOld.getId());
-                this.subCategoriesByIdAndCategory.put(key, subCategoryOld);
-            }
+        for (CategoryXml categoryXml : grisbiXmlManager.loadGrisbi().getCategory()) {
+            Category categoryOld = categoryMapper.categoryXmlToCategory(categoryXml);
+            this.categoryById.put(categoryOld.getId(), categoryOld);
+        }
+        for (SubCategoryXml subCategoryXml : grisbiXmlManager.loadGrisbi().getSubCategory()) {
+            SubCategory subCategoryOld = subCategoryMapper.subCategoryXmlToSubCategory(subCategoryXml);
+            Category categoryOld = categoryById.get(subCategoryOld.getIdCategory());
+            Pair<Category, String> key = new ImmutablePair<>(categoryOld, subCategoryOld.getId());
+            this.subCategoriesByIdAndCategory.put(key, subCategoryOld);
         }
     }
 

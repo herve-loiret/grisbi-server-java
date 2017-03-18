@@ -39,7 +39,7 @@ public class PartyMapperTest {
     public void should_mapper_map_partyxml_list() {
         List<PartyXml> partiesXml = new ArrayList<>();
         PartyXml partyXml = podam.manufacturePojo(PartyXml.class);
-        partyXml.setNb("1234");
+        partyXml.setNb("123");
         partiesXml.add(partyXml);
 
         List<Party> parties = mapper.partyXmlToParty(partiesXml);
