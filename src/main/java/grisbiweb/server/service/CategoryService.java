@@ -35,14 +35,14 @@ public class CategoryService implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         for (CategoryXml categoryXml : grisbiXmlManager.loadGrisbi().getCategory()) {
-            Category categoryOld = categoryMapper.categoryXmlToCategory(categoryXml);
-            this.categoryById.put(categoryOld.getId(), categoryOld);
+            Category category = categoryMapper.categoryXmlToCategory(categoryXml);
+            this.categoryById.put(category.getId(), category);
         }
         for (SubCategoryXml subCategoryXml : grisbiXmlManager.loadGrisbi().getSubCategory()) {
-            SubCategory subCategoryOld = subCategoryMapper.subCategoryXmlToSubCategory(subCategoryXml);
-            Category categoryOld = categoryById.get(subCategoryOld.getIdCategory());
-            Pair<Category, String> key = new ImmutablePair<>(categoryOld, subCategoryOld.getId());
-            this.subCategoriesByIdAndCategory.put(key, subCategoryOld);
+            SubCategory subCategory = subCategoryMapper.subCategoryXmlToSubCategory(subCategoryXml);
+            Category category = categoryById.get(subCategory.getIdCategory());
+            Pair<Category, String> key = new ImmutablePair<>(category, subCategory.getId());
+            this.subCategoriesByIdAndCategory.put(key, subCategory);
         }
     }
 

@@ -39,7 +39,7 @@ public class TransactionController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = { @ApiResponse(code = 400, message = "the transaction parameter is not valid"),
-            @ApiResponse(code = 404, message = "AccountOld not found") })
+            @ApiResponse(code = 404, message = "Account not found") })
     @ApiOperation(value = "Create a new transaction in the grisbi data file")
     public void createTransaction(@RequestBody TransactionCreationDto transactionCreationDto) {
         Transaction transaction = transactionMapper.mapTransactionRequest(transactionCreationDto);

@@ -52,7 +52,7 @@ public class AccountController {
      */
     @GetMapping(value = "/{accountId}")
     @ApiOperation(value = "get account by id", response = AccountDto.class)
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
     public AccountDto getAccount(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
         return accountMapper.accountToAccountDto(accountService.getAccountById(accountId));
@@ -75,7 +75,7 @@ public class AccountController {
      * @return @
      */
     @GetMapping(value = "/{accountId}/balance")
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
     @ApiOperation(value = "calculate the balance of this account", response = BigDecimal.class)
     public BigDecimal getBalanceByAccountId(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
@@ -88,7 +88,7 @@ public class AccountController {
      * @return @
      */
     @GetMapping(value = "/{accountId}/balance/reconciled")
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "AccountOld not found") })
+    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
     @ApiOperation(value = "calculate the reconciled balance of this account", response = BigDecimal.class)
     public BigDecimal getBalanceReconciledByAccountId(
             @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
