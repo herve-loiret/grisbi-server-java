@@ -165,7 +165,7 @@
     <xs:element name="Account">
         <xs:complexType>
             <xs:attribute name="Ascending_sort" type="xs:NMTOKEN" use="required" />
-            <xs:attribute name="Bank" type="xs:int" use="required" />
+            <xs:attribute name="Bank" type="xs:string" use="required" />
             <xs:attribute name="Bank_account_IBAN" type="xs:string" use="required" />
             <xs:attribute name="Bank_account_number" type="xs:string" use="required" />
             <xs:attribute name="Bank_branch_code" type="xs:string" use="required" />
