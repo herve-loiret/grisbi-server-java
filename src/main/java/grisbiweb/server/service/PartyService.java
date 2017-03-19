@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import grisbiweb.server.dto.PartyDto;
 import grisbiweb.server.mapper.PartyMapper;
+import grisbiweb.server.model.Party;
+import grisbiweb.server.xml.GrisbiXmlRepository;
 
 @Service
 public class PartyService {
@@ -17,8 +19,23 @@ public class PartyService {
     @Autowired
     private PartyMapper partyMapper;
 
-    public List<PartyDto> getParties() {
-        return partyMapper.partyToPartyDto(grisbiService.getParties());
+    @Autowired
+    private GrisbiXmlRepository grisbiXmlRepository;
+
+    public List<Party> getParties() {
+        return grisbiXmlRepository.getParties();
+    }
+    
+    public Party getPartyById(String id) {
+        if (id == null) {
+            return null;
+        }
+        for (Party party : grisbiXmlRepository.getParties()) {
+            if (id.equals(party.getId())) {
+                return party;
+            }
+        }
+        return null;
     }
 
     public PartyDto createParty(PartyDto partyDto) {
@@ -27,7 +44,6 @@ public class PartyService {
     }
 
     public void deleteParty(Long partyId) {
-        
-        
+
     }
 }

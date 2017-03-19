@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.dto.PartyDto;
+import grisbiweb.server.mapper.PartyMapper;
 import grisbiweb.server.service.PartyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,10 +26,13 @@ public class PartyController {
     @Autowired
     private PartyService partyService;
 
+    @Autowired
+    private PartyMapper partyMapper;
+
     @GetMapping
     @ApiOperation(value = "get all parties", response = PartyDto.class, responseContainer = "List")
     public List<PartyDto> getParties() {
-        return partyService.getParties();
+        return partyMapper.partyToPartyDto(partyService.getParties());
     }
 
     @PostMapping

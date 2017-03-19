@@ -20,6 +20,7 @@ import grisbiweb.server.model.Transaction;
 import grisbiweb.server.service.AccountService;
 import grisbiweb.server.service.CategoryService;
 import grisbiweb.server.service.GrisbiService;
+import grisbiweb.server.service.PartyService;
 import grisbiweb.server.service.TransactionService;
 
 @Service
@@ -36,6 +37,9 @@ public class TransactionMapper {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private PartyService partyService;
 
     /**
      * permet de récuperer les transaction déjà mappé par leur id permet de
@@ -65,7 +69,7 @@ public class TransactionMapper {
     private void mapParty(Transaction transaction, TransactionDto transactionUI) {
         String partyId = transaction.getPartyId();
         if (partyId != null) {
-            Party party = grisbiService.getPartyById(partyId);
+            Party party = partyService.getPartyById(partyId);
             if (party != null) {
                 transactionUI.setParty(party.getName());
             }

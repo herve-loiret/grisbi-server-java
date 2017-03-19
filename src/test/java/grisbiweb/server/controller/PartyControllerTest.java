@@ -26,6 +26,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import grisbiweb.server.dto.PartyDto;
+import grisbiweb.server.mapper.PartyMapper;
+import grisbiweb.server.model.Party;
 import grisbiweb.server.service.PartyService;
 import grisbiweb.server.utils.TestHelper;
 import lombok.SneakyThrows;
@@ -40,12 +42,17 @@ public class PartyControllerTest {
     @MockBean
     private PartyService partyService;
 
+    @Autowired
+    private PartyMapper partyMapper;
+
     @Test
     @SneakyThrows
     @SuppressWarnings("unchecked")
     public void should_return_list_of_parties() {
-        List<PartyDto> partyDtoInputs = TestHelper.FACTORY.manufacturePojo(ArrayList.class, PartyDto.class);
-        when(partyService.getParties()).thenReturn(partyDtoInputs);
+        List<Party> parties = TestHelper.FACTORY.manufacturePojo(ArrayList.class, Party.class);
+        parties.stream().forEach(p -> p.setId(String.valueOf(TestHelper.manufacture(Long.class))));
+        List<PartyDto> partyDtoInputs = partyMapper.partyToPartyDto(parties);
+        when(partyService.getParties()).thenReturn(parties);
 
         String result = mockMvc.perform(get("/parties"))
                 .andExpect(status().isOk())
@@ -55,7 +62,7 @@ public class PartyControllerTest {
                 new TypeReference<List<PartyDto>>() {
                 });
 
-        assertThat(partyDtoInputs.size()).isEqualTo(partyDtoOutputs.size());
+        assertThat(parties.size()).isEqualTo(partyDtoOutputs.size());
         partyDtoInputs.stream().forEach(partyInput -> assertThat(partyDtoOutputs.contains(partyInput)).isTrue());
     }
 
