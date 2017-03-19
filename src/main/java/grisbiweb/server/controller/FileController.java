@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import grisbiweb.server.service.GrisbiFileService;
+import grisbiweb.server.xml.GrisbiXmlFileLocator;
 import io.swagger.annotations.Api;
 import lombok.SneakyThrows;
 
@@ -22,13 +22,13 @@ import lombok.SneakyThrows;
 public class FileController {
 
     @Autowired
-    private GrisbiFileService grisbiFileService;
+    private GrisbiXmlFileLocator grisbiXmlFileLocator;
 
     @SneakyThrows
     @GetMapping(value = "download")
     public void getDownload(HttpServletResponse response) {
 
-        File file = grisbiFileService.getGrisbiFile();
+        File file = grisbiXmlFileLocator.getGrisbiFile();
         // Get your file stream from wherever.
         InputStream myStream = new FileInputStream(file);
 

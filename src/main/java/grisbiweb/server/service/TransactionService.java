@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
-import grisbiweb.server.xml.GrisbiXmlManager;
+import grisbiweb.server.xml.GrisbiXmlLoader;
 import grisbiweb.server.xml.XmlWriter;
 import grisbiweb.server.xml.model.TransactionXml;
 
@@ -17,7 +17,7 @@ import grisbiweb.server.xml.model.TransactionXml;
 public class TransactionService {
 
     @Autowired
-    private GrisbiXmlManager grisbiXmlManager;
+    private GrisbiXmlLoader grisbiXmlLoader;
 
     @Autowired
     private TransactionMapper transactionMapper;
@@ -45,7 +45,7 @@ public class TransactionService {
     }
 
     public Transaction getTransactionById(String idTransaction) {
-        for (TransactionXml oneTransaction : grisbiXmlManager.loadGrisbi().getTransaction()) {
+        for (TransactionXml oneTransaction : grisbiXmlLoader.loadGrisbi().getTransaction()) {
             Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
             if (transaction.getId().equals(idTransaction)) {
                 return transaction;
@@ -55,7 +55,7 @@ public class TransactionService {
     }
 
     private List<Transaction> getTransactions() {
-        List<TransactionXml> transactionsXml = grisbiXmlManager.loadGrisbi().getTransaction();
+        List<TransactionXml> transactionsXml = grisbiXmlLoader.loadGrisbi().getTransaction();
         List<Transaction> transactions = new ArrayList<>();
         for (TransactionXml transactionXml : transactionsXml) {
             transactions.add(transactionMapper.transactionXmlToTransaction(transactionXml));
@@ -64,10 +64,6 @@ public class TransactionService {
     }
 
     public List<Transaction> getTransactionsOrderedByAccountId(String accountId) {
-        return getTransactionsOrderedByAccountId(accountId, null, null);
-    }
-
-    public List<Transaction> getTransactionsOrderedByAccountId(String accountId, Integer page, Integer perPage) {
 
         List<Transaction> transactionsAccount = new ArrayList<>();
         List<Transaction> transactions = this.getTransactions();
@@ -80,20 +76,6 @@ public class TransactionService {
 
         Collections.sort(transactionsAccount,
                 (transaction1, transaction2) -> transaction1.getDate().compareTo(transaction2.getDate()));
-
-        // manage pagination
-        if (page != null && perPage != null) {
-            int from = (page - 1) * perPage;
-            if (from > transactionsAccount.size()) {
-                throw new RuntimeException("This page doesn't exist !");
-            }
-
-            int to = from + perPage;
-            if (to > transactionsAccount.size()) {
-                to = transactionsAccount.size();
-            }
-            transactionsAccount = transactionsAccount.subList(from, to);
-        }
 
         return transactionsAccount;
     }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import grisbiweb.server.mapper.PartyMapper;
 import grisbiweb.server.model.Party;
-import grisbiweb.server.xml.GrisbiXmlManager;
+import grisbiweb.server.xml.GrisbiXmlLoader;
 import grisbiweb.server.xml.model.CurrencyXml;
 import grisbiweb.server.xml.model.PartyXml;
 
@@ -15,7 +15,7 @@ import grisbiweb.server.xml.model.PartyXml;
 public class GrisbiService {
 
     @Autowired
-    private GrisbiXmlManager grisbiXmlManager;
+    private GrisbiXmlLoader grisbiXmlLoader;
 
     @Autowired
     private PartyMapper partyMapper;
@@ -26,7 +26,7 @@ public class GrisbiService {
      * @return
      */
     public List<CurrencyXml> getCurrencies() {
-        List<CurrencyXml> currencies = this.grisbiXmlManager.loadGrisbi().getCurrency();
+        List<CurrencyXml> currencies = this.grisbiXmlLoader.loadGrisbi().getCurrency();
         return currencies;
     }
 
@@ -40,14 +40,14 @@ public class GrisbiService {
     }
 
     public List<Party> getParties() {
-        return partyMapper.partyXmlToParty(this.grisbiXmlManager.loadGrisbi().getParty());
+        return partyMapper.partyXmlToParty(this.grisbiXmlLoader.loadGrisbi().getParty());
     }
 
     public Party getPartyById(String id) {
         if (id == null) {
             return null;
         }
-        for (PartyXml party : grisbiXmlManager.loadGrisbi().getParty()) {
+        for (PartyXml party : grisbiXmlLoader.loadGrisbi().getParty()) {
             if (id.equals(party.getNb())) {
                 return partyMapper.partyXmlToParty(party);
             }

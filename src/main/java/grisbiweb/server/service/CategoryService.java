@@ -13,7 +13,7 @@ import grisbiweb.server.mapper.CategoryMapper;
 import grisbiweb.server.mapper.SubCategoryMapper;
 import grisbiweb.server.model.Category;
 import grisbiweb.server.model.SubCategory;
-import grisbiweb.server.xml.GrisbiXmlManager;
+import grisbiweb.server.xml.GrisbiXmlLoader;
 import grisbiweb.server.xml.model.CategoryXml;
 import grisbiweb.server.xml.model.SubCategoryXml;
 
@@ -27,18 +27,18 @@ public class CategoryService implements InitializingBean {
     private SubCategoryMapper subCategoryMapper;
 
     @Autowired
-    private GrisbiXmlManager grisbiXmlManager;
+    private GrisbiXmlLoader grisbiXmlLoader;
 
     private Map<String, Category> categoryById = new HashMap<>();
     private Map<Pair<Category, String>, SubCategory> subCategoriesByIdAndCategory = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() {
-        for (CategoryXml categoryXml : grisbiXmlManager.loadGrisbi().getCategory()) {
+        for (CategoryXml categoryXml : grisbiXmlLoader.loadGrisbi().getCategory()) {
             Category category = categoryMapper.categoryXmlToCategory(categoryXml);
             this.categoryById.put(category.getId(), category);
         }
-        for (SubCategoryXml subCategoryXml : grisbiXmlManager.loadGrisbi().getSubCategory()) {
+        for (SubCategoryXml subCategoryXml : grisbiXmlLoader.loadGrisbi().getSubCategory()) {
             SubCategory subCategory = subCategoryMapper.subCategoryXmlToSubCategory(subCategoryXml);
             Category category = categoryById.get(subCategory.getIdCategory());
             Pair<Category, String> key = new ImmutablePair<>(category, subCategory.getId());

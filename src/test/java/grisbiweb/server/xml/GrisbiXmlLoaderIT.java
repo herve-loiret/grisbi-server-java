@@ -12,14 +12,14 @@ import grisbiweb.server.xml.model.GrisbiXml;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class GrisbiXmlManagerIT {
+public class GrisbiXmlLoaderIT {
     
     @Autowired
-    private GrisbiXmlManager grisbiXmlManager;
+    private GrisbiXmlLoader grisbiXmlLoader;
 
     @Test
     public void should_load_grisbi_unmarshal_the_file(){
-        GrisbiXml grisbiXml = grisbiXmlManager.loadGrisbi();
+        GrisbiXml grisbiXml = grisbiXmlLoader.loadGrisbi();
         
         assertThat(grisbiXml).isNotNull();
     }

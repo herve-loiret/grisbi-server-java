@@ -10,18 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import grisbiweb.server.exception.GrisbiFileException;
-import grisbiweb.server.service.GrisbiFileService;
 import grisbiweb.server.xml.model.GrisbiXml;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
-public class GrisbiXmlManager {
+public class GrisbiXmlLoader {
 
     private static final String BUSINESS_PACKAGE = "grisbiweb.server.xml.model";
 
     @Autowired
-    private GrisbiFileService grisbiFileService;
+    private GrisbiXmlFileLocator grisbiXmlFileLocator;
 
     private GrisbiXml grisbi;
 
@@ -31,7 +28,7 @@ public class GrisbiXmlManager {
         if (grisbi == null) {
             reload();
         } else {
-            File file = grisbiFileService.getGrisbiFile();
+            File file = grisbiXmlFileLocator.getGrisbiFile();
             if (lastModified < file.lastModified()) {
                 reload();
             }
@@ -43,7 +40,7 @@ public class GrisbiXmlManager {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(BUSINESS_PACKAGE);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            File file = grisbiFileService.getGrisbiFile();
+            File file = grisbiXmlFileLocator.getGrisbiFile();
             lastModified = file.lastModified();
             grisbi = (GrisbiXml) unmarshaller.unmarshal(file);
         } catch (JAXBException e) {

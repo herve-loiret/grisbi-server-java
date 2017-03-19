@@ -1,4 +1,4 @@
-package grisbiweb.server.service;
+package grisbiweb.server.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -15,18 +15,19 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import grisbiweb.server.config.GrisbiwebConfiguration;
+import grisbiweb.server.xml.GrisbiXmlFileLocator;
 import lombok.SneakyThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class GrisbiFileServiceTest {
+public class GrisbiXmlFileLocatorTest {
 
     @Mock
     private GrisbiwebConfiguration grisbiwebConfiguration;
 
     @Autowired
     @InjectMocks
-    private GrisbiFileService grisbiFileService;
+    private GrisbiXmlFileLocator grisbiXmlFileLocator;
 
     private static final String GRISBI_FILE_NAME = "account.gsb";
 
@@ -34,7 +35,7 @@ public class GrisbiFileServiceTest {
     public void should_get_grisbi_file_work_with_classpath_resources() {
         when(grisbiwebConfiguration.getFileUri()).thenReturn("classpath:" + GRISBI_FILE_NAME);
 
-        File file = grisbiFileService.getGrisbiFile();
+        File file = grisbiXmlFileLocator.getGrisbiFile();
 
         assertThat(file).isNotNull();
         assertThat(file.exists()).isTrue();
@@ -47,7 +48,7 @@ public class GrisbiFileServiceTest {
         File resourceFile = classPathResource.getFile();
         when(grisbiwebConfiguration.getFileUri()).thenReturn("file:" + resourceFile.getAbsolutePath());
 
-        File file = grisbiFileService.getGrisbiFile();
+        File file = grisbiXmlFileLocator.getGrisbiFile();
 
         assertThat(file).isNotNull();
         assertThat(file.exists()).isTrue();

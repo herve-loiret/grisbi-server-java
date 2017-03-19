@@ -22,7 +22,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
-import grisbiweb.server.service.GrisbiFileService;
 import grisbiweb.server.xml.model.AccountXml;
 import grisbiweb.server.xml.model.BankXml;
 import grisbiweb.server.xml.model.CategoryXml;
@@ -40,7 +39,7 @@ public class XmlWriter implements InitializingBean {
     private Resource template;
 
     @Autowired
-    private GrisbiFileService grisbiFileService;
+    private GrisbiXmlFileLocator grisbiXmlFileLocator;
 
     @Autowired
     private TransactionMapper transactionMapper;
@@ -105,7 +104,7 @@ public class XmlWriter implements InitializingBean {
 
     private int findLineOfLastTransaction() throws FileNotFoundException, IOException {
 
-        File file = grisbiFileService.getGrisbiFile();
+        File file = grisbiXmlFileLocator.getGrisbiFile();
 
         boolean alreadyOneTransaction = false;
         int allLines = 0;
@@ -165,7 +164,7 @@ public class XmlWriter implements InitializingBean {
         try {
             int lineNumber = findLineOfLastTransaction();
             synchronized (this) {
-                insertStringInFile(grisbiFileService.getGrisbiFile(), lineNumber, line);
+                insertStringInFile(grisbiXmlFileLocator.getGrisbiFile(), lineNumber, line);
             }
         } catch (IOException e) {
             log.error("Error while trying to insert transaction in grisbi file", e);

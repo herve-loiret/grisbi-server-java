@@ -1,4 +1,4 @@
-package grisbiweb.server.service;
+package grisbiweb.server.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class GrisbiFileService {
+public class GrisbiXmlFileLocator {
 
     private static final String CLASSPATH_PREFIX = "classpath:";
     private static final String FILE_PREFIX = "file:";
