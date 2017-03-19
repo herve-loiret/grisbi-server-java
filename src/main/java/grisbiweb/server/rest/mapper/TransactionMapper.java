@@ -74,12 +74,13 @@ public class TransactionMapper {
 
     private TransactionDto mapTransaction(Transaction transaction) {
 
-        TransactionDto transactionUI = new TransactionDto();
+        TransactionDto transactionDto = new TransactionDto();
 
-        mapAmount(transaction, transactionUI);
+        mapAmount(transaction, transactionDto);
 
-        transactionUI.setId(transaction.getId());
-        transactionUI.setDate(transaction.getDate());
+        transactionDto.setId(transaction.getId());
+        transactionDto.setDate(transaction.getDate());
+        transactionDto.setPr(String.valueOf(transaction.isTransactionPointeOuArchive()));
         String categoryId = transaction.getCategoryId();
         String subCategoryId = transaction.getSubCategoryId();
 
@@ -88,25 +89,25 @@ public class TransactionMapper {
             if (transactionDistante != null) {
                 Account accountDistant = accountService.getAccountById(transactionDistante.getAccountId());
                 if (accountDistant != null) {
-                    transactionUI.setCategory("Virement : " + accountDistant.getName());
+                    transactionDto.setCategory("Virement : " + accountDistant.getName());
                 }
             }
         } else {
             Category category = categoryService.getCategoryById(categoryId);
             if (category != null) {
-                transactionUI.setCategory(category.getName());
+                transactionDto.setCategory(category.getName());
                 SubCategory subCategory = categoryService.getSubCategoryByIds(categoryId, subCategoryId);
                 if (subCategory != null) {
-                    transactionUI.setCategory(transactionUI.getCategory() + " : " + subCategory.getName());
+                    transactionDto.setCategory(transactionDto.getCategory() + " : " + subCategory.getName());
                 }
             }
         }
 
-        mapParty(transaction, transactionUI);
+        mapParty(transaction, transactionDto);
 
         // P/R
         if (transaction.isTransactionPointe()) {
-            transactionUI.setPr("P");
+            transactionDto.setPr("P");
         }
 
         // solde
@@ -115,19 +116,19 @@ public class TransactionMapper {
             String transactionParentId = transaction.getTransactionParentId();
             TransactionDto transactionParent = transactionById.get(transactionParentId);
             if (transactionParent != null) {
-                transactionParent.getSubTransactions().add(transactionUI);
+                transactionParent.getSubTransactions().add(transactionDto);
             }
         } else {
             // c'est une transaction parente ou une transaction normale
             cptTransactionAll = cptTransactionAll.add(transaction.getAmount());
-            transactionUI.setSolde(cptTransactionAll.doubleValue());
+            transactionDto.setSolde(cptTransactionAll.doubleValue());
 
             // save in list
-            transactionUIs.add(transactionUI);
-            transactionById.put(String.valueOf(transaction.getId()), transactionUI);
+            transactionUIs.add(transactionDto);
+            transactionById.put(String.valueOf(transaction.getId()), transactionDto);
         }
 
-        return transactionUI;
+        return transactionDto;
 
     }
 
