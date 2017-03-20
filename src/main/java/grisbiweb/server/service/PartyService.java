@@ -6,18 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import grisbiweb.server.dto.PartyDto;
-import grisbiweb.server.mapper.PartyMapper;
 import grisbiweb.server.model.Party;
 import grisbiweb.server.xml.GrisbiXmlRepository;
 
 @Service
 public class PartyService {
-
-    @Autowired
-    private GrisbiService grisbiService;
-
-    @Autowired
-    private PartyMapper partyMapper;
 
     @Autowired
     private GrisbiXmlRepository grisbiXmlRepository;
