@@ -31,19 +31,12 @@ public class AccountService {
 
     public Account getAccountById(String accountId) {
 
-        Account account = null;
-        for (AccountXml accountXml : grisbiXmlLoader.loadGrisbi().getAccount()) {
-            if (accountId.equals(accountXml.getNumber())) {
-                account = accountMapper.accountXmlToAccount(accountXml);
-                break;
-            }
-        }
+        return grisbiXmlLoader.loadGrisbi().getAccount().stream()
+                .filter(account -> accountId.equals(account.getNumber()))
+                .map(accountMapper::accountXmlToAccount)
+                .findFirst()
+                .orElseThrow(AccountNotFoundException::new);
 
-        if (account == null) {
-            throw new AccountNotFoundException();
-        } else {
-            return account;
-        }
     }
 
     public List<Account> getAccountsByCurrencyId(String currencyId) {
@@ -94,12 +87,12 @@ public class AccountService {
         }
         return balanceTotal;
     }
-    
-    public boolean deleteAccount(String accountId){
+
+    public boolean deleteAccount(String accountId) {
         boolean success = true;
-        
+
         return success;
-        
+
     }
 
     public BigDecimal getInitialBalance(String accountNumber) {
