@@ -19,7 +19,6 @@ import grisbiweb.server.model.SubCategory;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.service.AccountService;
 import grisbiweb.server.service.CategoryService;
-import grisbiweb.server.service.GrisbiService;
 import grisbiweb.server.service.PartyService;
 import grisbiweb.server.service.TransactionService;
 
@@ -28,9 +27,6 @@ public class TransactionMapper {
 
     @Autowired
     private CategoryService categoryService;
-
-    @Autowired
-    private GrisbiService grisbiService;
 
     @Autowired
     private TransactionService transactionService;
