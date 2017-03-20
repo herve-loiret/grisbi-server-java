@@ -23,4 +23,5 @@ public class GrisbiXmlLoaderIT {
         
         assertThat(grisbiXml).isNotNull();
     }
+    
 }

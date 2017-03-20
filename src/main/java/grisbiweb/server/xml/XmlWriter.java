@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,16 @@ public class XmlWriter implements InitializingBean {
     private TransactionMapper transactionMapper;
 
     private Configuration configuration;
+
+    @SneakyThrows
+    public void updateParty(PartyXml partyXml) {
+
+        try (Stream<String> input = Files.lines(grisbiXmlFileLocator.getGrisbiFile().toPath());
+                PrintWriter output = new PrintWriter("output.txt", "UTF-8")) {
+            input.map(s -> s.replaceAll("<", ">"))
+                    .forEachOrdered(output::println);
+        }
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
