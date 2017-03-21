@@ -6,14 +6,14 @@ import lombok.Data;
 
 @Data
 public class Account {
-    
-    public enum AccountType {
-        BANK, ASSET, LIABILITY, CASH;
-    }
 
-    private String id;
-    private AccountType accountType;
-    private String currencyId;
-    private BigDecimal initialBalance;
-    private String name;
+	public enum AccountType {
+		BANK, ASSET, LIABILITY, CASH;
+	}
+
+	private String id;
+	private AccountType accountType;
+	private String currencyId;
+	private BigDecimal initialBalance;
+	private String name;
 }

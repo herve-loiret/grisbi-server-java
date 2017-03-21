@@ -8,8 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "grisbiweb.server")
 public class GrisbiWebServerApplication {
 
-    public static void main(String... args) {
-        SpringApplication.run(GrisbiWebServerApplication.class, args);
-    }
+	public static void main(String... args) {
+		SpringApplication.run(GrisbiWebServerApplication.class, args);
+	}
 
 }

@@ -18,12 +18,12 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "/categories")
 public class CategoryController {
 
-    @Autowired
-    private CategoryResponseBuilder categoryResponseBuilder;
+	@Autowired
+	private CategoryResponseBuilder categoryResponseBuilder;
 
-    @GetMapping
-    @ApiOperation(value = "get all categories", response = CategoryDto.class, responseContainer = "List")
-    public List<CategoryDto> getCategoriesUI() {
-        return categoryResponseBuilder.getCategoriesUI();
-    }
+	@GetMapping
+	@ApiOperation(value = "get all categories", response = CategoryDto.class, responseContainer = "List")
+	public List<CategoryDto> getCategoriesUI() {
+		return categoryResponseBuilder.getCategoriesUI();
+	}
 }

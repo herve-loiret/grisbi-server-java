@@ -29,117 +29,117 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/accounts")
 public class AccountController {
 
-    @Autowired
-    private AccountService accountService;
+	@Autowired
+	private AccountService accountService;
 
-    @Autowired
-    private AccountMapper accountMapper;
+	@Autowired
+	private AccountMapper accountMapper;
 
-    /**
-     * delete one account
-     *
-     * @return @
-     */
-    @DeleteMapping(value = "/{accountId}")
-    public List<AccountDto> deleteAccount(@PathVariable("accountId") String accountId) {
-        throw new NotImplementedException();
-    }
+	/**
+	 * delete one account
+	 *
+	 * @return @
+	 */
+	@DeleteMapping(value = "/{accountId}")
+	public List<AccountDto> deleteAccount(@PathVariable("accountId") String accountId) {
+		throw new NotImplementedException();
+	}
 
-    /**
-     * get one account
-     * 
-     * @return @
-     */
-    @GetMapping(value = "/{accountId}")
-    @ApiOperation(value = "get account by id", response = AccountDto.class)
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
-    public AccountDto getAccount(
-            @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
-        return accountMapper.accountToAccountDto(accountService.getAccountById(accountId));
-    }
+	/**
+	 * get one account
+	 * 
+	 * @return @
+	 */
+	@GetMapping(value = "/{accountId}")
+	@ApiOperation(value = "get account by id", response = AccountDto.class)
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
+	public AccountDto getAccount(
+			@ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
+		return accountMapper.accountToAccountDto(accountService.getAccountById(accountId));
+	}
 
-    /**
-     * return all accounts
-     * 
-     * @return @
-     */
-    @GetMapping
-    @ApiOperation(value = "get all accounts", response = AccountDto.class, responseContainer = "List")
-    public List<AccountDto> getAccounts() {
-        return accountMapper.accountToAccountDto(accountService.getOpenedAccounts());
-    }
+	/**
+	 * return all accounts
+	 * 
+	 * @return @
+	 */
+	@GetMapping
+	@ApiOperation(value = "get all accounts", response = AccountDto.class, responseContainer = "List")
+	public List<AccountDto> getAccounts() {
+		return accountMapper.accountToAccountDto(accountService.getOpenedAccounts());
+	}
 
-    /**
-     * get balance by account id
-     * 
-     * @return @
-     */
-    @GetMapping(value = "/{accountId}/balance")
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
-    @ApiOperation(value = "calculate the balance of this account", response = BigDecimal.class)
-    public BigDecimal getBalanceByAccountId(
-            @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
-        return accountService.getBalance(accountId, false);
-    }
+	/**
+	 * get balance by account id
+	 * 
+	 * @return @
+	 */
+	@GetMapping(value = "/{accountId}/balance")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
+	@ApiOperation(value = "calculate the balance of this account", response = BigDecimal.class)
+	public BigDecimal getBalanceByAccountId(
+			@ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
+		return accountService.getBalance(accountId, false);
+	}
 
-    /**
-     * get reconciled balance by account id
-     * 
-     * @return @
-     */
-    @GetMapping(value = "/{accountId}/balance/reconciled")
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
-    @ApiOperation(value = "calculate the reconciled balance of this account", response = BigDecimal.class)
-    public BigDecimal getBalanceReconciledByAccountId(
-            @ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
-        return accountService.getBalance(accountId, true);
-    }
+	/**
+	 * get reconciled balance by account id
+	 * 
+	 * @return @
+	 */
+	@GetMapping(value = "/{accountId}/balance/reconciled")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Account not found") })
+	@ApiOperation(value = "calculate the reconciled balance of this account", response = BigDecimal.class)
+	public BigDecimal getBalanceReconciledByAccountId(
+			@ApiParam(value = "id of the account", required = true) @PathVariable("accountId") String accountId) {
+		return accountService.getBalance(accountId, true);
+	}
 
-    /**
-     * get balance total by account type
-     * 
-     * @return @
-     */
-    @GetMapping(value = "/balance/{typeAccountStr}")
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Type account not found") })
-    @ApiOperation(value = "calculate total balance of this type account", response = BigDecimal.class)
-    public BigDecimal getBalanceTotalByAccountType(
-            @ApiParam(value = "type of the account", allowableValues = "BANK,ASSET,LIABILITY,CASH") @PathVariable("typeAccountStr") String typeAccountStr) {
-        AccountType typeAccount = AccountMapper.getAccountTypeFromStringName(typeAccountStr);
-        return accountService.getBalanceTotalByAccountType(typeAccount, false);
-    }
+	/**
+	 * get balance total by account type
+	 * 
+	 * @return @
+	 */
+	@GetMapping(value = "/balance/{typeAccountStr}")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Type account not found") })
+	@ApiOperation(value = "calculate total balance of this type account", response = BigDecimal.class)
+	public BigDecimal getBalanceTotalByAccountType(
+			@ApiParam(value = "type of the account", allowableValues = "BANK,ASSET,LIABILITY,CASH") @PathVariable("typeAccountStr") String typeAccountStr) {
+		AccountType typeAccount = AccountMapper.getAccountTypeFromStringName(typeAccountStr);
+		return accountService.getBalanceTotalByAccountType(typeAccount, false);
+	}
 
-    /**
-     * get balance total by account type
-     * 
-     * @return @
-     */
-    @GetMapping(value = "/balance/reconciled/{typeAccountStr}")
-    @ApiResponses(value = { @ApiResponse(code = 404, message = "Type account not found") })
-    @ApiOperation(value = "calculate total reconciled balance of this type account", response = BigDecimal.class)
-    public BigDecimal getBalanceTotalReconciledByAccountType(
-            @ApiParam(value = "type of the account", allowableValues = "BANK,ASSET,LIABILITY,CASH") @PathVariable("typeAccountStr") String typeAccountStr) {
-        AccountType typeAccount = AccountMapper.getAccountTypeFromStringName(typeAccountStr);
-        return accountService.getBalanceTotalByAccountType(typeAccount, true);
-    }
+	/**
+	 * get balance total by account type
+	 * 
+	 * @return @
+	 */
+	@GetMapping(value = "/balance/reconciled/{typeAccountStr}")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Type account not found") })
+	@ApiOperation(value = "calculate total reconciled balance of this type account", response = BigDecimal.class)
+	public BigDecimal getBalanceTotalReconciledByAccountType(
+			@ApiParam(value = "type of the account", allowableValues = "BANK,ASSET,LIABILITY,CASH") @PathVariable("typeAccountStr") String typeAccountStr) {
+		AccountType typeAccount = AccountMapper.getAccountTypeFromStringName(typeAccountStr);
+		return accountService.getBalanceTotalByAccountType(typeAccount, true);
+	}
 
-    /**
-     * create one account
-     *
-     * @return @
-     */
-    @PostMapping
-    public List<AccountDto> postAccount() {
-        throw new NotImplementedException();
-    }
+	/**
+	 * create one account
+	 *
+	 * @return @
+	 */
+	@PostMapping
+	public List<AccountDto> postAccount() {
+		throw new NotImplementedException();
+	}
 
-    /**
-     * update one account
-     *
-     * @return @
-     */
-    @PutMapping(value = "/{accountId}")
-    public List<AccountDto> putAccount(@PathVariable("accountId") String accountId) {
-        throw new NotImplementedException();
-    }
+	/**
+	 * update one account
+	 *
+	 * @return @
+	 */
+	@PutMapping(value = "/{accountId}")
+	public List<AccountDto> putAccount(@PathVariable("accountId") String accountId) {
+		throw new NotImplementedException();
+	}
 }

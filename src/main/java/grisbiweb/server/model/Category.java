@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class Category {
 
-    private String id;
-    private String name;
-    
-    public Long getIdLong(){
-        return Long.valueOf(getId());
-    }
+	private String id;
+	private String name;
+
+	public Long getIdLong() {
+		return Long.valueOf(getId());
+	}
 }

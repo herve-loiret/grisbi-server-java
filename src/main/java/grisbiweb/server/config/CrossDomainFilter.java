@@ -19,28 +19,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class CrossDomainFilter implements Filter {
 
-    @Override
-    public void destroy() {
-    }
+	@Override
+	public void destroy() {
+	}
 
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+	/**
+	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+	 */
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        httpResponse.addHeader("Access-Control-Allow-Headers", "Content-Type");
-        httpResponse.addHeader("Access-Control-Allow-Origin", "*");
-        httpResponse.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+		httpResponse.addHeader("Access-Control-Allow-Headers", "Content-Type");
+		httpResponse.addHeader("Access-Control-Allow-Origin", "*");
+		httpResponse.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
 
-        chain.doFilter(request, response);
-    }
+		chain.doFilter(request, response);
+	}
 
-    @Override
-    public void init(FilterConfig fConfig) throws ServletException {
-    }
+	@Override
+	public void init(FilterConfig fConfig) throws ServletException {
+	}
 
 }

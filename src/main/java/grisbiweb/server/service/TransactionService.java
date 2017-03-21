@@ -16,73 +16,73 @@ import grisbiweb.server.xml.model.TransactionXml;
 @Service
 public class TransactionService {
 
-    @Autowired
-    private GrisbiXmlLoader grisbiXmlLoader;
+	@Autowired
+	private GrisbiXmlLoader grisbiXmlLoader;
 
-    @Autowired
-    private TransactionMapper transactionMapper;
+	@Autowired
+	private TransactionMapper transactionMapper;
 
-    @Autowired
-    private XmlWriter xmlWriter;
+	@Autowired
+	private XmlWriter xmlWriter;
 
-    public void createTransaction(Transaction transaction) {
-        transaction.setId(findNextTransactionId());
-        xmlWriter.writeTransaction(transaction);
-    }
+	public void createTransaction(Transaction transaction) {
+		transaction.setId(findNextTransactionId());
+		xmlWriter.writeTransaction(transaction);
+	}
 
-    private Long findNextTransactionId() {
-        Long id = 0L;
-        for (Transaction transaction : this.getTransactions()) {
-            if (id.compareTo(transaction.getId()) < 0) {
-                id = transaction.getId();
-            }
-        }
-        return ++id;
-    }
+	private Long findNextTransactionId() {
+		Long id = 0L;
+		for (Transaction transaction : this.getTransactions()) {
+			if (id.compareTo(transaction.getId()) < 0) {
+				id = transaction.getId();
+			}
+		}
+		return ++id;
+	}
 
-    public Transaction getForeignTransaction(Transaction transaction) {
-        return this.getTransactionById(transaction.getForeignTransactionId());
-    }
+	public Transaction getForeignTransaction(Transaction transaction) {
+		return this.getTransactionById(transaction.getForeignTransactionId());
+	}
 
-    public Transaction getTransactionById(String idTransaction) {
-        for (TransactionXml oneTransaction : grisbiXmlLoader.loadGrisbi().getTransaction()) {
-            Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
-            if (transaction.getId().equals(idTransaction)) {
-                return transaction;
-            }
-        }
-        return null;
-    }
+	public Transaction getTransactionById(String idTransaction) {
+		for (TransactionXml oneTransaction : grisbiXmlLoader.loadGrisbi().getTransaction()) {
+			Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
+			if (transaction.getId().equals(idTransaction)) {
+				return transaction;
+			}
+		}
+		return null;
+	}
 
-    private List<Transaction> getTransactions() {
-        List<TransactionXml> transactionsXml = grisbiXmlLoader.loadGrisbi().getTransaction();
-        List<Transaction> transactions = new ArrayList<>();
-        for (TransactionXml transactionXml : transactionsXml) {
-            transactions.add(transactionMapper.transactionXmlToTransaction(transactionXml));
-        }
-        return transactions;
-    }
+	private List<Transaction> getTransactions() {
+		List<TransactionXml> transactionsXml = grisbiXmlLoader.loadGrisbi().getTransaction();
+		List<Transaction> transactions = new ArrayList<>();
+		for (TransactionXml transactionXml : transactionsXml) {
+			transactions.add(transactionMapper.transactionXmlToTransaction(transactionXml));
+		}
+		return transactions;
+	}
 
-    public List<Transaction> getTransactionsOrderedByAccountId(String accountId) {
+	public List<Transaction> getTransactionsOrderedByAccountId(String accountId) {
 
-        List<Transaction> transactionsAccount = new ArrayList<>();
-        List<Transaction> transactions = this.getTransactions();
+		List<Transaction> transactionsAccount = new ArrayList<>();
+		List<Transaction> transactions = this.getTransactions();
 
-        for (Transaction transaction : transactions) {
-            if (transaction.getAccountId().equals(accountId)) {
-                transactionsAccount.add(transaction);
-            }
-        }
+		for (Transaction transaction : transactions) {
+			if (transaction.getAccountId().equals(accountId)) {
+				transactionsAccount.add(transaction);
+			}
+		}
 
-        Collections.sort(transactionsAccount,
-                (transaction1, transaction2) -> transaction1.getDate().compareTo(transaction2.getDate()));
+		Collections.sort(transactionsAccount,
+				(transaction1, transaction2) -> transaction1.getDate().compareTo(transaction2.getDate()));
 
-        return transactionsAccount;
-    }
+		return transactionsAccount;
+	}
 
-    public long getTransactionTotal(String accountId) {
-        return this.getTransactions().stream().filter(transaction -> accountId.equals(transaction.getAccountId()))
-                .count();
-    }
+	public long getTransactionTotal(String accountId) {
+		return this.getTransactions().stream().filter(transaction -> accountId.equals(transaction.getAccountId()))
+				.count();
+	}
 
 }

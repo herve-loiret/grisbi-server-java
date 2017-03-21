@@ -16,43 +16,43 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrisbiXmlFileLocator {
 
-    private static final String CLASSPATH_PREFIX = "classpath:";
-    private static final String FILE_PREFIX = "file:";
+	private static final String CLASSPATH_PREFIX = "classpath:";
+	private static final String FILE_PREFIX = "file:";
 
-    @Autowired
-    private GrisbiwebConfiguration grisbiwebConfiguration;
+	@Autowired
+	private GrisbiwebConfiguration grisbiwebConfiguration;
 
-    public File getGrisbiFile() {
+	public File getGrisbiFile() {
 
-        String fileUri = grisbiwebConfiguration.getFileUri();
+		String fileUri = grisbiwebConfiguration.getFileUri();
 
-        if (StringUtils.isEmpty(fileUri)) {
-            throw new ConfigFileException("The grisbi file uri is not set in the config");
-        }
+		if (StringUtils.isEmpty(fileUri)) {
+			throw new ConfigFileException("The grisbi file uri is not set in the config");
+		}
 
-        File file = null;
+		File file = null;
 
-        if (fileUri.startsWith(CLASSPATH_PREFIX)) {
-            file = openClasspathFile(fileUri);
-        } else if (fileUri.startsWith(FILE_PREFIX)) {
-            file = new File(fileUri.replaceFirst(FILE_PREFIX, ""));
-        }
+		if (fileUri.startsWith(CLASSPATH_PREFIX)) {
+			file = openClasspathFile(fileUri);
+		} else if (fileUri.startsWith(FILE_PREFIX)) {
+			file = new File(fileUri.replaceFirst(FILE_PREFIX, ""));
+		}
 
-        log.info("grisbi file served : {}", file.getAbsolutePath());
+		log.info("grisbi file served : {}", file.getAbsolutePath());
 
-        return file;
+		return file;
 
-    }
+	}
 
-    private File openClasspathFile(String fileUri) {
-        File file = null;
-        try {
-            String trimed = fileUri.replaceFirst(CLASSPATH_PREFIX, "");
-            ClassPathResource classPathResource = new ClassPathResource(trimed);
-            file = classPathResource.getFile();
-        } catch (IOException e) {
-            throw new ConfigFileException("can not read grisbi file uri : " + fileUri, e);
-        }
-        return file;
-    }
+	private File openClasspathFile(String fileUri) {
+		File file = null;
+		try {
+			String trimed = fileUri.replaceFirst(CLASSPATH_PREFIX, "");
+			ClassPathResource classPathResource = new ClassPathResource(trimed);
+			file = classPathResource.getFile();
+		} catch (IOException e) {
+			throw new ConfigFileException("can not read grisbi file uri : " + fileUri, e);
+		}
+		return file;
+	}
 }

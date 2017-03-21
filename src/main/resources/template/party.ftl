@@ -1,1 +1,1 @@
-    <Party Nb="${nb}" Na="${na}" Txt="${txt}" Search="${search}" />
+	<Party Nb="${nb}" Na="${na}" Txt="${txt}" Search="${search}" />

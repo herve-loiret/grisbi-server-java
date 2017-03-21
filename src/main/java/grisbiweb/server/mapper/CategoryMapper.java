@@ -12,13 +12,13 @@ import grisbiweb.server.xml.model.CategoryXml;
 @Mapper(componentModel = "spring", uses = {})
 public interface CategoryMapper {
 
-    @Mapping(source = "na", target = "name")
-    @Mapping(source = "nb", target = "id")
-    public Category categoryXmlToCategory(CategoryXml categoryXml);
+	@Mapping(source = "na", target = "name")
+	@Mapping(source = "nb", target = "id")
+	public Category categoryXmlToCategory(CategoryXml categoryXml);
 
-    public List<CategoryDto> categoriesToCategoryResponses(List<Category> categories);
+	public List<CategoryDto> categoriesToCategoryResponses(List<Category> categories);
 
-    @Mapping(source = "id", target = "idCategory")
-    @Mapping(source = "name", target = "nameCategory")
-    public CategoryDto categoryToCategoryResponse(Category category);
+	@Mapping(source = "id", target = "idCategory")
+	@Mapping(source = "name", target = "nameCategory")
+	public CategoryDto categoryToCategoryResponse(Category category);
 }

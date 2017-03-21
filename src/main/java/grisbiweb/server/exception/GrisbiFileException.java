@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.FAILED_DEPENDENCY)
 public class GrisbiFileException extends RuntimeException {
 
-    private static final long serialVersionUID = -4385824820153863241L;
+	private static final long serialVersionUID = -4385824820153863241L;
 
-    public GrisbiFileException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public GrisbiFileException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

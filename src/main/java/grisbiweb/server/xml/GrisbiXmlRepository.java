@@ -11,14 +11,14 @@ import grisbiweb.server.model.Party;
 @Service
 public class GrisbiXmlRepository {
 
-    @Autowired
-    private GrisbiXmlLoader grisbiXmlLoader;
+	@Autowired
+	private GrisbiXmlLoader grisbiXmlLoader;
 
-    @Autowired
-    private PartyMapper partyMapper;
+	@Autowired
+	private PartyMapper partyMapper;
 
-    public List<Party> getParties() {
-        return partyMapper.partyXmlToParty(this.grisbiXmlLoader.loadGrisbi().getParty());
-    }
+	public List<Party> getParties() {
+		return partyMapper.partyXmlToParty(this.grisbiXmlLoader.loadGrisbi().getParty());
+	}
 
 }

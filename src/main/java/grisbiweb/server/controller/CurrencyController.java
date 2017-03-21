@@ -19,15 +19,15 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "/currencies", description = "Operations about currencies")
 public class CurrencyController {
 
-    @Autowired
-    private GrisbiService grisbiService;
+	@Autowired
+	private GrisbiService grisbiService;
 
-    @Autowired
-    private CurrencyMapper currencyMapper;
+	@Autowired
+	private CurrencyMapper currencyMapper;
 
-    @GetMapping
-    @ApiOperation(value = "get all currencies", response = CurrencyDto.class, responseContainer = "List")
-    public List<CurrencyDto> getCurrencies() {
-        return currencyMapper.currencyXmlToCurrencyResponse(grisbiService.getCurrencies());
-    }
+	@GetMapping
+	@ApiOperation(value = "get all currencies", response = CurrencyDto.class, responseContainer = "List")
+	public List<CurrencyDto> getCurrencies() {
+		return currencyMapper.currencyXmlToCurrencyResponse(grisbiService.getCurrencies());
+	}
 }

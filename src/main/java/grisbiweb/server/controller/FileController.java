@@ -21,23 +21,23 @@ import lombok.SneakyThrows;
 @Api(value = "/files")
 public class FileController {
 
-    @Autowired
-    private GrisbiXmlFileLocator grisbiXmlFileLocator;
+	@Autowired
+	private GrisbiXmlFileLocator grisbiXmlFileLocator;
 
-    @SneakyThrows
-    @GetMapping(value = "download")
-    public void getDownload(HttpServletResponse response) {
+	@SneakyThrows
+	@GetMapping(value = "download")
+	public void getDownload(HttpServletResponse response) {
 
-        File file = grisbiXmlFileLocator.getGrisbiFile();
-        // Get your file stream from wherever.
-        InputStream myStream = new FileInputStream(file);
+		File file = grisbiXmlFileLocator.getGrisbiFile();
+		// Get your file stream from wherever.
+		InputStream myStream = new FileInputStream(file);
 
-        // Set the content type and attachment header.
-        response.addHeader("Content-disposition", "attachment;filename=" + file.getName());
-        response.setContentType("txt/plain");
+		// Set the content type and attachment header.
+		response.addHeader("Content-disposition", "attachment;filename=" + file.getName());
+		response.setContentType("txt/plain");
 
-        // Copy the stream to the response's output stream.
-        IOUtils.copy(myStream, response.getOutputStream());
-        response.flushBuffer();
-    }
+		// Copy the stream to the response's output stream.
+		IOUtils.copy(myStream, response.getOutputStream());
+		response.flushBuffer();
+	}
 }

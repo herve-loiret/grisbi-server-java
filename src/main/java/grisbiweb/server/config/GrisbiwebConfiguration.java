@@ -8,8 +8,8 @@ import lombok.Getter;
 @Configuration
 public class GrisbiwebConfiguration {
 
-    @Getter
-    @Value("${grisbiweb.fileuri}")
-    private String fileUri;
+	@Getter
+	@Value("${grisbiweb.fileuri}")
+	private String fileUri;
 
 }

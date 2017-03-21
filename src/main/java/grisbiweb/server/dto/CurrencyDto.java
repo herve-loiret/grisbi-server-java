@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class CurrencyDto {
 
-    private Long id;
-    private String name;
-    private String sign;
+	private Long id;
+	private String name;
+	private String sign;
 
 }

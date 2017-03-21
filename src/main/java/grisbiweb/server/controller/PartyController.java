@@ -24,33 +24,33 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "/parties", description = "Operations about parties")
 public class PartyController {
 
-    @Autowired
-    private PartyService partyService;
+	@Autowired
+	private PartyService partyService;
 
-    @Autowired
-    private PartyMapper partyMapper;
+	@Autowired
+	private PartyMapper partyMapper;
 
-    @GetMapping
-    @ApiOperation(value = "get all parties", response = PartyDto.class, responseContainer = "List")
-    public List<PartyDto> getParties() {
-        return partyMapper.partyToPartyDto(partyService.getParties());
-    }
+	@GetMapping
+	@ApiOperation(value = "get all parties", response = PartyDto.class, responseContainer = "List")
+	public List<PartyDto> getParties() {
+		return partyMapper.partyToPartyDto(partyService.getParties());
+	}
 
-    @PostMapping
-    @ApiOperation(value = "create a new party", response = PartyDto.class)
-    public PartyDto postParty(@RequestBody PartyDto partyDto) {
-        return partyService.createParty(partyDto);
-    }
+	@PostMapping
+	@ApiOperation(value = "create a new party", response = PartyDto.class)
+	public PartyDto postParty(@RequestBody PartyDto partyDto) {
+		return partyService.createParty(partyDto);
+	}
 
-    @PutMapping
-    @ApiOperation(value = "update a party", response = PartyDto.class)
-    public PartyDto putParty(@RequestBody PartyDto partyDto) {
-        return partyService.updateParty(partyDto);
-    }
+	@PutMapping
+	@ApiOperation(value = "update a party", response = PartyDto.class)
+	public PartyDto putParty(@RequestBody PartyDto partyDto) {
+		return partyService.updateParty(partyDto);
+	}
 
-    @DeleteMapping(value = "/{partyId}")
-    @ApiOperation(value = "delete a party")
-    public void deleteParty(@PathVariable("partyId") Long partyId) {
-        partyService.deleteParty(partyId);
-    }
+	@DeleteMapping(value = "/{partyId}")
+	@ApiOperation(value = "delete a party")
+	public void deleteParty(@PathVariable("partyId") Long partyId) {
+		partyService.deleteParty(partyId);
+	}
 }

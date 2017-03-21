@@ -13,23 +13,23 @@ import lombok.Data;
 @Data
 public class TransactionCreationDto {
 
-    @ApiModelProperty(value = "id of the account", required = true)
-    private String accountId;
+	@ApiModelProperty(value = "id of the account", required = true)
+	private String accountId;
 
-    @ApiModelProperty(value = "date of the transaction, format ISO DATE", required = true)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate date;
+	@ApiModelProperty(value = "date of the transaction, format ISO DATE", required = true)
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	private LocalDate date;
 
-    @ApiModelProperty(value = "category id")
-    private String categoryId;
+	@ApiModelProperty(value = "category id")
+	private String categoryId;
 
-    @ApiModelProperty(value = "subcategory id")
-    private String subCategoryId;
+	@ApiModelProperty(value = "subcategory id")
+	private String subCategoryId;
 
-    @ApiModelProperty(value = "party id")
-    private String partyId;
+	@ApiModelProperty(value = "party id")
+	private String partyId;
 
-    @ApiModelProperty(value = "amount of the transaction")
-    private BigDecimal amount;
+	@ApiModelProperty(value = "amount of the transaction")
+	private BigDecimal amount;
 
 }

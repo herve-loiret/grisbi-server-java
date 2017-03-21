@@ -9,28 +9,28 @@ import lombok.Data;
 @Data
 public class CategoryDto {
 
-    private Long idCategory;
+	private Long idCategory;
 
-    private Long idSubCategory;
+	private Long idSubCategory;
 
-    private String nameCategory;
+	private String nameCategory;
 
-    private String nameSubCategory;
+	private String nameSubCategory;
 
-    public String getCompleteId() {
-        StringBuilder compelteId = new StringBuilder(String.valueOf(idCategory));
-        if (idSubCategory != null) {
-            compelteId.append('-').append(idSubCategory);
-        }
-        return compelteId.toString();
-    }
+	public String getCompleteId() {
+		StringBuilder compelteId = new StringBuilder(String.valueOf(idCategory));
+		if (idSubCategory != null) {
+			compelteId.append('-').append(idSubCategory);
+		}
+		return compelteId.toString();
+	}
 
-    public String getCompleteName() {
-        StringBuilder completeName = new StringBuilder(nameCategory);
-        if (StringUtils.isNotEmpty(nameSubCategory)) {
-            completeName.append(" : ").append(nameSubCategory);
-        }
-        return completeName.toString();
-    }
+	public String getCompleteName() {
+		StringBuilder completeName = new StringBuilder(nameCategory);
+		if (StringUtils.isNotEmpty(nameSubCategory)) {
+			completeName.append(" : ").append(nameSubCategory);
+		}
+		return completeName.toString();
+	}
 
 }

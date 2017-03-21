@@ -16,33 +16,33 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionDto {
 
-    private Long id;
-    private Date date;
-    private String party;
-    private Double debit;
-    private Double credit;
-    private Double solde;
-    private String category;
-    private String currencyId;
-    private String pr;
-    private List<TransactionDto> subTransactions = new ArrayList<>();
+	private Long id;
+	private Date date;
+	private String party;
+	private Double debit;
+	private Double credit;
+	private Double solde;
+	private String category;
+	private String currencyId;
+	private String pr;
+	private List<TransactionDto> subTransactions = new ArrayList<>();
 
-    public String getCreditUI() {
-        return credit == null ? "" : credit + " €";
-    }
+	public String getCreditUI() {
+		return credit == null ? "" : credit + " €";
+	}
 
-    public String getDateUI() {
+	public String getDateUI() {
 
-        if (date == null) {
-            return null;
-        }
+		if (date == null) {
+			return null;
+		}
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
-        return simpleDateFormat.format(date);
-    }
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.FRENCH);
+		return simpleDateFormat.format(date);
+	}
 
-    public String getSoldeUI() {
-        return solde + " €";
-    }
+	public String getSoldeUI() {
+		return solde + " €";
+	}
 
 }
