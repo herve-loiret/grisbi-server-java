@@ -19,7 +19,7 @@ public class GrisbiXmlLoaderIT {
 
     @Test
     public void should_load_grisbi_unmarshal_the_file(){
-        GrisbiXml grisbiXml = grisbiXmlLoader.loadGrisbi();
+        GrisbiXml grisbiXml = grisbiXmlLoader.getGrisbi();
         
         assertThat(grisbiXml).isNotNull();
     }

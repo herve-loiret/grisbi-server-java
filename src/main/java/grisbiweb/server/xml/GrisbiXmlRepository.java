@@ -18,7 +18,7 @@ public class GrisbiXmlRepository {
 	private PartyMapper partyMapper;
 
 	public List<Party> getParties() {
-		return partyMapper.partyXmlToParty(this.grisbiXmlLoader.loadGrisbi().getParty());
+		return partyMapper.partyXmlToParty(this.grisbiXmlLoader.getGrisbi().getParty());
 	}
 
 }

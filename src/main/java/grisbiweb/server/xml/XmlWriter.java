@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -24,6 +25,7 @@ import com.google.common.annotations.VisibleForTesting;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
+import grisbiweb.server.exception.GrisbiFileException;
 import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.xml.model.AccountXml;
@@ -52,11 +54,27 @@ public class XmlWriter implements InitializingBean {
 
 	@SneakyThrows
 	public void updateParty(PartyXml partyXml) {
+		File tempFile = File.createTempFile("grisbi-temp-file", ".tmp");
+		System.out.println(tempFile.getAbsolutePath());
 		String partyString = createXmlStringFrom(partyXml);
-		String trigerString = "    <Party Nb=\"" + partyXml.getNb() + "\"";
+		String trigerString = partyString.substring(0, 19);
 		try (Stream<String> input = Files.lines(grisbiXmlFileLocator.getGrisbiFile().toPath());
-				PrintWriter output = new PrintWriter("output.txt", "UTF-8")) {
+				PrintWriter output = new PrintWriter(tempFile, "UTF-8")) {
 			input.map(s -> s.startsWith(trigerString) ? partyString : s).forEachOrdered(output::println);
+		}
+		updateGrisbiFile(tempFile);
+	}
+
+	private void updateGrisbiFile(File source) {
+		File grisbiFile = grisbiXmlFileLocator.getGrisbiFile();
+		File archiveFile = new File(grisbiFile + String.valueOf(new Date().getTime()));
+		if (!grisbiFile.renameTo(archiveFile)) {
+			throw new GrisbiFileException("can't rename the grisbi file");
+		}
+		try {
+			Files.copy(source.toPath(), grisbiFile.toPath());
+		} catch (IOException e) {
+			log.error("Error while trying to replace the generated temp grisbi file by the new one", e);
 		}
 	}
 

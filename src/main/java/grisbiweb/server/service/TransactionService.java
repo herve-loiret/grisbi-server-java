@@ -45,7 +45,7 @@ public class TransactionService {
 	}
 
 	public Transaction getTransactionById(String idTransaction) {
-		for (TransactionXml oneTransaction : grisbiXmlLoader.loadGrisbi().getTransaction()) {
+		for (TransactionXml oneTransaction : grisbiXmlLoader.getGrisbi().getTransaction()) {
 			Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
 			if (transaction.getId().equals(idTransaction)) {
 				return transaction;
@@ -55,7 +55,7 @@ public class TransactionService {
 	}
 
 	private List<Transaction> getTransactions() {
-		List<TransactionXml> transactionsXml = grisbiXmlLoader.loadGrisbi().getTransaction();
+		List<TransactionXml> transactionsXml = grisbiXmlLoader.getGrisbi().getTransaction();
 		List<Transaction> transactions = new ArrayList<>();
 		for (TransactionXml transactionXml : transactionsXml) {
 			transactions.add(transactionMapper.transactionXmlToTransaction(transactionXml));

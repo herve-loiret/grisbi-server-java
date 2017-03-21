@@ -15,7 +15,7 @@ public class GrisbiService {
 	private GrisbiXmlLoader grisbiXmlLoader;
 
 	public List<CurrencyXml> getCurrencies() {
-		List<CurrencyXml> currencies = this.grisbiXmlLoader.loadGrisbi().getCurrency();
+		List<CurrencyXml> currencies = this.grisbiXmlLoader.getGrisbi().getCurrency();
 		return currencies;
 	}
 

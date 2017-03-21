@@ -24,28 +24,29 @@ public class GrisbiXmlLoader {
 
 	private long lastModified;
 
-	public GrisbiXml loadGrisbi() {
+	public GrisbiXml getGrisbi() {
 		if (grisbi == null) {
-			reload();
+			grisbi = loadGrisbi(grisbiXmlFileLocator.getGrisbiFile());
 		} else {
 			File file = grisbiXmlFileLocator.getGrisbiFile();
 			if (lastModified < file.lastModified()) {
-				reload();
+				grisbi = loadGrisbi(file);
 			}
 		}
 		return grisbi;
 	}
 
-	private void reload() {
+	public GrisbiXml loadGrisbi(File file) {
+		GrisbiXml grisbi = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(BUSINESS_PACKAGE);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			File file = grisbiXmlFileLocator.getGrisbiFile();
 			lastModified = file.lastModified();
 			grisbi = (GrisbiXml) unmarshaller.unmarshal(file);
 		} catch (JAXBException e) {
 			throw new GrisbiFileException("Error while accessing grisbi file", e);
 		}
+		return grisbi;
 	}
 
 }

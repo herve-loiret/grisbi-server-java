@@ -31,9 +31,11 @@ public class AccountService {
 
 	public Account getAccountById(String accountId) {
 
-		return grisbiXmlLoader.loadGrisbi().getAccount().stream()
-				.filter(account -> accountId.equals(account.getNumber())).map(accountMapper::accountXmlToAccount)
-				.findFirst().orElseThrow(AccountNotFoundException::new);
+		return grisbiXmlLoader.getGrisbi().getAccount().stream()
+				.filter(account -> accountId.equals(account.getNumber()))
+				.map(accountMapper::accountXmlToAccount)
+				.findFirst()
+				.orElseThrow(AccountNotFoundException::new);
 
 	}
 
@@ -100,7 +102,7 @@ public class AccountService {
 
 	public List<Account> getOpenedAccounts() {
 		List<Account> accounts = new ArrayList<>();
-		for (AccountXml account : this.grisbiXmlLoader.loadGrisbi().getAccount()) {
+		for (AccountXml account : this.grisbiXmlLoader.getGrisbi().getAccount()) {
 			if ("0".equals(account.getClosedAccount())) {
 				accounts.add(accountMapper.accountXmlToAccount(account));
 			}

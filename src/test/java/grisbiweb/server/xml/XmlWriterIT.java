@@ -23,14 +23,20 @@ public class XmlWriterIT {
     @Autowired
     private PartyService partyService;
     
+    @Autowired
+    private GrisbiXmlLoader grisbiXmlLoader;
+    
 
     @Test
     public void should_update_party_work() {
         Party party = partyService.getParties().get(3);
         PartyXml partyXml = TestHelper.manufacture(PartyXml.class);
         partyXml.setNb(party.getId());
+        System.out.println(partyXml);
         xmlWriter.updateParty(partyXml);
-        fail(); //FIXME fail because of the tabe -> space replacement
+        
+        fail();//TODO finish this IT test
+        System.out.println(partyService.getParties());
     }
     
 }

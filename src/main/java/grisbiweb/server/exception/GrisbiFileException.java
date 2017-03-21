@@ -11,4 +11,8 @@ public class GrisbiFileException extends RuntimeException {
 	public GrisbiFileException(String message, Throwable cause) {
 		super(message, cause);
 	}
+
+	public GrisbiFileException(String message) {
+		super(message);
+	}
 }
