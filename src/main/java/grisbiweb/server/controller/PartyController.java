@@ -45,7 +45,7 @@ public class PartyController {
     @PutMapping
     @ApiOperation(value = "update a party", response = PartyDto.class)
     public PartyDto putParty(@RequestBody PartyDto partyDto) {
-        return partyService.createParty(partyDto);
+        return partyService.updateParty(partyDto);
     }
 
     @DeleteMapping(value = "/{partyId}")

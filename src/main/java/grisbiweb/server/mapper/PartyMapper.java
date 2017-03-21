@@ -24,4 +24,9 @@ public interface PartyMapper {
     @Mapping(expression = "java(\"(null)\".equals(partyXml.getTxt()) ? null : partyXml.getTxt())", target = "description")
     Party partyXmlToParty(PartyXml partyXml);
 
+    @Mapping(source = "name", target = "na")
+    @Mapping(source = "id", target = "nb")
+    @Mapping(constant = "", target = "search") // TODO retrieve the existing one
+    @Mapping(source = "description", target = "txt")
+    PartyXml partyDtoToPartyXml(PartyDto partyDto);
 }

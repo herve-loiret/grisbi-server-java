@@ -1,4 +1,4 @@
-package grisbiweb.server.service;
+package grisbiweb.server.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
@@ -50,10 +52,11 @@ public class XmlWriter implements InitializingBean {
 
     @SneakyThrows
     public void updateParty(PartyXml partyXml) {
-
+        String partyString = createXmlStringFrom(partyXml);
+        String trigerString = "    <Party Nb=\"" + partyXml.getNb() + "\"";
         try (Stream<String> input = Files.lines(grisbiXmlFileLocator.getGrisbiFile().toPath());
                 PrintWriter output = new PrintWriter("output.txt", "UTF-8")) {
-            input.map(s -> s.replaceAll("<", ">"))
+            input.map(s -> s.startsWith(trigerString) ? partyString : s)
                     .forEachOrdered(output::println);
         }
     }
@@ -67,7 +70,7 @@ public class XmlWriter implements InitializingBean {
     }
 
     @SneakyThrows
-    public String createXmlStringFrom(PartyXml partyXml) {
+    protected String createXmlStringFrom(PartyXml partyXml) {
         Template template = configuration.getTemplate("party.ftl");
         StringWriter stringWriter = new StringWriter();
         template.process(partyXml, stringWriter);
@@ -114,7 +117,8 @@ public class XmlWriter implements InitializingBean {
         return stringWriter.toString();
     }
 
-    private int findLineOfLastTransaction() throws FileNotFoundException, IOException {
+    @VisibleForTesting
+    protected int findLineOfLastTransaction() throws FileNotFoundException, IOException {
 
         File file = grisbiXmlFileLocator.getGrisbiFile();
 

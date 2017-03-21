@@ -49,4 +49,16 @@ public class PartyMapperTest {
         assertThat(parties.get(0).getId()).as("id").isEqualTo(partyXml.getNb());
         assertThat(parties.get(0).getDescription()).as("description").isEqualTo(partyXml.getTxt());
     }
+
+    @Test
+    public void should_mapper_map_party_dto_to_party_xml() {
+        PartyDto partyDto = podam.manufacturePojo(PartyDto.class);
+
+        PartyXml partyXml = mapper.partyDtoToPartyXml(partyDto);
+
+        assertThat(partyXml.getNa()).isEqualTo(partyDto.getName());
+        assertThat(partyXml.getNb()).isEqualTo(String.valueOf(partyDto.getId()));
+        assertThat(partyXml.getSearch()).isEqualTo("");
+        assertThat(partyXml.getTxt()).isEqualTo(partyDto.getDescription());
+    }
 }
