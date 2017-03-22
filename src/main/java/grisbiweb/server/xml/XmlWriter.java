@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -49,6 +50,9 @@ public class XmlWriter implements InitializingBean {
 
 	@Autowired
 	private TransactionMapper transactionMapper;
+	
+	@Autowired
+	private GrisbiXmlRepository grisbiXmlRepository;
 
 	private Configuration configuration;
 
@@ -105,7 +109,8 @@ public class XmlWriter implements InitializingBean {
 	}
 
 	@SneakyThrows
-	public String createXmlStringFrom(TransactionXml transactionXml) {
+	@VisibleForTesting
+	protected String createXmlStringFrom(TransactionXml transactionXml) {
 		Template template = configuration.getTemplate("transaction.ftl");
 		StringWriter stringWriter = new StringWriter();
 		template.process(transactionXml, stringWriter);
@@ -113,7 +118,8 @@ public class XmlWriter implements InitializingBean {
 	}
 
 	@SneakyThrows
-	public String createXmlStringFrom(CategoryXml categoryXml) {
+	@VisibleForTesting
+	protected String createXmlStringFrom(CategoryXml categoryXml) {
 		Template template = configuration.getTemplate("category.ftl");
 		StringWriter stringWriter = new StringWriter();
 		template.process(categoryXml, stringWriter);
@@ -121,7 +127,8 @@ public class XmlWriter implements InitializingBean {
 	}
 
 	@SneakyThrows
-	public String createXmlStringFrom(SubCategoryXml subCategoryXml) {
+	@VisibleForTesting
+	protected String createXmlStringFrom(SubCategoryXml subCategoryXml) {
 		Template template = configuration.getTemplate("subcategory.ftl");
 		StringWriter stringWriter = new StringWriter();
 		template.process(subCategoryXml, stringWriter);
@@ -129,7 +136,8 @@ public class XmlWriter implements InitializingBean {
 	}
 
 	@SneakyThrows
-	public String createXmlStringFrom(AccountXml accountXml) {
+	@VisibleForTesting
+	protected String createXmlStringFrom(AccountXml accountXml) {
 		Template template = configuration.getTemplate("account.ftl");
 		StringWriter stringWriter = new StringWriter();
 		template.process(accountXml, stringWriter);
@@ -137,7 +145,8 @@ public class XmlWriter implements InitializingBean {
 	}
 
 	@SneakyThrows
-	public String createXmlStringFrom(BankXml bankXml) {
+	@VisibleForTesting
+	protected String createXmlStringFrom(BankXml bankXml) {
 		Template template = configuration.getTemplate("bank.ftl");
 		StringWriter stringWriter = new StringWriter();
 		template.process(bankXml, stringWriter);
@@ -145,6 +154,7 @@ public class XmlWriter implements InitializingBean {
 	}
 
 	@VisibleForTesting
+	@Deprecated
 	protected int findLineOfLastTransaction() throws FileNotFoundException, IOException {
 
 		File file = grisbiXmlFileLocator.getGrisbiFile();
@@ -170,6 +180,7 @@ public class XmlWriter implements InitializingBean {
 		return ++lastLine;
 	}
 
+	@Deprecated
 	private void insertStringInFile(File file, int lineNumber, String line) throws IOException {
 		// temp file
 		File outFile = new File("$$$$$$$$.tmp");
@@ -199,6 +210,7 @@ public class XmlWriter implements InitializingBean {
 		outFile.renameTo(file);
 	}
 
+	@Deprecated
 	public void writeTransaction(Transaction transaction) {
 
 		TransactionXml transactionXml = transactionMapper.transactionToTransactionXml(transaction);
@@ -226,6 +238,37 @@ public class XmlWriter implements InitializingBean {
 					.forEachOrdered(output::println);
 		}
 		updateGrisbiFile(tempFile);
+	}
+
+	@SneakyThrows
+	public PartyXml createParty(PartyXml partyXml) {
+		partyXml.setNb(String.valueOf(grisbiXmlRepository.findNextPartyId()));
+		
+		String partyString = createXmlStringFrom(partyXml);
+		File tempFile = this.createTempFile();
+		String trigerString = partyString.substring(0, 12);
+		List<String> lines = Files.readAllLines(grisbiXmlFileLocator.getGrisbiFile().toPath());
+
+		boolean transactionFound = false;
+		boolean transactionInserted = false;
+		try (PrintWriter output = new PrintWriter(tempFile, "UTF-8")) {
+			for (String line : lines) {
+				System.out.println(line);
+				// FIXME : in v1, we assume there is already at least one
+				// party in the grisbi file
+				if (!transactionInserted) {
+					if (line.startsWith(trigerString)) {
+						transactionFound = true;
+					} else if (transactionFound) {
+						transactionInserted = true;
+						output.println(partyString);
+					}
+				}
+				output.println(line);
+			}
+		}
+		updateGrisbiFile(tempFile);
+		return partyXml;
 	}
 
 }

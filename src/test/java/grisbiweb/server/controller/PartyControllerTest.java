@@ -70,10 +70,12 @@ public class PartyControllerTest {
     @SneakyThrows
     public void should_create_a_party() {
         PartyDto partyDtoInput = TestHelper.manufacture(PartyDto.class);
+        Party partyInput = partyMapper.partyDtoToParty(partyDtoInput);
         PartyDto partyDtoOutput = TestHelper.manufacture(PartyDto.class);
+        Party partyOutput = partyMapper.partyDtoToParty(partyDtoOutput);
         partyDtoInput.setId(null);
         String partyJson = TestHelper.serialize(partyDtoInput);
-        when(partyService.createParty(partyDtoInput)).thenReturn(partyDtoOutput);
+        when(partyService.createParty(partyInput)).thenReturn(partyOutput);
 
         mockMvc.perform(post("/parties", partyDtoInput).contentType(MediaType.APPLICATION_JSON).content(partyJson))
                 .andExpect(status().isOk())

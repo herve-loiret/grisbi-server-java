@@ -24,6 +24,7 @@ public class GrisbiXmlRepository {
 
 	/**
 	 * TODO : unused ! replace replace this by the partyService search
+	 * 
 	 * @param partyId
 	 * @return
 	 */
@@ -32,6 +33,12 @@ public class GrisbiXmlRepository {
 				.filter(p -> p.getNb().equals(partyId))
 				.findFirst()
 				.orElseThrow(() -> new PartyNotFoundException(partyId)));
+	}
+
+	public long findNextPartyId() {
+		return getParties().stream()
+				.mapToLong(party -> Long.valueOf(party.getId()) + 1).max()
+				.orElse(1L);
 	}
 
 }

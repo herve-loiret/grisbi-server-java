@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import grisbiweb.server.xml.XmlWriter;
 import grisbiweb.server.xml.model.AccountXml;
 import grisbiweb.server.xml.model.BankXml;
 import grisbiweb.server.xml.model.CategoryXml;
@@ -127,5 +126,5 @@ public class XmlWriterTest {
 
 		assertThat(string).isEqualTo(expected);
 	}
-
+	
 }

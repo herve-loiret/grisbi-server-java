@@ -35,4 +35,6 @@ public interface PartyMapper {
 	@Mapping(constant = "", target = "search") // FIXME will erase the search value
 	@Mapping(expression = "java(party.getDescription() == null ? \"\" : party.getDescription())", target = "txt")
 	PartyXml partyToPartyXml(Party party);
+
+	Party partyDtoToParty(PartyDto partyDto);
 }

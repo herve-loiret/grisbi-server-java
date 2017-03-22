@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import grisbiweb.server.dto.PartyDto;
 import grisbiweb.server.mapper.PartyMapper;
 import grisbiweb.server.model.Party;
 import grisbiweb.server.xml.GrisbiXmlRepository;
@@ -40,9 +39,9 @@ public class PartyService {
 		return null;
 	}
 
-	public PartyDto createParty(PartyDto partyDto) {
-
-		return null;
+	public Party createParty(Party party) {
+		PartyXml partyXml = xmlWriter.createParty(partyMapper.partyToPartyXml(party));
+		return partyMapper.partyXmlToParty(partyXml);
 	}
 
 	public void deleteParty(String partyId) {
@@ -51,11 +50,11 @@ public class PartyService {
 		xmlWriter.deleteParty(partyXml);
 	}
 
-	public PartyDto updateParty(PartyDto partyDto) {
+	public Party updateParty(Party party) {
 
-		PartyXml partyXml = partyMapper.partyDtoToPartyXml(partyDto);
+		PartyXml partyXml = partyMapper.partyToPartyXml(party);
 		xmlWriter.updateParty(partyXml);
 
-		return partyDto;
+		return party;
 	}
 }

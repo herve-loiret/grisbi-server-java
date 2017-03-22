@@ -26,6 +26,9 @@ public class XmlWriterIT {
 	@Autowired
 	private PartyMapper partyMapper;
 
+	@Autowired
+	private GrisbiXmlRepository grisbiXmlRepository;
+
 	@Test
 	public void should_update_party_work() {
 		PartyXml partyXml = TestHelper.manufacture(PartyXml.class);
@@ -36,6 +39,19 @@ public class XmlWriterIT {
 		Party retrievedParty = partyService.getPartyById(partyXml.getNb());
 
 		Assertions.assertThat(retrievedParty).isEqualTo(mappedParty);
+	}
+
+	@Test
+	public void should_create_party_work_with_already_existing_party() {
+		PartyXml partyXml = TestHelper.manufacture(PartyXml.class);
+		String expectedId = String.valueOf(grisbiXmlRepository.findNextPartyId());
+
+		Party createdParty = partyMapper.partyXmlToParty(xmlWriter.createParty(partyXml));
+
+		Party retrievedParty = partyService.getPartyById(createdParty.getId());
+		Assertions.assertThat(retrievedParty).isNotNull();
+		Assertions.assertThat(createdParty.getId()).isEqualTo(expectedId);
+		Assertions.assertThat(createdParty).isEqualTo(retrievedParty);
 	}
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.dto.PartyDto;
 import grisbiweb.server.mapper.PartyMapper;
+import grisbiweb.server.model.Party;
 import grisbiweb.server.service.PartyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,13 +40,16 @@ public class PartyController {
 	@PostMapping
 	@ApiOperation(value = "create a new party", response = PartyDto.class)
 	public PartyDto postParty(@RequestBody PartyDto partyDto) {
-		return partyService.createParty(partyDto);
+		Party party = partyMapper.partyDtoToParty(partyDto);
+		party = partyService.createParty(party);
+		return partyMapper.partyToPartyDto(party);
 	}
 
 	@PutMapping
 	@ApiOperation(value = "update a party", response = PartyDto.class)
 	public PartyDto putParty(@RequestBody PartyDto partyDto) {
-		return partyService.updateParty(partyDto);
+		partyService.updateParty(partyMapper.partyDtoToParty(partyDto));
+		return partyDto;
 	}
 
 	@DeleteMapping(value = "/{partyId}")
