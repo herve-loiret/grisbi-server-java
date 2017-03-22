@@ -54,8 +54,7 @@ public class XmlWriter implements InitializingBean {
 
 	@SneakyThrows
 	public void updateParty(PartyXml partyXml) {
-		File tempFile = File.createTempFile("grisbi-temp-file", ".tmp");
-		System.out.println(tempFile.getAbsolutePath());
+		File tempFile = createTempFile();
 		String partyString = createXmlStringFrom(partyXml);
 		String trigerString = partyString.substring(0, 19);
 		try (Stream<String> input = Files.lines(grisbiXmlFileLocator.getGrisbiFile().toPath());
@@ -63,6 +62,17 @@ public class XmlWriter implements InitializingBean {
 			input.map(s -> s.startsWith(trigerString) ? partyString : s).forEachOrdered(output::println);
 		}
 		updateGrisbiFile(tempFile);
+	}
+
+	private File createTempFile() {
+		try {
+
+			File tempFile = File.createTempFile("grisbi-temp-file", ".tmp");
+			log.debug("temp file created : {}", tempFile.getAbsolutePath());
+			return tempFile;
+		} catch (IOException e) {
+			throw new GrisbiFileException("error while trying to create a temp file", e);
+		}
 	}
 
 	private void updateGrisbiFile(File source) {
@@ -203,6 +213,19 @@ public class XmlWriter implements InitializingBean {
 			log.error("Error while trying to insert transaction in grisbi file", e);
 		}
 
+	}
+
+	@SneakyThrows
+	public void deleteParty(PartyXml partyXml) {
+		File tempFile = createTempFile();
+		String partyString = createXmlStringFrom(partyXml);
+		String trigerString = partyString.substring(0, 19);
+		try (Stream<String> input = Files.lines(grisbiXmlFileLocator.getGrisbiFile().toPath());
+				PrintWriter output = new PrintWriter(tempFile, "UTF-8")) {
+			input.filter(s -> !s.startsWith(trigerString))
+					.forEachOrdered(output::println);
+		}
+		updateGrisbiFile(tempFile);
 	}
 
 }

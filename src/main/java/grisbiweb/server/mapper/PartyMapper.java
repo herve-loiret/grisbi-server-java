@@ -29,4 +29,10 @@ public interface PartyMapper {
 	@Mapping(constant = "", target = "search") // TODO retrieve the existing one
 	@Mapping(source = "description", target = "txt")
 	PartyXml partyDtoToPartyXml(PartyDto partyDto);
+
+	@Mapping(source = "name", target = "na")
+	@Mapping(source = "id", target = "nb")
+	@Mapping(constant = "", target = "search") // FIXME will erase the search value
+	@Mapping(expression = "java(party.getDescription() == null ? \"\" : party.getDescription())", target = "txt")
+	PartyXml partyToPartyXml(Party party);
 }

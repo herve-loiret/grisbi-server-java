@@ -86,7 +86,7 @@ public class PartyControllerTest {
     @Test
     @SneakyThrows
     public void should_delete_a_party() {
-        final long partyId = 123L;
+        final String partyId = "123";
         mockMvc.perform(delete("/parties/{partyId}", partyId)) //
                 .andExpect(status().isOk());
 

@@ -45,8 +45,10 @@ public class PartyService {
 		return null;
 	}
 
-	public void deleteParty(Long partyId) {
-
+	public void deleteParty(String partyId) {
+		Party party = this.getPartyById(partyId);
+		PartyXml partyXml = partyMapper.partyToPartyXml(party);
+		xmlWriter.deleteParty(partyXml);
 	}
 
 	public PartyDto updateParty(PartyDto partyDto) {
