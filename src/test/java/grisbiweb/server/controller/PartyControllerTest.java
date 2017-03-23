@@ -36,62 +36,63 @@ import lombok.SneakyThrows;
 @WebMvcTest(PartyController.class)
 public class PartyControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockBean
-    private PartyService partyService;
+	@MockBean
+	private PartyService partyService;
 
-    @Autowired
-    private PartyMapper partyMapper;
+	@Autowired
+	private PartyMapper partyMapper;
 
-    @Test
-    @SneakyThrows
-    @SuppressWarnings("unchecked")
-    public void should_return_list_of_parties() {
-        List<Party> parties = TestHelper.FACTORY.manufacturePojo(ArrayList.class, Party.class);
-        parties.stream().forEach(p -> p.setId(String.valueOf(TestHelper.manufacture(Long.class))));
-        List<PartyDto> partyDtoInputs = partyMapper.partyToPartyDto(parties);
-        when(partyService.getParties()).thenReturn(parties);
+	@Test
+	@SneakyThrows
+	@SuppressWarnings("unchecked")
+	public void should_return_list_of_parties() {
+		List<Party> parties = TestHelper.FACTORY.manufacturePojo(ArrayList.class, Party.class);
+		parties.stream().forEach(p -> p.setId(String.valueOf(TestHelper.manufacture(Long.class))));
+		List<PartyDto> partyDtoInputs = partyMapper.partyToPartyDto(parties);
+		when(partyService.getParties()).thenReturn(parties);
 
-        String result = mockMvc.perform(get("/parties"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+		String result = mockMvc.perform(get("/parties"))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
 
-        List<PartyDto> partyDtoOutputs = TestHelper.MAPPER.readValue(result,
-                new TypeReference<List<PartyDto>>() {
-                });
+		List<PartyDto> partyDtoOutputs = TestHelper.MAPPER.readValue(result,
+				new TypeReference<List<PartyDto>>() {
+				});
 
-        assertThat(parties.size()).isEqualTo(partyDtoOutputs.size());
-        partyDtoInputs.stream().forEach(partyInput -> assertThat(partyDtoOutputs.contains(partyInput)).isTrue());
-    }
+		assertThat(parties.size()).isEqualTo(partyDtoOutputs.size());
+		partyDtoInputs.stream().forEach(partyInput -> assertThat(partyDtoOutputs.contains(partyInput)).isTrue());
+	}
 
-    @Test
-    @SneakyThrows
-    public void should_create_a_party() {
-        PartyDto partyDtoInput = TestHelper.manufacture(PartyDto.class);
-        Party partyInput = partyMapper.partyDtoToParty(partyDtoInput);
-        PartyDto partyDtoOutput = TestHelper.manufacture(PartyDto.class);
-        Party partyOutput = partyMapper.partyDtoToParty(partyDtoOutput);
-        partyDtoInput.setId(null);
-        String partyJson = TestHelper.serialize(partyDtoInput);
-        when(partyService.createParty(partyInput)).thenReturn(partyOutput);
+	@Test
+	@SneakyThrows
+	public void should_create_a_party() {
 
-        mockMvc.perform(post("/parties", partyDtoInput).contentType(MediaType.APPLICATION_JSON).content(partyJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(partyDtoOutput.getId())))
-                .andExpect(jsonPath("$.description", is(partyDtoOutput.getDescription())))
-                .andExpect(jsonPath("$.name", is(partyDtoOutput.getName())));
+		PartyDto partyDtoInput = TestHelper.manufacture(PartyDto.class);
+		partyDtoInput.setId(null);
+		Party partyInput = partyMapper.partyDtoToParty(partyDtoInput);
+		PartyDto partyDtoOutput = TestHelper.manufacture(PartyDto.class);
+		Party partyOutput = partyMapper.partyDtoToParty(partyDtoOutput);
+		String partyJson = TestHelper.serialize(partyDtoInput);
+		when(partyService.createParty(partyInput)).thenReturn(partyOutput);
 
-    }
+		mockMvc.perform(post("/parties", partyDtoInput).contentType(MediaType.APPLICATION_JSON).content(partyJson))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id", is(partyDtoOutput.getId())))
+				.andExpect(jsonPath("$.description", is(partyDtoOutput.getDescription())))
+				.andExpect(jsonPath("$.name", is(partyDtoOutput.getName())));
 
-    @Test
-    @SneakyThrows
-    public void should_delete_a_party() {
-        final String partyId = "123";
-        mockMvc.perform(delete("/parties/{partyId}", partyId)) //
-                .andExpect(status().isOk());
+	}
 
-        verify(partyService, times(1)).deleteParty(partyId);
-    }
+	@Test
+	@SneakyThrows
+	public void should_delete_a_party() {
+		final String partyId = "123";
+		mockMvc.perform(delete("/parties/{partyId}", partyId)) //
+				.andExpect(status().isOk());
+
+		verify(partyService, times(1)).deleteParty(partyId);
+	}
 }

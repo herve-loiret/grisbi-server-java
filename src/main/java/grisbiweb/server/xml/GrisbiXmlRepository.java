@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import grisbiweb.server.exception.PartyNotFoundException;
 import grisbiweb.server.mapper.PartyMapper;
 import grisbiweb.server.model.Party;
 
@@ -32,7 +31,7 @@ public class GrisbiXmlRepository {
 		return partyMapper.partyXmlToParty(this.grisbiXmlLoader.getGrisbi().getParty().stream()
 				.filter(p -> p.getNb().equals(partyId))
 				.findFirst()
-				.orElseThrow(() -> new PartyNotFoundException(partyId)));
+				.orElse(null)); // lol
 	}
 
 	public long findNextPartyId() {

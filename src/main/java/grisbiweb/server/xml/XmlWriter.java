@@ -49,8 +49,11 @@ public class XmlWriter implements InitializingBean {
 	private GrisbiXmlFileLocator grisbiXmlFileLocator;
 
 	@Autowired
+	private GrisbiXmlLoader grisbiXmlLoader;
+
+	@Autowired
 	private TransactionMapper transactionMapper;
-	
+
 	@Autowired
 	private GrisbiXmlRepository grisbiXmlRepository;
 
@@ -58,6 +61,7 @@ public class XmlWriter implements InitializingBean {
 
 	@SneakyThrows
 	public void updateParty(PartyXml partyXml) {
+		log.debug("updateParty {}", partyXml);
 		File tempFile = createTempFile();
 		String partyString = createXmlStringFrom(partyXml);
 		String trigerString = partyString.substring(0, 19);
@@ -70,7 +74,6 @@ public class XmlWriter implements InitializingBean {
 
 	private File createTempFile() {
 		try {
-
 			File tempFile = File.createTempFile("grisbi-temp-file", ".tmp");
 			log.debug("temp file created : {}", tempFile.getAbsolutePath());
 			return tempFile;
@@ -80,6 +83,8 @@ public class XmlWriter implements InitializingBean {
 	}
 
 	private void updateGrisbiFile(File source) {
+		log.debug("updateGrisbiFile {}", source.getAbsolutePath());
+		grisbiXmlLoader.modified();
 		File grisbiFile = grisbiXmlFileLocator.getGrisbiFile();
 		File archiveFile = new File(grisbiFile + String.valueOf(new Date().getTime()));
 		if (!grisbiFile.renameTo(archiveFile)) {
@@ -229,6 +234,7 @@ public class XmlWriter implements InitializingBean {
 
 	@SneakyThrows
 	public void deleteParty(PartyXml partyXml) {
+		log.debug("deleteParty {}", partyXml);
 		File tempFile = createTempFile();
 		String partyString = createXmlStringFrom(partyXml);
 		String trigerString = partyString.substring(0, 19);
@@ -242,8 +248,9 @@ public class XmlWriter implements InitializingBean {
 
 	@SneakyThrows
 	public PartyXml createParty(PartyXml partyXml) {
+		log.debug("createParty {}", partyXml);
 		partyXml.setNb(String.valueOf(grisbiXmlRepository.findNextPartyId()));
-		
+
 		String partyString = createXmlStringFrom(partyXml);
 		File tempFile = this.createTempFile();
 		String trigerString = partyString.substring(0, 12);

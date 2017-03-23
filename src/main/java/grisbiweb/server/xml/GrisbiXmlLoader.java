@@ -24,16 +24,27 @@ public class GrisbiXmlLoader {
 
 	private long lastModified;
 
+	private boolean isModified;
+
 	public GrisbiXml getGrisbi() {
 		if (grisbi == null) {
 			grisbi = loadGrisbi(grisbiXmlFileLocator.getGrisbiFile());
 		} else {
 			File file = grisbiXmlFileLocator.getGrisbiFile();
-			if (lastModified < file.lastModified()) {
+			if (isModified || lastModified < file.lastModified()) {
+				isModified = false;
 				grisbi = loadGrisbi(file);
 			}
 		}
 		return grisbi;
+	}
+
+	/**
+	 * this is a quick fix for concurrence access but there is still a risk of
+	 * concurent modification before the temp file copy
+	 */
+	public void modified() {
+		isModified = true;
 	}
 
 	public GrisbiXml loadGrisbi(File file) {

@@ -52,6 +52,10 @@ public class XmlWriterIT {
 		Assertions.assertThat(retrievedParty).isNotNull();
 		Assertions.assertThat(createdParty.getId()).isEqualTo(expectedId);
 		Assertions.assertThat(createdParty).isEqualTo(retrievedParty);
+
+		partyService.deleteParty(retrievedParty.getId());
+		retrievedParty = partyService.getPartyById(createdParty.getId());
+		Assertions.assertThat(retrievedParty).isNull();
 	}
 
 }

@@ -28,15 +28,7 @@ public class PartyService {
 	}
 
 	public Party getPartyById(String id) {
-		if (id == null) {
-			return null;
-		}
-		for (Party party : grisbiXmlRepository.getParties()) {
-			if (id.equals(party.getId())) {
-				return party;
-			}
-		}
-		return null;
+		return grisbiXmlRepository.getPartyById(id);
 	}
 
 	public Party createParty(Party party) {

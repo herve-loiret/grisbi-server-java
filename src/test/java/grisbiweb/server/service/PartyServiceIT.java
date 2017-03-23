@@ -1,6 +1,10 @@
 package grisbiweb.server.service;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+import java.util.Random;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +17,20 @@ import grisbiweb.server.model.Party;
 @SpringBootTest
 public class PartyServiceIT {
 
-    @Autowired
-    private PartyService partyService;
+	@Autowired
+	private PartyService partyService;
 
-    @Test
-    public void should_delete_party_work() {
-    	Party party = partyService.getParties().get(4);
-    	
-    	partyService.deleteParty(party.getId());
-    	
-    	Party retrievedParty = partyService.getPartyById(party.getId());
-    	Assertions.assertThat(retrievedParty).isNull();
-    }
+	@Test
+	public void should_delete_party_work() {
+		List<Party> parties = partyService.getParties();
+		int initialSize = parties.size();
+		Party party = parties.get(new Random().nextInt(parties.size()));
+
+		partyService.deleteParty(party.getId());
+
+		assertThat(partyService.getPartyById(party.getId())).isNull();
+		partyService.createParty(party);
+		assertThat(partyService.getParties().size()).isEqualTo(initialSize);
+	}
 
 }
