@@ -1,8 +1,8 @@
 package grisbiweb.server.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +55,7 @@ public class TransactionService {
 	}
 
 	private List<Transaction> getTransactions() {
+
 		List<TransactionXml> transactionsXml = grisbiXmlLoader.getGrisbi().getTransaction();
 		List<Transaction> transactions = new ArrayList<>();
 		for (TransactionXml transactionXml : transactionsXml) {
@@ -64,25 +65,10 @@ public class TransactionService {
 	}
 
 	public List<Transaction> getTransactionsOrderedByAccountId(String accountId) {
-
-		List<Transaction> transactionsAccount = new ArrayList<>();
-		List<Transaction> transactions = this.getTransactions();
-
-		for (Transaction transaction : transactions) {
-			if (transaction.getAccountId().equals(accountId)) {
-				transactionsAccount.add(transaction);
-			}
-		}
-
-		Collections.sort(transactionsAccount,
-				(transaction1, transaction2) -> transaction1.getDate().compareTo(transaction2.getDate()));
-
-		return transactionsAccount;
-	}
-
-	public long getTransactionTotal(String accountId) {
-		return this.getTransactions().stream().filter(transaction -> accountId.equals(transaction.getAccountId()))
-				.count();
+		return this.getTransactions().stream()
+				.filter(t -> accountId.equals(t.getAccountId()))
+				.sorted((t1, t2) -> t1.getDate().compareTo(t2.getDate()))
+				.collect(Collectors.toList());
 	}
 
 }

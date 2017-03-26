@@ -1,6 +1,7 @@
 package grisbiweb.server.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Data;
@@ -18,7 +19,7 @@ public class Transaction {
 	private String budgetSubImputationId;
 	private String categoryId;
 	private String currencyId;
-	private Date date;
+	private LocalDate date;
 	private Boolean exchange;
 	private BigDecimal exchangeFees;
 	private BigDecimal exchangeRate;

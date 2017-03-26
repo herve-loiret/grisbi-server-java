@@ -7,13 +7,14 @@ import java.util.Date;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import grisbiweb.server.dto.TransactionCreationDto;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.utils.DateUtils;
 import grisbiweb.server.utils.NumberUtils;
 import grisbiweb.server.xml.model.TransactionXml;
 import lombok.SneakyThrows;
 
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {}, imports = { DateUtils.class })
 public interface TransactionMapper {
 
 	@Mapping(source = "ac", target = "accountId")
@@ -25,7 +26,7 @@ public interface TransactionMapper {
 	@Mapping(source = "sbu", target = "budgetSubImputationId")
 	@Mapping(source = "ca", target = "categoryId")
 	@Mapping(source = "cu", target = "currencyId")
-	@Mapping(expression = "java(grisbiweb.server.utils.DateUtils.parseEnglishDate(transactionXml.getDt()))", target = "date")
+	@Mapping(expression = "java(DateUtils.parseEnglishLocalDate(transactionXml.getDt()))", target = "date")
 	@Mapping(expression = "java(transactionXml.getExb().equals(\"1\"))", target = "exchange")
 	@Mapping(expression = "java(grisbiweb.server.utils.NumberUtils.parseNumber(transactionXml.getExf()))", target = "exchangeFees")
 	@Mapping(expression = "java(grisbiweb.server.utils.NumberUtils.parseNumber(transactionXml.getExr()))", target = "exchangeRate")
@@ -85,6 +86,8 @@ public interface TransactionMapper {
 	// "java(grisbiweb.server.utils.NumberUtils.parseNumber(transactionXml.getExr()))",
 	// target = "exchangeRate")
 	public TransactionXml transactionToTransactionXml(Transaction transaction);
+
+	public Transaction transactionCreationDtoToTransaction(TransactionCreationDto transactionCreationDto);
 
 	default BigDecimal mapAmount(TransactionXml transactionXml) {
 
