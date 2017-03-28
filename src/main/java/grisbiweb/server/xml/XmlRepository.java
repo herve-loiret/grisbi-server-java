@@ -9,16 +9,16 @@ import grisbiweb.server.mapper.PartyMapper;
 import grisbiweb.server.model.Party;
 
 @Service
-public class GrisbiXmlRepository {
+public class XmlRepository {
 
 	@Autowired
-	private GrisbiXmlLoader grisbiXmlLoader;
+	private XmlReader xmlReader;
 
 	@Autowired
 	private PartyMapper partyMapper;
 
 	public List<Party> getParties() {
-		return partyMapper.partyXmlToParty(this.grisbiXmlLoader.getGrisbi().getParty());
+		return partyMapper.partyXmlToParty(this.xmlReader.getGrisbi().getParty());
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class GrisbiXmlRepository {
 	 * @return
 	 */
 	public Party getPartyById(String partyId) {
-		return partyMapper.partyXmlToParty(this.grisbiXmlLoader.getGrisbi().getParty().stream()
+		return partyMapper.partyXmlToParty(this.xmlReader.getGrisbi().getParty().stream()
 				.filter(p -> p.getNb().equals(partyId))
 				.findFirst()
 				.orElse(null)); // lol
@@ -39,8 +39,5 @@ public class GrisbiXmlRepository {
 				.mapToLong(party -> Long.valueOf(party.getId()) + 1).max()
 				.orElse(1L);
 	}
-	
-	
-	
 
 }

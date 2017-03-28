@@ -13,12 +13,12 @@ import grisbiweb.server.exception.GrisbiFileException;
 import grisbiweb.server.xml.model.GrisbiXml;
 
 @Service
-public class GrisbiXmlLoader {
+public class XmlReader {
 
 	private static final String BUSINESS_PACKAGE = "grisbiweb.server.xml.model";
 
 	@Autowired
-	private GrisbiXmlFileLocator grisbiXmlFileLocator;
+	private XmlFileLocator xmlFileLocator;
 
 	private GrisbiXml grisbi;
 
@@ -28,9 +28,9 @@ public class GrisbiXmlLoader {
 
 	public GrisbiXml getGrisbi() {
 		if (grisbi == null) {
-			grisbi = loadGrisbi(grisbiXmlFileLocator.getGrisbiFile());
+			grisbi = loadGrisbi(xmlFileLocator.getGrisbiFile());
 		} else {
-			File file = grisbiXmlFileLocator.getGrisbiFile();
+			File file = xmlFileLocator.getGrisbiFile();
 			if (isModified || lastModified < file.lastModified()) {
 				isModified = false;
 				grisbi = loadGrisbi(file);
@@ -43,7 +43,7 @@ public class GrisbiXmlLoader {
 	 * this is a quick fix for concurrence access but there is still a risk of
 	 * concurent modification before the temp file copy
 	 */
-	public void modified() {
+	public void declareModified() {
 		isModified = true;
 	}
 

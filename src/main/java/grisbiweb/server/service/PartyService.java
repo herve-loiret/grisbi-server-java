@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import grisbiweb.server.mapper.PartyMapper;
 import grisbiweb.server.model.Party;
-import grisbiweb.server.xml.GrisbiXmlRepository;
+import grisbiweb.server.xml.XmlRepository;
 import grisbiweb.server.xml.XmlWriter;
 import grisbiweb.server.xml.model.PartyXml;
 
@@ -15,7 +15,7 @@ import grisbiweb.server.xml.model.PartyXml;
 public class PartyService {
 
 	@Autowired
-	private GrisbiXmlRepository grisbiXmlRepository;
+	private XmlRepository xmlRepository;
 
 	@Autowired
 	private PartyMapper partyMapper;
@@ -24,11 +24,11 @@ public class PartyService {
 	private XmlWriter xmlWriter;
 
 	public List<Party> getParties() {
-		return grisbiXmlRepository.getParties();
+		return xmlRepository.getParties();
 	}
 
 	public Party getPartyById(String id) {
-		return grisbiXmlRepository.getPartyById(id);
+		return xmlRepository.getPartyById(id);
 	}
 
 	public Party createParty(Party party) {

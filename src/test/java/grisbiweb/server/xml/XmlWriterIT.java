@@ -27,7 +27,7 @@ public class XmlWriterIT {
 	private PartyMapper partyMapper;
 
 	@Autowired
-	private GrisbiXmlRepository grisbiXmlRepository;
+	private XmlRepository xmlRepository;
 
 	@Test
 	public void should_update_party_work() {
@@ -44,7 +44,7 @@ public class XmlWriterIT {
 	@Test
 	public void should_create_party_work_with_already_existing_party() {
 		PartyXml partyXml = TestHelper.manufacture(PartyXml.class);
-		String expectedId = String.valueOf(grisbiXmlRepository.findNextPartyId());
+		String expectedId = String.valueOf(xmlRepository.findNextPartyId());
 
 		Party createdParty = partyMapper.partyXmlToParty(xmlWriter.createParty(partyXml));
 

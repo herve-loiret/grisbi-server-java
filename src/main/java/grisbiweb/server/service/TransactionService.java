@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
-import grisbiweb.server.xml.GrisbiXmlLoader;
+import grisbiweb.server.xml.XmlReader;
 import grisbiweb.server.xml.XmlWriter;
 import grisbiweb.server.xml.model.TransactionXml;
 
@@ -17,7 +17,7 @@ import grisbiweb.server.xml.model.TransactionXml;
 public class TransactionService {
 
 	@Autowired
-	private GrisbiXmlLoader grisbiXmlLoader;
+	private XmlReader xmlReader;
 
 	@Autowired
 	private TransactionMapper transactionMapper;
@@ -45,7 +45,7 @@ public class TransactionService {
 	}
 
 	public Transaction getTransactionById(String idTransaction) {
-		for (TransactionXml oneTransaction : grisbiXmlLoader.getGrisbi().getTransaction()) {
+		for (TransactionXml oneTransaction : xmlReader.getGrisbi().getTransaction()) {
 			Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
 			if (transaction.getId().equals(idTransaction)) {
 				return transaction;
@@ -56,7 +56,7 @@ public class TransactionService {
 
 	private List<Transaction> getTransactions() {
 
-		List<TransactionXml> transactionsXml = grisbiXmlLoader.getGrisbi().getTransaction();
+		List<TransactionXml> transactionsXml = xmlReader.getGrisbi().getTransaction();
 		List<Transaction> transactions = new ArrayList<>();
 		for (TransactionXml transactionXml : transactionsXml) {
 			transactions.add(transactionMapper.transactionXmlToTransaction(transactionXml));

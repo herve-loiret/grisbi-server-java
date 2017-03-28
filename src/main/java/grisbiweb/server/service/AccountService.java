@@ -12,7 +12,7 @@ import grisbiweb.server.mapper.AccountMapper;
 import grisbiweb.server.model.Account;
 import grisbiweb.server.model.Account.AccountType;
 import grisbiweb.server.model.Transaction;
-import grisbiweb.server.xml.GrisbiXmlLoader;
+import grisbiweb.server.xml.XmlReader;
 import grisbiweb.server.xml.model.AccountXml;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,14 +24,14 @@ public class AccountService {
 	private AccountMapper accountMapper;
 
 	@Autowired
-	private GrisbiXmlLoader grisbiXmlLoader;
+	private XmlReader xmlReader;
 
 	@Autowired
 	private TransactionService transactionService;
 
 	public Account getAccountById(String accountId) {
 
-		return grisbiXmlLoader.getGrisbi().getAccount().stream()
+		return xmlReader.getGrisbi().getAccount().stream()
 				.filter(account -> accountId.equals(account.getNumber()))
 				.map(accountMapper::accountXmlToAccount)
 				.findFirst()
@@ -102,7 +102,7 @@ public class AccountService {
 
 	public List<Account> getOpenedAccounts() {
 		List<Account> accounts = new ArrayList<>();
-		for (AccountXml account : this.grisbiXmlLoader.getGrisbi().getAccount()) {
+		for (AccountXml account : this.xmlReader.getGrisbi().getAccount()) {
 			if ("0".equals(account.getClosedAccount())) {
 				accounts.add(accountMapper.accountXmlToAccount(account));
 			}

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class GrisbiXmlFileLocator {
+public class XmlFileLocator {
 
 	private static final String CLASSPATH_PREFIX = "classpath:";
 	private static final String FILE_PREFIX = "file:";

@@ -15,11 +15,11 @@ import grisbiweb.server.xml.model.GrisbiXml;
 public class GrisbiXmlLoaderIT {
     
     @Autowired
-    private GrisbiXmlLoader grisbiXmlLoader;
+    private XmlReader xmlReader;
 
     @Test
     public void should_load_grisbi_unmarshal_the_file(){
-        GrisbiXml grisbiXml = grisbiXmlLoader.getGrisbi();
+        GrisbiXml grisbiXml = xmlReader.getGrisbi();
         
         assertThat(grisbiXml).isNotNull();
     }

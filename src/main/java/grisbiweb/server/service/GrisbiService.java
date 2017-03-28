@@ -5,17 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import grisbiweb.server.xml.GrisbiXmlLoader;
+import grisbiweb.server.xml.XmlReader;
 import grisbiweb.server.xml.model.CurrencyXml;
 
 @Service
 public class GrisbiService {
 
 	@Autowired
-	private GrisbiXmlLoader grisbiXmlLoader;
+	private XmlReader xmlReader;
 
 	public List<CurrencyXml> getCurrencies() {
-		List<CurrencyXml> currencies = this.grisbiXmlLoader.getGrisbi().getCurrency();
+		List<CurrencyXml> currencies = this.xmlReader.getGrisbi().getCurrency();
 		return currencies;
 	}
 

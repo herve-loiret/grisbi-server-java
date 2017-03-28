@@ -46,16 +46,16 @@ public class XmlWriter implements InitializingBean {
 	private Resource template;
 
 	@Autowired
-	private GrisbiXmlFileLocator grisbiXmlFileLocator;
+	private XmlFileLocator xmlFileLocator;
 
 	@Autowired
-	private GrisbiXmlLoader grisbiXmlLoader;
+	private XmlReader xmlReader;
 
 	@Autowired
 	private TransactionMapper transactionMapper;
 
 	@Autowired
-	private GrisbiXmlRepository grisbiXmlRepository;
+	private XmlRepository xmlRepository;
 
 	private Configuration configuration;
 
@@ -65,7 +65,7 @@ public class XmlWriter implements InitializingBean {
 		File tempFile = createTempFile();
 		String partyString = createXmlStringFrom(partyXml);
 		String trigerString = partyString.substring(0, 19);
-		try (Stream<String> input = Files.lines(grisbiXmlFileLocator.getGrisbiFile().toPath());
+		try (Stream<String> input = Files.lines(xmlFileLocator.getGrisbiFile().toPath());
 				PrintWriter output = new PrintWriter(tempFile, "UTF-8")) {
 			input.map(s -> s.startsWith(trigerString) ? partyString : s).forEachOrdered(output::println);
 		}
@@ -84,8 +84,8 @@ public class XmlWriter implements InitializingBean {
 
 	private void updateGrisbiFile(File source) {
 		log.debug("updateGrisbiFile {}", source.getAbsolutePath());
-		grisbiXmlLoader.modified();
-		File grisbiFile = grisbiXmlFileLocator.getGrisbiFile();
+		xmlReader.declareModified();
+		File grisbiFile = xmlFileLocator.getGrisbiFile();
 		File archiveFile = new File(grisbiFile + String.valueOf(new Date().getTime()));
 		if (!grisbiFile.renameTo(archiveFile)) {
 			throw new GrisbiFileException("can't rename the grisbi file");
@@ -162,7 +162,7 @@ public class XmlWriter implements InitializingBean {
 	@Deprecated
 	protected int findLineOfLastTransaction() throws FileNotFoundException, IOException {
 
-		File file = grisbiXmlFileLocator.getGrisbiFile();
+		File file = xmlFileLocator.getGrisbiFile();
 
 		boolean alreadyOneTransaction = false;
 		int allLines = 0;
@@ -224,7 +224,7 @@ public class XmlWriter implements InitializingBean {
 		try {
 			int lineNumber = findLineOfLastTransaction();
 			synchronized (this) {
-				insertStringInFile(grisbiXmlFileLocator.getGrisbiFile(), lineNumber, line);
+				insertStringInFile(xmlFileLocator.getGrisbiFile(), lineNumber, line);
 			}
 		} catch (IOException e) {
 			log.error("Error while trying to insert transaction in grisbi file", e);
@@ -238,7 +238,7 @@ public class XmlWriter implements InitializingBean {
 		File tempFile = createTempFile();
 		String partyString = createXmlStringFrom(partyXml);
 		String trigerString = partyString.substring(0, 19);
-		try (Stream<String> input = Files.lines(grisbiXmlFileLocator.getGrisbiFile().toPath());
+		try (Stream<String> input = Files.lines(xmlFileLocator.getGrisbiFile().toPath());
 				PrintWriter output = new PrintWriter(tempFile, "UTF-8")) {
 			input.filter(s -> !s.startsWith(trigerString))
 					.forEachOrdered(output::println);
@@ -249,12 +249,12 @@ public class XmlWriter implements InitializingBean {
 	@SneakyThrows
 	public PartyXml createParty(PartyXml partyXml) {
 		log.debug("createParty {}", partyXml);
-		partyXml.setNb(String.valueOf(grisbiXmlRepository.findNextPartyId()));
+		partyXml.setNb(String.valueOf(xmlRepository.findNextPartyId()));
 
 		String partyString = createXmlStringFrom(partyXml);
 		File tempFile = this.createTempFile();
 		String trigerString = partyString.substring(0, 12);
-		List<String> lines = Files.readAllLines(grisbiXmlFileLocator.getGrisbiFile().toPath());
+		List<String> lines = this.readAllLines();
 
 		boolean transactionFound = false;
 		boolean transactionInserted = false;
@@ -276,6 +276,23 @@ public class XmlWriter implements InitializingBean {
 		}
 		updateGrisbiFile(tempFile);
 		return partyXml;
+	}
+
+	@SneakyThrows
+	public TransactionXml createTransaction(TransactionXml transactionXml) {
+		log.debug("createTransaction {}", transactionXml);
+		String transactionXmlString = this.createXmlStringFrom(transactionXml);
+		
+		return transactionXml;
+	}
+	
+
+	public List<String> readAllLines() {
+		try {
+			return Files.readAllLines(xmlFileLocator.getGrisbiFile().toPath());
+		} catch (IOException e) {
+			throw new GrisbiFileException("can't read grisbi xml file");
+		}
 	}
 
 }
