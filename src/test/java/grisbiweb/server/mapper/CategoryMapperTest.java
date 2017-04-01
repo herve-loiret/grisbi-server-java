@@ -11,6 +11,7 @@ import grisbiweb.server.xml.model.CategoryXml;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+
 public class CategoryMapperTest {
 
     @Test

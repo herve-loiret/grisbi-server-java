@@ -17,27 +17,25 @@ public class CategoryResponseBuilder {
 	@Autowired
 	private CategoryService categoryService;
 
-	public List<CategoryDto> getCategoriesUI() {
-		List<CategoryDto> categoriesUI = new ArrayList<>();
+	public List<CategoryDto> getCategoriesDto() {
+		List<CategoryDto> categoriesDto = new ArrayList<>();
 		// TODO à optimiser...
-		for (Category category : categoryService.getCategoryById().values()) {
+		for (Category category : categoryService.getAllCategories()) {
 			CategoryDto categoryUI = new CategoryDto();
 			categoryUI.setIdCategory(category.getIdLong());
 			categoryUI.setNameCategory(category.getName());
-			categoriesUI.add(categoryUI);
-			for (SubCategory subCategory : categoryService.getSubCategoriesByIdAndCategory().values()) {
-				if (subCategory.getIdCategory().equals(category.getId())) {
-					CategoryDto subCategoryUI = new CategoryDto();
+			categoriesDto.add(categoryUI);
+			for (SubCategory subCategory : categoryService.getSubCategoriesByCategoryId(category.getId())) {
+				CategoryDto subCategoryDto = new CategoryDto();
 
-					subCategoryUI.setIdCategory(categoryUI.getIdCategory());
-					subCategoryUI.setNameCategory(categoryUI.getNameCategory());
+				subCategoryDto.setIdCategory(categoryUI.getIdCategory());
+				subCategoryDto.setNameCategory(categoryUI.getNameCategory());
 
-					subCategoryUI.setIdSubCategory(subCategory.getIdLong());
-					subCategoryUI.setNameSubCategory(subCategory.getName());
-					categoriesUI.add(subCategoryUI);
-				}
+				subCategoryDto.setIdSubCategory(subCategory.getIdLong());
+				subCategoryDto.setNameSubCategory(subCategory.getName());
+				categoriesDto.add(subCategoryDto);
 			}
 		}
-		return categoriesUI;
+		return categoriesDto;
 	}
 }

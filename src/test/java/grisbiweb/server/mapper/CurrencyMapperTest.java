@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mapstruct.factory.Mappers;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import grisbiweb.server.dto.CurrencyDto;
 import grisbiweb.server.xml.model.CurrencyXml;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CurrencyMapperTest {
 
     @Test

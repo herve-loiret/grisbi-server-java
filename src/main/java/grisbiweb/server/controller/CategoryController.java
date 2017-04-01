@@ -24,6 +24,6 @@ public class CategoryController {
 	@GetMapping
 	@ApiOperation(value = "get all categories", response = CategoryDto.class, responseContainer = "List")
 	public List<CategoryDto> getCategoriesUI() {
-		return categoryResponseBuilder.getCategoriesUI();
+		return categoryResponseBuilder.getCategoriesDto();
 	}
 }

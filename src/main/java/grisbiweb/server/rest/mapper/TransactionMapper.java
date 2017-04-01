@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,9 +86,9 @@ public class TransactionMapper {
 		String subCategoryId = transaction.getSubCategoryId();
 
 		if (transaction.isATransfer()) {
-			Transaction transactionDistante = transactionService.getForeignTransaction(transaction);
-			if (transactionDistante != null) {
-				Account accountDistant = accountService.getAccountById(transactionDistante.getAccountId());
+			Optional<Transaction> transactionDistante = transactionService.getForeignTransaction(transaction);
+			if (transactionDistante.isPresent()) {
+				Account accountDistant = accountService.getAccountById(transactionDistante.get().getAccountId());
 				if (accountDistant != null) {
 					transactionDto.setCategory("Virement : " + accountDistant.getName());
 				}

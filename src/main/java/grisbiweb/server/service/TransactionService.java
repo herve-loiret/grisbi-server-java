@@ -2,10 +2,13 @@ package grisbiweb.server.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.annotations.VisibleForTesting;
 
 import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
@@ -30,32 +33,26 @@ public class TransactionService {
 		xmlWriter.writeTransaction(transaction);
 	}
 
-	private Long findNextTransactionId() {
-		Long id = 0L;
-		for (Transaction transaction : this.getTransactions()) {
-			if (id.compareTo(transaction.getId()) < 0) {
-				id = transaction.getId();
-			}
-		}
-		return ++id;
+	@VisibleForTesting
+	protected Long findNextTransactionId() {
+		Long lastId = this.getTransactions().stream()
+				.mapToLong(t -> t.getId())
+				.max()
+				.orElse(0L);
+		return ++lastId;
 	}
 
-	public Transaction getForeignTransaction(Transaction transaction) {
+	public Optional<Transaction> getForeignTransaction(Transaction transaction) {
 		return this.getTransactionById(transaction.getForeignTransactionId());
 	}
 
-	public Transaction getTransactionById(String idTransaction) {
-		for (TransactionXml oneTransaction : xmlReader.getGrisbi().getTransaction()) {
-			Transaction transaction = transactionMapper.transactionXmlToTransaction(oneTransaction);
-			if (transaction.getId().equals(idTransaction)) {
-				return transaction;
-			}
-		}
-		return null;
+	public Optional<Transaction> getTransactionById(String idTransaction) {
+		return this.getTransactions().stream()
+				.filter(t -> t.getId().equals(Long.valueOf(idTransaction)))
+				.findFirst();
 	}
 
 	private List<Transaction> getTransactions() {
-
 		List<TransactionXml> transactionsXml = xmlReader.getGrisbi().getTransaction();
 		List<Transaction> transactions = new ArrayList<>();
 		for (TransactionXml transactionXml : transactionsXml) {

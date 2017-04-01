@@ -1,7 +1,10 @@
 package grisbiweb.server.service;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -46,16 +49,18 @@ public class CategoryService implements InitializingBean {
 		}
 	}
 
-	public Map<String, Category> getCategoryById() {
-		return categoryById;
+	public Collection<Category> getAllCategories() {
+		return categoryById.values();
 	}
 
 	public Category getCategoryById(String categoryId) {
 		return this.categoryById.get(categoryId);
 	}
 
-	public Map<Pair<Category, String>, SubCategory> getSubCategoriesByIdAndCategory() {
-		return subCategoriesByIdAndCategory;
+	public List<SubCategory> getSubCategoriesByCategoryId(String categoryId) {
+		return subCategoriesByIdAndCategory.values().stream()
+				.filter(sc -> categoryId.equals(sc.getIdCategory()))
+				.collect(Collectors.toList());
 	}
 
 	public SubCategory getSubCategoryByIds(String categoryId, String subCategoryId) {

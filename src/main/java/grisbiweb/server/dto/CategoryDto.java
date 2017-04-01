@@ -5,6 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+/**
+ * TODO : replace this by a simple CategoryDto with List<CategoryDto>
+ * subcategories
+ */
 @ApiModel
 @Data
 public class CategoryDto {
