@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import grisbiweb.server.dto.CurrencyDto;
 import grisbiweb.server.mapper.CurrencyMapper;
-import grisbiweb.server.service.GrisbiService;
+import grisbiweb.server.service.CurrencyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 public class CurrencyController {
 
 	@Autowired
-	private GrisbiService grisbiService;
+	private CurrencyService currencyService;
 
 	@Autowired
 	private CurrencyMapper currencyMapper;
@@ -28,6 +28,6 @@ public class CurrencyController {
 	@GetMapping
 	@ApiOperation(value = "get all currencies", response = CurrencyDto.class, responseContainer = "List")
 	public List<CurrencyDto> getCurrencies() {
-		return currencyMapper.currencyXmlToCurrencyResponse(grisbiService.getCurrencies());
+		return currencyMapper.currencyToCurrencyDto(currencyService.getCurrencies());
 	}
 }

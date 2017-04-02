@@ -1,6 +1,5 @@
 package grisbiweb.server.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,7 +13,6 @@ import grisbiweb.server.mapper.TransactionMapper;
 import grisbiweb.server.model.Transaction;
 import grisbiweb.server.xml.XmlReader;
 import grisbiweb.server.xml.XmlWriter;
-import grisbiweb.server.xml.model.TransactionXml;
 
 @Service
 public class TransactionService {
@@ -53,12 +51,9 @@ public class TransactionService {
 	}
 
 	private List<Transaction> getTransactions() {
-		List<TransactionXml> transactionsXml = xmlReader.getGrisbi().getTransaction();
-		List<Transaction> transactions = new ArrayList<>();
-		for (TransactionXml transactionXml : transactionsXml) {
-			transactions.add(transactionMapper.transactionXmlToTransaction(transactionXml));
-		}
-		return transactions;
+		return xmlReader.getGrisbi().getTransaction().stream()
+				.map(transactionMapper::transactionXmlToTransaction)
+				.collect(Collectors.toList());
 	}
 
 	public List<Transaction> getTransactionsOrderedByAccountId(String accountId) {
