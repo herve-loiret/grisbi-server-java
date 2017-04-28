@@ -19,10 +19,10 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class XmlWriterTest {
+public class ObjectToXmlMapperTest {
 
 	@Autowired
-	private XmlWriter xmlWriter;
+	private ObjectToXmlMapper objectToXmlMapperTest;
 
 	private PodamFactory factory = new PodamFactoryImpl();
 
@@ -30,7 +30,7 @@ public class XmlWriterTest {
 	public void should_create_xml_string_party_work() {
 		PartyXml partyXml = factory.manufacturePojo(PartyXml.class);
 
-		String partyString = xmlWriter.createXmlStringFrom(partyXml);
+		String partyString = objectToXmlMapperTest.createXmlStringFrom(partyXml);
 
 		assertThat(partyString).isEqualTo("	<Party Nb=\"" + partyXml.getNb() + "\" Na=\"" + partyXml.getNa()
 				+ "\" Txt=\"" + partyXml.getTxt() + "\" Search=\"" + partyXml.getSearch() + "\" />");
@@ -40,7 +40,7 @@ public class XmlWriterTest {
 	public void should_create_xml_string_transaction_work() {
 		TransactionXml transactionXml = factory.manufacturePojo(TransactionXml.class);
 
-		String transactionString = xmlWriter.createXmlStringFrom(transactionXml);
+		String transactionString = objectToXmlMapperTest.createXmlStringFrom(transactionXml);
 
 		assertThat(transactionString).isEqualTo("	<Transaction Ac=\"" + transactionXml.getAc() + "\" Nb=\""
 				+ transactionXml.getNb() + "\" Id=\"" + transactionXml.getId() + "\" Dt=\"" + transactionXml.getDt()
@@ -60,7 +60,7 @@ public class XmlWriterTest {
 	public void should_create_xml_string_category_work() {
 		CategoryXml categoryXml = factory.manufacturePojo(CategoryXml.class);
 
-		String categoryString = xmlWriter.createXmlStringFrom(categoryXml);
+		String categoryString = objectToXmlMapperTest.createXmlStringFrom(categoryXml);
 
 		assertThat(categoryString).isEqualTo("	<Category Nb=\"" + categoryXml.getNb() + "\" Na=\""
 				+ categoryXml.getNa() + "\" Kd=\"" + categoryXml.getKd() + "\" />");
@@ -70,7 +70,7 @@ public class XmlWriterTest {
 	public void should_create_xml_string_subcategory_work() {
 		SubCategoryXml subCategoryXml = factory.manufacturePojo(SubCategoryXml.class);
 
-		String subCategoryString = xmlWriter.createXmlStringFrom(subCategoryXml);
+		String subCategoryString = objectToXmlMapperTest.createXmlStringFrom(subCategoryXml);
 
 		assertThat(subCategoryString).isEqualTo("	<Sub_category Nbc=\"" + subCategoryXml.getNbc() + "\" Nb=\""
 				+ subCategoryXml.getNb() + "\" Na=\"" + subCategoryXml.getNa() + "\" />");
@@ -81,7 +81,7 @@ public class XmlWriterTest {
 		BankXml xml = factory.manufacturePojo(BankXml.class);
 		xml.setBIC(factory.manufacturePojo(String.class));
 
-		String string = xmlWriter.createXmlStringFrom(xml);
+		String string = objectToXmlMapperTest.createXmlStringFrom(xml);
 
 		assertThat(string).isEqualTo("	<Bank Nb=\"" + xml.getNb() + "\" Na=\"" + xml.getNa() + "\" Co=\"" + xml.getCo()
 				+ "\" BIC=\"" + xml.getBIC() + "\" Adr=\"" + xml.getAdr() + "\" Tel=\"" + xml.getTel() + "\" Mail=\""
@@ -93,7 +93,7 @@ public class XmlWriterTest {
 	public void should_create_xml_string_from_account_work() {
 		AccountXml xml = factory.manufacturePojo(AccountXml.class);
 
-		String string = xmlWriter.createXmlStringFrom(xml);
+		String string = objectToXmlMapperTest.createXmlStringFrom(xml);
 
 		String expected = "	<Account\n		Name=\"" + xml.getName() + "\"\n		Id=\"" + xml.getId()
 				+ "\"\n		Number=\"" + xml.getNumber() + "\"\n		Owner=\"" + xml.getOwner() + "\"\n		Kind=\""
@@ -126,5 +126,5 @@ public class XmlWriterTest {
 
 		assertThat(string).isEqualTo(expected);
 	}
-	
+
 }
